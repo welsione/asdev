@@ -1,0 +1,69 @@
+<svg width="1120" height="360" viewBox="0 0 1120 360" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">asdev 工作流总览</title>
+  <desc id="desc">展示 asdev 从能力探测、代码调查、任务拆解到开发验收的四阶段流程。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1120" y2="360" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0F172A"/>
+      <stop offset="1" stop-color="#134E4A"/>
+    </linearGradient>
+    <linearGradient id="phase" x1="70" y1="112" x2="1048" y2="245" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#7DD3FC"/>
+      <stop offset="0.48" stop-color="#34D399"/>
+      <stop offset="1" stop-color="#FDE68A"/>
+    </linearGradient>
+    <style>
+      .title { font: 800 34px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #F8FAFC; }
+      .sub { font: 600 18px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #A7F3D0; }
+      .phase { font: 800 24px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #F8FAFC; }
+      .body { font: 600 15px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #D1FAE5; }
+      .tag { font: 800 13px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #0F172A; }
+    </style>
+  </defs>
+  <rect width="1120" height="360" rx="28" fill="url(#bg)"/>
+  <text x="64" y="64" class="title">asdev 四阶段交付流</text>
+  <text x="64" y="98" class="sub">从真实代码事实出发，用独立 Agent 逐段验证，最后把证据沉淀到 .record/。</text>
+
+  <path d="M286 178H318" stroke="#5EEAD4" stroke-width="5" stroke-linecap="round"/>
+  <path d="M554 178H586" stroke="#5EEAD4" stroke-width="5" stroke-linecap="round"/>
+  <path d="M822 178H854" stroke="#5EEAD4" stroke-width="5" stroke-linecap="round"/>
+  <path d="M310 166L326 178L310 190" stroke="#5EEAD4" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M578 166L594 178L578 190" stroke="#5EEAD4" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M846 166L862 178L846 190" stroke="#5EEAD4" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <g>
+    <rect x="64" y="122" width="222" height="150" rx="18" fill="#102A2F" stroke="#7DD3FC" stroke-width="2"/>
+    <rect x="88" y="146" width="74" height="26" rx="13" fill="#7DD3FC"/>
+    <text x="104" y="165" class="tag">Phase 0</text>
+    <text x="88" y="205" class="phase">能力探测</text>
+    <text x="88" y="235" class="body">确认多 Agent、项目规范</text>
+    <text x="88" y="259" class="body">初始化 .record/ 模板</text>
+  </g>
+
+  <g>
+    <rect x="332" y="122" width="222" height="150" rx="18" fill="#102A2F" stroke="#34D399" stroke-width="2"/>
+    <rect x="356" y="146" width="74" height="26" rx="13" fill="#34D399"/>
+    <text x="372" y="165" class="tag">Phase 1</text>
+    <text x="356" y="205" class="phase">代码调查</text>
+    <text x="356" y="235" class="body">直接/间接调用链</text>
+    <text x="356" y="259" class="body">需求探索与设计验收</text>
+  </g>
+
+  <g>
+    <rect x="600" y="122" width="222" height="150" rx="18" fill="#102A2F" stroke="#A7F3D0" stroke-width="2"/>
+    <rect x="624" y="146" width="74" height="26" rx="13" fill="#A7F3D0"/>
+    <text x="640" y="165" class="tag">Phase 2</text>
+    <text x="624" y="205" class="phase">任务拆解</text>
+    <text x="624" y="235" class="body">目标、原因、验收项</text>
+    <text x="624" y="259" class="body">计划检查后暂停确认</text>
+  </g>
+
+  <g>
+    <rect x="868" y="122" width="222" height="150" rx="18" fill="#102A2F" stroke="#FDE68A" stroke-width="2"/>
+    <rect x="892" y="146" width="74" height="26" rx="13" fill="#FDE68A"/>
+    <text x="908" y="165" class="tag">Phase 3</text>
+    <text x="892" y="205" class="phase">开发验收</text>
+    <text x="892" y="235" class="body">逐任务实现、验证</text>
+    <text x="892" y="259" class="body">独立验收与返工闭环</text>
+  </g>
+  <text x="64" y="318" class="sub">默认在 Phase 2 后暂停，等用户确认再进入开发。</text>
+</svg>

@@ -26,6 +26,10 @@
 
 一句话：**asdev 不是让 Agent 更快动手，而是让 Agent 更可靠地交付。**
 
+<p align="center">
+  <img src="assets/workflow.svg" alt="asdev 四阶段工作流" width="900" />
+</p>
+
 ## 核心原则
 
 ```text
@@ -52,6 +56,10 @@ asdev 强制遵守三条硬规则：
 ## 多 Agent 角色
 
 asdev 至少需要这些独立 Agent：
+
+<p align="center">
+  <img src="assets/agents.svg" alt="asdev 多 Agent 团队" width="900" />
+</p>
 
 | Agent | 职责 |
 | --- | --- |
@@ -100,6 +108,10 @@ name: asdev
 ## 首次使用
 
 在项目中首次运行时，asdev 会尝试创建轻量记录结构：
+
+<p align="center">
+  <img src="assets/records.svg" alt="asdev 记录产物链路" width="900" />
+</p>
 
 ```text
 .record/

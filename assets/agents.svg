@@ -1,0 +1,68 @@
+<svg width="1120" height="520" viewBox="0 0 1120 520" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">asdev 多 Agent 团队</title>
+  <desc id="desc">展示 asdev 的主编排 Agent 与调查、设计、拆解、验收等专业 Agent 的协作关系。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1120" y2="520" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#111827"/>
+      <stop offset="1" stop-color="#0B3B36"/>
+    </linearGradient>
+    <style>
+      .title { font: 800 34px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #F8FAFC; }
+      .sub { font: 600 18px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #A7F3D0; }
+      .name { font: 800 20px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #F8FAFC; }
+      .desc { font: 600 14px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #D1FAE5; }
+      .center { font: 900 28px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #0F172A; }
+      .label { font: 700 13px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #0F172A; }
+    </style>
+  </defs>
+  <rect width="1120" height="520" rx="28" fill="url(#bg)"/>
+  <text x="64" y="64" class="title">强制多 Agent，不用主 Agent 自审</text>
+  <text x="64" y="98" class="sub">主 Agent 只做编排和记录，专业 Agent 各司其职，审查角色默认只读。</text>
+
+  <line x1="560" y1="240" x2="220" y2="170" stroke="#5EEAD4" stroke-width="3" stroke-opacity="0.75"/>
+  <line x1="560" y1="240" x2="220" y2="320" stroke="#5EEAD4" stroke-width="3" stroke-opacity="0.75"/>
+  <line x1="560" y1="240" x2="560" y2="150" stroke="#5EEAD4" stroke-width="3" stroke-opacity="0.75"/>
+  <line x1="560" y1="240" x2="560" y2="350" stroke="#5EEAD4" stroke-width="3" stroke-opacity="0.75"/>
+  <line x1="560" y1="240" x2="900" y2="170" stroke="#5EEAD4" stroke-width="3" stroke-opacity="0.75"/>
+  <line x1="560" y1="240" x2="900" y2="320" stroke="#5EEAD4" stroke-width="3" stroke-opacity="0.75"/>
+
+  <g>
+    <circle cx="560" cy="240" r="76" fill="#A7F3D0"/>
+    <text x="514" y="233" class="center">主 Agent</text>
+    <text x="507" y="266" class="label">编排 · 记录 · 对齐</text>
+  </g>
+
+  <g>
+    <rect x="84" y="124" width="272" height="92" rx="18" fill="#102A2F" stroke="#7DD3FC" stroke-width="2"/>
+    <text x="112" y="158" class="name">Investigator</text>
+    <text x="112" y="186" class="desc">代码事实、调用链、影响范围</text>
+  </g>
+  <g>
+    <rect x="424" y="104" width="272" height="92" rx="18" fill="#102A2F" stroke="#34D399" stroke-width="2"/>
+    <text x="452" y="138" class="name">Product / Design</text>
+    <text x="452" y="166" class="desc">需求探索、方案设计、风险策略</text>
+  </g>
+  <g>
+    <rect x="764" y="124" width="272" height="92" rx="18" fill="#102A2F" stroke="#FDE68A" stroke-width="2"/>
+    <text x="792" y="158" class="name">Design Acceptance</text>
+    <text x="792" y="186" class="desc">完整性、可行性、一致性验收</text>
+  </g>
+  <g>
+    <rect x="84" y="284" width="272" height="92" rx="18" fill="#102A2F" stroke="#A7F3D0" stroke-width="2"/>
+    <text x="112" y="318" class="name">Development Manager</text>
+    <text x="112" y="346" class="desc">任务拆解、依赖顺序、验收标准</text>
+  </g>
+  <g>
+    <rect x="424" y="324" width="272" height="92" rx="18" fill="#102A2F" stroke="#7DD3FC" stroke-width="2"/>
+    <text x="452" y="358" class="name">Implementation</text>
+    <text x="452" y="386" class="desc">单任务实现、测试、变更说明</text>
+  </g>
+  <g>
+    <rect x="764" y="284" width="272" height="92" rx="18" fill="#102A2F" stroke="#34D399" stroke-width="2"/>
+    <text x="792" y="318" class="name">Task Acceptance</text>
+    <text x="792" y="346" class="desc">逐项验收、证据检查、返工建议</text>
+  </g>
+
+  <rect x="336" y="446" width="448" height="36" rx="18" fill="#D9F99D"/>
+  <text x="378" y="470" class="label">缺少独立 Agent 能力时，asdev 会停止，而不是单 Agent 自审</text>
+</svg>
