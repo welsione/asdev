@@ -1,6 +1,6 @@
 <svg width="960" height="320" viewBox="0 0 960 320" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
-  <title id="title">asdev Logo</title>
-  <desc id="desc">A geometric logo for asdev, showing a central orchestrator node connected to specialist agent nodes.</desc>
+  <title id="title">asdev 标志</title>
+  <desc id="desc">asdev 的几何标志，中央编排节点连接多个专业 Agent 节点。</desc>
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="960" y2="320" gradientUnits="userSpaceOnUse">
       <stop offset="0" stop-color="#101828"/>
@@ -42,17 +42,17 @@
     <path d="M202 144V181" stroke="#0F172A" stroke-width="5" stroke-linecap="round"/>
   </g>
 
-  <text x="356" y="142" fill="url(#text)" font-family="Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="64" font-weight="800" letter-spacing="0">asdev</text>
-  <text x="360" y="184" fill="#A7F3D0" font-family="Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="600" letter-spacing="0">Goal-mode delivery with mandatory multi-agent verification</text>
-  <g fill="#D9F99D" font-family="Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="18" font-weight="600">
-    <text x="360" y="234">Investigate</text>
-    <circle cx="462" cy="228" r="4" fill="#5EEAD4"/>
-    <text x="478" y="234">Design</text>
-    <circle cx="548" cy="228" r="4" fill="#5EEAD4"/>
-    <text x="564" y="234">Decompose</text>
-    <circle cx="674" cy="228" r="4" fill="#5EEAD4"/>
-    <text x="690" y="234">Implement</text>
-    <circle cx="790" cy="228" r="4" fill="#5EEAD4"/>
-    <text x="806" y="234">Accept</text>
+  <text x="356" y="142" fill="url(#text)" font-family="Inter, 'PingFang SC', 'Microsoft YaHei', 'Noto Sans CJK SC', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="64" font-weight="800" letter-spacing="0">asdev</text>
+  <text x="360" y="184" fill="#A7F3D0" font-family="Inter, 'PingFang SC', 'Microsoft YaHei', 'Noto Sans CJK SC', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="26" font-weight="700" letter-spacing="0">目标模式 · 强制多 Agent 验证交付</text>
+  <g fill="#D9F99D" font-family="Inter, 'PingFang SC', 'Microsoft YaHei', 'Noto Sans CJK SC', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="18" font-weight="700">
+    <text x="360" y="234">代码调查</text>
+    <circle cx="450" cy="228" r="4" fill="#5EEAD4"/>
+    <text x="466" y="234">方案设计</text>
+    <circle cx="556" cy="228" r="4" fill="#5EEAD4"/>
+    <text x="572" y="234">任务拆解</text>
+    <circle cx="662" cy="228" r="4" fill="#5EEAD4"/>
+    <text x="678" y="234">开发实现</text>
+    <circle cx="768" cy="228" r="4" fill="#5EEAD4"/>
+    <text x="784" y="234">独立验收</text>
   </g>
 </svg>
