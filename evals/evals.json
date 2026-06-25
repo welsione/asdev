@@ -1,0 +1,42 @@
+{
+  "skill_name": "asdev",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Use goal mode for this Java Spring project: net.example.ErrorCode#PAYMENT_TIMEOUT must propagate to the Controller response. Find all direct and indirect call sites, discuss unclear behavior with me if needed, then create the design and task plan before coding.",
+      "expected_output": "The agent should confirm independent multi-agent capability, bootstrap records if needed, launch an Investigator Agent before design, identify direct and indirect call chains, ask material clarification questions, create Phase 1 and Phase 2 record documents through the required agents, and pause before implementation.",
+      "expectations": [
+        "The workflow confirms independent multi-agent capability before Phase 1.",
+        "The workflow launches or plans to launch an Investigator Agent before writing a design.",
+        "The output distinguishes direct call sites, indirect call chains, and boundary callers.",
+        "Material uncertainties are surfaced as user-alignment questions before task decomposition.",
+        "The workflow creates or names investigation, design, review, and task record paths.",
+        "The workflow pauses after Phase 2 before implementation unless the user explicitly requested full execution."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "I want to refactor a large service into smaller services using our CLAUDE.md rules. Please run the multi-agent validation workflow and write task files.",
+      "expected_output": "The agent should confirm independent multi-agent capability, read project rules, inspect the service and dependencies, produce a requirement/design exploration document, run independent design acceptance, create objective ordered task records, run independent task check, and ask before development.",
+      "expectations": [
+        "The workflow reads project-local rules such as CLAUDE.md before planning.",
+        "The workflow uses a Product/Design Agent and a Design Acceptance Agent before task decomposition.",
+        "The task plan includes ordered tasks with reasons, measurable goals, and objective acceptance criteria.",
+        "The workflow uses an independent Task Check Agent before development.",
+        "The workflow records review outputs instead of relying only on chat history."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "First time using this skill in the repo. Set up whatever lightweight templates are needed, but do not install codegraph or other tools unless I approve.",
+      "expected_output": "The agent should create only local .record directories/templates if missing, require independent multi-agent capability, detect optional capabilities, avoid installing external dependencies, and explain optional enhancements such as codegraph and superpowers.",
+      "expectations": [
+        "The workflow creates only project-local .record directories and templates when missing.",
+        "The workflow does not install codegraph, superpowers, or other external tools without explicit approval.",
+        "The workflow treats codegraph and superpowers as optional enhancements.",
+        "The workflow stops if independent multi-agent capability is unavailable.",
+        "The workflow writes or references a goal config with multiAgent.required set to true."
+      ]
+    }
+  ]
+}

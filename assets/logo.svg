@@ -1,0 +1,58 @@
+<svg width="960" height="320" viewBox="0 0 960 320" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">asdev Logo</title>
+  <desc id="desc">A geometric logo for asdev, showing a central orchestrator node connected to specialist agent nodes.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="960" y2="320" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#101828"/>
+      <stop offset="0.55" stop-color="#12343B"/>
+      <stop offset="1" stop-color="#0B3B36"/>
+    </linearGradient>
+    <linearGradient id="mark" x1="154" y1="62" x2="286" y2="254" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#7DD3FC"/>
+      <stop offset="0.5" stop-color="#34D399"/>
+      <stop offset="1" stop-color="#FDE68A"/>
+    </linearGradient>
+    <linearGradient id="text" x1="356" y1="118" x2="790" y2="118" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#F8FAFC"/>
+      <stop offset="1" stop-color="#C7F9E9"/>
+    </linearGradient>
+    <filter id="shadow" x="90" y="40" width="220" height="240" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="18" stdDeviation="18" flood-color="#020617" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+
+  <rect width="960" height="320" rx="32" fill="url(#bg)"/>
+  <path d="M0 248C130 208 217 221 348 254C504 294 647 302 960 220V320H0V248Z" fill="#0F766E" fill-opacity="0.18"/>
+  <path d="M0 52C134 78 242 66 376 35C548 -5 730 0 960 63V0H0V52Z" fill="#38BDF8" fill-opacity="0.08"/>
+
+  <g filter="url(#shadow)">
+    <path d="M201.8 56L294.6 109.6V216.8L201.8 270.4L109 216.8V109.6L201.8 56Z" fill="#0F172A" stroke="url(#mark)" stroke-width="6"/>
+    <path d="M202 96L260 129.5V196.5L202 230L144 196.5V129.5L202 96Z" fill="#102A2F" stroke="#5EEAD4" stroke-width="4"/>
+    <circle cx="202" cy="163" r="25" fill="url(#mark)"/>
+    <circle cx="145" cy="130" r="13" fill="#7DD3FC"/>
+    <circle cx="259" cy="130" r="13" fill="#34D399"/>
+    <circle cx="145" cy="197" r="13" fill="#FDE68A"/>
+    <circle cx="259" cy="197" r="13" fill="#A7F3D0"/>
+    <path d="M202 137V96" stroke="#BAE6FD" stroke-width="4" stroke-linecap="round"/>
+    <path d="M180 151L145 130" stroke="#BAE6FD" stroke-width="4" stroke-linecap="round"/>
+    <path d="M224 151L259 130" stroke="#A7F3D0" stroke-width="4" stroke-linecap="round"/>
+    <path d="M180 175L145 197" stroke="#FDE68A" stroke-width="4" stroke-linecap="round"/>
+    <path d="M224 175L259 197" stroke="#A7F3D0" stroke-width="4" stroke-linecap="round"/>
+    <path d="M184 162H220" stroke="#0F172A" stroke-width="5" stroke-linecap="round"/>
+    <path d="M202 144V181" stroke="#0F172A" stroke-width="5" stroke-linecap="round"/>
+  </g>
+
+  <text x="356" y="142" fill="url(#text)" font-family="Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="64" font-weight="800" letter-spacing="0">asdev</text>
+  <text x="360" y="184" fill="#A7F3D0" font-family="Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="600" letter-spacing="0">Goal-mode delivery with mandatory multi-agent verification</text>
+  <g fill="#D9F99D" font-family="Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="18" font-weight="600">
+    <text x="360" y="234">Investigate</text>
+    <circle cx="462" cy="228" r="4" fill="#5EEAD4"/>
+    <text x="478" y="234">Design</text>
+    <circle cx="548" cy="228" r="4" fill="#5EEAD4"/>
+    <text x="564" y="234">Decompose</text>
+    <circle cx="674" cy="228" r="4" fill="#5EEAD4"/>
+    <text x="690" y="234">Implement</text>
+    <circle cx="790" cy="228" r="4" fill="#5EEAD4"/>
+    <text x="806" y="234">Accept</text>
+  </g>
+</svg>
