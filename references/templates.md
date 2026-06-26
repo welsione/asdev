@@ -1,5 +1,14 @@
 # Templates
 
+## Contents
+
+- [Product/Design Template](#productdesign-template)
+- [Task Template](#task-template)
+- [Goal Config Template](#goal-config-template)
+- [Review Record Template](#review-record-template)
+- [Comprehension Report Template](#comprehension-report-template)
+- [Goal Check Record Template](#goal-check-record-template)
+
 Use these templates when project-local templates are missing.
 
 Prefer the project's existing template if one already exists.
@@ -84,6 +93,14 @@ Recommended path:
 - 验收 Agent：
 - 结论：
 - 修改记录：
+- **铁律提醒**：若验收结果为 FAIL，必须按验收意见修改后重新提交验收，循环直到 PASS。
+
+## 10. 停止条件（仅目标模式）
+
+> 如果激活了 /goal 或目标模式，在此定义可验证的停止条件。停止条件在迭代之间不变。如果用户想改变停止条件，需要开启新的目标。
+
+- 停止条件：
+- 验证方式：
 ```
 
 ## Task Template
@@ -184,7 +201,79 @@ Status: PASS | FAIL
 
 - [修改项]
 
+## 返工记录
+
+> 铁律3：验收不过必须返工。每次 FAIL 后的修改和重新提交必须记录在此。
+
+| 轮次 | 审阅结果 | 修改内容 | 重新提交日期 |
+| --- | --- | --- | --- |
+| 1 | FAIL | [按 Required Changes 修改的内容] | [日期] |
+| 2 | PASS | — | [日期] |
+
 ## 备注
 
 - [可选]
+```
+
+## Comprehension Report Template
+
+Produced at Completion or Goal Check PASS. Written to `.record/.prod/`.
+
+```markdown
+# 理解腐烂防护报告：[目标名称]
+
+> 生成日期：
+> 关联设计文档：
+
+## 变更文件摘要
+
+| 文件路径 | 变更描述 |
+| --- | --- |
+| | |
+
+## 新引入的概念、模式或抽象
+
+- [概念/模式/抽象]：[简要说明]
+
+## 验收报告标记的风险或副作用
+
+- [风险/副作用]：[来源任务和验收报告路径]
+
+## 用户需手动确认的项
+
+- [ ] [确认项]
+```
+
+## Goal Check Record Template
+
+Written to `.record/.review/` after each Goal Check Agent run.
+
+```markdown
+# 目标检查记录：[停止条件摘要]
+
+> 检查日期：
+> 迭代轮次：
+
+## 检查结果
+
+Status: PASS | FAIL
+
+## 停止条件评估
+
+| 条件 | 证据 | 结果 |
+| --- | --- | --- |
+
+## 差距分析
+
+- 未满足的条件及原因：
+
+## 建议下一步
+
+- [如果 FAIL，描述还需做什么]
+
+## 返工记录
+
+| 轮次 | 检查结果 | 差距 | 修改内容 | 重新提交日期 |
+| --- | --- | --- | --- | --- |
+| | | | | |
 ```

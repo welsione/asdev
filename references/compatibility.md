@@ -15,6 +15,14 @@ The workflow is platform-neutral. Tool usage adapts to the host.
 - Keep generated records inside the project workspace.
 - Preserve user changes in the worktree.
 
+## Iron Rules (Cross-Platform)
+
+These rules apply on every platform with no exception:
+
+1. **强制记录**：Every agent output MUST be saved to `.record/` before the next phase starts. No phase advances without records on disk.
+2. **强制验收**：Every phase deliverable MUST pass independent acceptance review (PASS). No PASS = phase not complete.
+3. **验收不过必须返工**：FAIL triggers mandatory revision and re-submission. The loop continues until PASS. No skip, no override.
+
 ## Codex
 
 In Codex:
@@ -33,7 +41,7 @@ If no multi-agent/subagent capability is exposed in the Codex session after foll
 
 In Claude Code:
 
-- Use the Task tool for independent roles.
+- Use the Agent tool (子代理) for independent roles.
 - If Task is unavailable, stop and tell the user that asdev requires Claude Code Task/multi-agent support.
 - Use TodoWrite if available to track phases and task progress.
 - Use Read/Grep/Glob/Bash/Edit tools according to Claude Code conventions.

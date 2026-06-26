@@ -19,6 +19,7 @@ If a value is unknown, write `Unknown` and explain what was checked.
 Use these when relevant:
 
 - `{TRACE_TARGETS}`: symbols, error codes, routes, files, or behaviors to trace.
+- `{HISTORICAL_CONTEXT}`: concise summary of prior `.record/` findings from previous goals. 5-10 bullets covering what was done, what passed, what failed, what was deferred, what patterns were established. Empty if first goal.
 - `{INVESTIGATION_FINDINGS}`: path to investigation record plus short summary.
 - `{USER_ALIGNMENT}`: user-confirmed answers or explicit assumptions.
 - `{DESIGN_DOCUMENT}`: path and summary of accepted design.
@@ -29,6 +30,8 @@ Use these when relevant:
 - `{IMPLEMENTATION_SUMMARY}`: implementation output or main-agent summary.
 - `{CHANGED_FILES_OR_DIFF}`: changed file list, diff summary, or relevant patch excerpts.
 - `{VERIFICATION_TARGET}`: the behavior, boundary, or risk to verify.
+- `{STOP_CONDITION}`: the verifiable stop condition for goal mode. Required only when the Goal Check Agent is used.
+- `{TASK_RECORDS}`: paths and summaries of completed task records and acceptance reports. Used by the Goal Check Agent.
 
 ## Context Size Rules
 
@@ -47,6 +50,16 @@ When context is large:
 - Do not pass secrets into agent prompts unless the user explicitly requires it.
 - Do not ask read-only review agents to edit files.
 - Do not let implementation agents change unrelated files.
+
+## Iron Rule Enforcement In Prompts
+
+Every agent prompt MUST enforce the three iron rules:
+
+1. **强制记录**：After each agent returns, its output MUST be saved to the appropriate `.record/` file before any next-phase agent is launched. If saving fails, stop and report.
+2. **强制验收**：Review/acceptance agents that return FAIL MUST prevent the phase from advancing. No deliverable is accepted without PASS.
+3. **验收不过必须返工**：When a review/acceptance agent returns FAIL, the deliverable MUST be revised according to Required Changes/Required Fixes and re-submitted. This loop continues until PASS. There is no skip or override.
+
+Include an "Iron Rule Reminder" section at the end of every role-specific prompt to reinforce these rules for the agent.
 
 ## Shared Header
 

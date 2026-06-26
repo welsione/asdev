@@ -8,14 +8,21 @@ The main agent is the orchestrator and record keeper. Specialist agents must run
 
 The environment must support launching independent agents for at least these roles:
 
+Core roles (7 agents, required for all modes):
+
 - Investigator Agent
 - Product/Design Agent
 - Design Acceptance Agent
 - Development Manager Agent
 - Task Check Agent
+- Implementation Agent (may be replaced by main agent if platform cannot safely let agents edit the shared workspace)
 - Task Acceptance Agent
 
-Implementation Agent is recommended when the platform can safely let agents edit a shared workspace or isolated worktree. If not, the main agent may implement, but independent task acceptance is still mandatory.
+Goal mode role (8th agent, required when /goal or goal mode is active):
+
+- Goal Check Agent: evaluates whether the verifiable stop condition is met after all tasks are complete.
+
+If the platform cannot spawn the Goal Check Agent, goal mode is unavailable but the standard phased workflow (Phase 0–3) may still run.
 
 ## Codex Detection
 
@@ -39,14 +46,14 @@ asdev cannot continue because this Codex session does not expose a multi-agent/s
 
 In Claude Code:
 
-1. Use the Task tool for each specialist role.
+1. Use the Agent tool (子代理) for each specialist role.
 2. If project-level subagents are available in `.claude/agents/`, prefer those when they match asdev roles.
-3. If the Task tool is unavailable, stop.
+3. If the Agent tool (子代理) is unavailable, stop.
 
 Stop message shape:
 
 ```text
-asdev cannot continue because Claude Code Task/multi-agent support is unavailable. Enable the Task tool or run in a Claude Code environment that supports subagents.
+asdev cannot continue because Claude Code Task/multi-agent support is unavailable. Enable the Agent tool (子代理) or run in a Claude Code environment that supports subagents.
 ```
 
 ## Agent Independence Rules
@@ -72,6 +79,15 @@ If an individual agent fails:
 1. Record the failure in `.record/.review/`.
 2. Retry once with a smaller, clearer prompt if the failure is due to context size or ambiguity.
 3. If the retry fails, stop and ask the user whether to adjust scope, provide missing context, or change platform.
+
+## Iron Rule Enforcement
+
+When a review/acceptance agent returns FAIL:
+
+1. The deliverable MUST be revised according to Required Changes/Required Fixes.
+2. The revised deliverable MUST be re-submitted to the same acceptance agent role.
+3. This loop continues until PASS. There is no skip, downgrade, or override.
+4. Every FAIL and revision MUST be recorded in `.record/` to prove the revision loop was followed.
 
 ## Optional Capabilities
 

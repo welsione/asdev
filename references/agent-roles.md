@@ -1,15 +1,34 @@
 # Agent Roles
 
+## Contents
+
+- [Iron Rules For All Roles](#iron-rules-for-all-roles)
+- [Mandatory Multi-Agent Contract](#mandatory-multi-agent-contract)
+- [Investigator Agent](#investigator-agent)
+- [Product/Design Agent](#productdesign-agent)
+- [Design Acceptance Agent](#design-acceptance-agent)
+- [Development Manager Agent](#development-manager-agent)
+- [Task Check Agent](#task-check-agent)
+- [Implementation Agent](#implementation-agent)
+- [Task Acceptance Agent](#task-acceptance-agent)
+- [Goal Check Agent](#goal-check-agent)
+
 asdev requires real independent agents. Use the platform's multi-agent mechanism for every review/check role. If independent agents cannot be spawned, stop the workflow and tell the user that asdev requires multi-agent support in the current environment.
 
 The purpose of roles is separation of concerns. Review roles identify issues; implementation roles make changes.
+
+## Iron Rules For All Roles
+
+1. **强制记录**：Every agent output MUST be saved to `.record/` before any next-phase agent is launched.
+2. **强制验收**：No deliverable is accepted until the corresponding acceptance agent returns PASS.
+3. **验收不过必须返工**：When an acceptance agent returns FAIL, the deliverable MUST be revised and re-submitted. This loop continues until PASS.
 
 ## Mandatory Multi-Agent Contract
 
 Before Phase 1, confirm that the platform can create independent agents:
 
 - Codex: use the available multi-agent/subagent tooling exposed in the session.
-- Claude Code: use the Task tool.
+- Claude Code: use the Agent tool (子代理).
 
 Use `references/multi-agent-contract.md` for detailed detection and failure handling.
 
@@ -205,4 +224,50 @@ Status: PASS | FAIL
 - Fix needed before completion
 ```
 
-If status is PASS, the task status and acceptance report may be updated.
+If status is PASS, the task status and acceptance report MUST be updated.
+
+If status is FAIL, the Implementation Agent MUST fix according to Required Fixes and re-submit for acceptance. This loop is mandatory and continues until PASS.
+
+## Goal Check Agent
+
+Mission:
+
+- Evaluate whether a verifiable stop condition is met after all tasks are complete.
+- Only used in goal mode.
+
+Inputs:
+
+- The verifiable stop condition.
+- The design document with task records.
+- Changed files and verification evidence.
+
+Checks:
+
+- The stop condition is objectively testable.
+- Each part of the stop condition is satisfied by actual code/test evidence.
+- No part of the stop condition relies on narrative judgment.
+
+Output format:
+
+```markdown
+## Goal Check Result
+
+Status: PASS | FAIL
+
+## Stop Condition Evaluation
+
+| Condition | Evidence | Result |
+| --- | --- | --- |
+
+## Gap Analysis
+
+- Unsatisfied conditions and why:
+
+## Recommended Next Steps
+
+If FAIL, describe what is still needed to satisfy the stop condition.
+```
+
+If status is PASS, the goal is achieved. Record the result in `.record/.goal/`.
+
+If status is FAIL, the main agent MUST return to Phase 1 to investigate the gap, update the design and tasks, re-implement, and re-submit for Goal Check. This loop is mandatory and continues until PASS. The convergence safeguard in `references/workflow.md` applies.

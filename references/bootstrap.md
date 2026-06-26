@@ -31,6 +31,8 @@ If the workflow directories are missing and the workspace is writable, create:
 └── .review/
 ```
 
+**Iron rule 1 enforcement**: Record directories MUST exist before Phase 1 begins. If they cannot be created, stop and report.
+
 If the project already has a different record convention, follow the existing convention instead of forcing this one.
 
 ## Create Lightweight Templates
@@ -51,7 +53,7 @@ Detect tools and capabilities before relying on them:
 - `git`: useful for status and diffs.
 - Build/test command: infer from project files.
 - `codegraph`: optional for call-chain and dependency graph exploration.
-- Subagents or Task tool: required for independent role execution.
+- Subagents or Agent tool (子代理): required for independent role execution.
 - Related skills such as `superpowers`: optional reasoning/review enhancement.
 
 Use `references/multi-agent-contract.md` for the exact acceptance criteria for independent agent capability.
