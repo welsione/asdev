@@ -1,0 +1,164 @@
+# Phase 0 — Bootstrap & Capability Detection
+
+## Contents
+
+- [Detect Project Context](#detect-project-context)
+- [Create Record Structure](#create-record-structure)
+- [Create STATUS.md](#create-statusmd)
+- [Capability Detection](#capability-detection)
+- [Multi-Agent Contract](#multi-agent-contract)
+- [Model Selection](#model-selection)
+- [Worktree Isolation](#worktree-isolation)
+- [Loop Mode Scheduling](#loop-mode-scheduling)
+- [Dependency Policy](#dependency-policy)
+
+Iron Rules: see [references/cross-phase.md](cross-phase.md) for the canonical definition.
+
+## Detect Project Context
+
+Read project-local guidance first:
+
+- `CLAUDE.md`, `AGENTS.md`, `README.md`
+- `docs/architecture/`, `docs/`
+- Existing `.record/`
+- Build files: `pom.xml`, `package.json`, `build.gradle`, `Cargo.toml`, `pyproject.toml`
+
+Read only the files needed to understand rules, architecture, and verification commands.
+
+## Create Record Structure
+
+If missing and workspace is writable, create `.record/` root and `.record/.knowledge/`. Goal-scoped subdirectories (`.record/{slug}/.goal/`, `.prod/`, `.task/`, `.review/`) are created at Phase 1 after the slug is generated. Follow existing convention if the project already has one.
+
+**Iron rule 1**: `.record/` root and `.knowledge/` MUST exist before Phase 1. Goal-scoped subdirectories MUST exist before Phase 1 investigation begins. If they cannot be created, stop and report.
+
+## Create STATUS.md
+
+When creating the record structure, create `.record/STATUS.md`. Use the STATUS Template from [references/cross-phase.md](cross-phase.md). STATUS.md is NOT an agent output — update at the 5 event points defined in cross-phase.md. When STATUS.md conflicts with record files, record files are source of truth.
+
+**STATUS.md update**: After Phase 0 completes, set "当前模式" and "当前阶段", clear placeholder sections.
+
+## Capability Detection
+
+Detect before relying on them:
+
+- `rg`: primary text search.
+- `git`: status and diffs.
+- Build/test command: infer from project files.
+- `codegraph`: optional call-chain exploration.
+- Agent tool (子代理): **required** for independent role execution.
+- `superpowers`: optional review enhancement.
+
+Record findings in the product/design notes when they affect execution.
+
+## Multi-Agent Contract
+
+asdev requires real independent agents. If unavailable, stop — do not continue with self-review.
+
+### Minimum Required Capability
+
+Core roles (8 agents, all modes): Investigator, Product/Design, Design Acceptance, Development Manager, Task Check, Implementation, Task Acceptance, Verification.
+
+Goal mode role (8th agent, required for `/goal`): Goal Check Agent.
+
+If the platform cannot spawn the Goal Check Agent, goal mode is unavailable but the standard phased workflow (Phase 0–3) may still run.
+
+### Detection
+
+**Claude Code**: Use the Agent tool (子代理). If unavailable, stop with: "asdev cannot continue because Claude Code Agent tool (子代理)/multi-agent support is unavailable."
+
+**Codex**: Check for multi-agent/subagent tools. Search for `subagent`, `multi-agent`, `spawn agent`, `task agent`. If no capability found, stop with: "asdev cannot continue because this Codex session does not expose a multi-agent/subagent capability."
+
+### Agent Independence Rules
+
+Agents should receive: role-specific prompt, user goal, relevant record paths, project rules/summaries, bounded excerpts. Agents should NOT receive: hidden main-agent reasoning, secrets. Review agents must be read-only by default.
+
+### Failure Handling
+
+If an individual agent fails:
+
+1. Record the failure in `.record/{slug}/.review/`.
+2. Retry once with a smaller, clearer prompt if failure is due to context size or ambiguity.
+3. If retry fails, stop and ask the user whether to adjust scope or change platform.
+
+## Model Selection
+
+When the platform supports per-agent model selection (e.g. Claude Code Agent tool `model` parameter):
+
+| Role | Tier | Model |
+|------|------|-------|
+| Investigator | Standard | default / sonnet |
+| Product/Design | Standard | default / sonnet |
+| Design Acceptance | **High** | opus |
+| Development Manager | Standard | default / sonnet |
+| Task Check | **High** | opus |
+| Implementation | Standard | default / sonnet |
+| Task Acceptance | **High** | opus |
+| Goal Check | **High** | opus |
+
+### Detection (Phase 0)
+
+1. Launch a read-only test agent with a specified model identifier (e.g. `"opus"`).
+2. If launch succeeds, platform supports model selection — record available identifiers.
+3. If launch fails, use prompt-level fallback.
+
+### Prompt-Level Fallback
+
+When model selection is unavailable, add to high-tier role prompts: "请以最高推理努力执行审查"
+
+Record degradation in `.record/{slug}/`:
+
+```markdown
+## Model Selection Degradation Note
+
+> Phase 0 capability detection on YYYY-MM-DD
+> Platform: [Claude Code / Codex]
+> Detection result: [failure reason]
+> Affected roles: [list of high-tier roles]
+> Fallback: prompt-level reasoning-effort instruction
+> Residual risk: reviewer/implementer may share cognitive bias from same model
+```
+
+### Claude Code Known Model Identifiers
+
+- `"opus"` — highest reasoning, recommended for high-tier roles
+- `"sonnet"` — standard reasoning, default for most roles
+- `"haiku"` — fastest, lowest cost
+
+Availability depends on user's subscription tier.
+
+### Codex Fallback
+
+If per-agent model selection unavailable, use prompt-level reasoning-effort instruction for high-tier roles. Workflow is not blocked — degraded review is still better than self-review.
+
+## Worktree Isolation
+
+| Scenario | Isolation Level | Operation |
+|----------|----------------|-----------|
+| Single task, sequential | None | Work in main checkout |
+| Task rework (FAIL → redo) | **Branch** | `git checkout -b asdev/TXX_YYYYMMDDHHMM` → PASS → merge; FAIL → fix on branch; user terminates → delete branch |
+| Goal Mode iteration | **Worktree** | New worktree per iteration; PASS → merge back |
+| Parallel tasks (future) | **Worktree** | Each task in own worktree |
+
+**Claude Code**: supports `git worktree` and Agent tool `isolation: "worktree"`.
+**Codex**: fall back to branch isolation if worktree unsupported.
+
+After PASS and merge, clean up worktree (`git worktree remove`). If task terminated, preserve worktree for user inspection.
+
+## Loop Mode Scheduling
+
+- **Claude Code `/loop` skill**: `"/loop 10m /asdev [goal with 循环模式 keyword]"`
+- **Claude Code hooks/cron**: Configure in `.claude/settings.json`
+- **Codex Automations tab**: Pick project, prompt, cadence
+- **Manual re-trigger**: User re-triggers `/asdev [goal]`; STATUS.md ensures breakpoint recovery
+
+**Detection**: In Phase 0, check for `/loop` skill and hooks/cron configuration.
+
+## Dependency Policy
+
+Do not install external dependencies automatically. If a useful optional tool is missing:
+
+1. Continue with available tools when practical.
+2. Mention the missing tool and the benefit.
+3. Ask the user before installing.
+
+If independent multi-agent capability is missing, stop. This is not optional.
