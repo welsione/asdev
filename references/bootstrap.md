@@ -34,23 +34,65 @@ If the workflow directories are missing and the workspace is writable, create:
 
 ```text
 .record/
-├── .goal/
-├── .prod/
-├── .task/
-└── .review/
+├── STATUS.md
+└── .knowledge/                  ← shared across goals
 ```
 
-**Iron rule 1 enforcement**: Record directories MUST exist before Phase 1 begins. If they cannot be created, stop and report.
+The goal-scoped subdirectory (`.record/{slug}/.goal/`, `.record/{slug}/.prod/`, `.record/{slug}/.task/`, `.record/{slug}/.review/`) is created at Phase 1 after the goal slug is generated. See `references/recording-protocol.md` for the Goal Slug Generation rules.
+
+**Iron rule 1 enforcement**: The `.record/` root and `.knowledge/` MUST exist before Phase 1 begins. The goal-scoped subdirectories MUST exist before Phase 1 investigation begins. If they cannot be created, stop and report.
 
 If the project already has a different record convention, follow the existing convention instead of forcing this one.
+
+## Create STATUS.md Aggregated View
+
+When creating the record structure, also create `.record/STATUS.md` using the STATUS Template from `references/templates.md`. STATUS.md is the aggregated state view — Cross-Goal Memory reads this file first to recover context efficiently (O(1) instead of scanning all `.record/` directories).
+
+**Initial content** (when no prior goals exist):
+
+```markdown
+# STATUS
+
+> 最后更新：[当前时间]
+> 当前模式：交互
+> 当前阶段：Phase 0
+
+## 活跃目标
+
+（暂无活跃目标）
+
+## 任务进度
+
+（暂无任务）
+
+## 历史目标摘要
+
+（暂无历史目标）
+
+## 知识要点
+
+（暂无知识条目）
+
+## 可用连接器
+
+（待 Phase 0 连接器发现阶段填充）
+
+## 最近变更摘要
+
+（暂无变更）
+```
 
 ## Create Lightweight Templates
 
 If missing, create project-local templates from `references/templates.md`:
 
-- `.record/.prod/PROD_TEMPLATE.md`
-- `.record/.task/TASK_TEMPLATE.md`
-- `.record/.goal/GOAL_CONFIG_TEMPLATE.md`
+- `.record/.knowledge/KNOW_TEMPLATE.md` (knowledge item template, see `references/templates.md`)
+
+Goal-scoped templates are created inside the goal subdirectory when a new goal starts at Phase 1:
+
+- `.record/{slug}/.prod/PROD_TEMPLATE.md`
+- `.record/{slug}/.task/TASK_TEMPLATE.md`
+- `.record/{slug}/.goal/GOAL_CONFIG_TEMPLATE.md`
 
 Do not overwrite existing templates without user approval.
 
@@ -92,9 +134,12 @@ When useful, create a config like this:
 
 ```yaml
 recordRoot: .record
-prodDir: .record/.prod
-taskDir: .record/.task
-reviewDir: .record/.review
+goalSlug: {generated at Phase 1}
+prodDir: .record/{slug}/.prod
+taskDir: .record/{slug}/.task
+reviewDir: .record/{slug}/.review
+knowledgeDir: .record/.knowledge
+language: zh-CN
 language: zh-CN
 rulesFiles:
   - CLAUDE.md

@@ -9,8 +9,9 @@ Every agent prompt must receive:
 - `{PROJECT_ROOT}`: absolute or project-relative root path.
 - `{USER_GOAL}`: the user's current goal in their own words or a faithful concise restatement.
 - `{PROJECT_RULE_FILES}`: file paths for local rules, such as `CLAUDE.md`, `AGENTS.md`, or architecture docs.
-- `{RECORD_DIRS}`: record directories being used.
+- `{RECORD_DIRS}`: record directories for the current goal. Includes the goal-scoped paths: `.record/{slug}/.prod`, `.record/{slug}/.task`, `.record/{slug}/.review`, `.record/{slug}/.goal`, plus the shared `.record/.knowledge/`.
 - `{PROJECT_RULE_SUMMARY}`: concise summary of relevant project rules, with file references.
+- `{GOAL_SLUG}`: the current goal's slug, used to construct goal-scoped record paths (`.record/{slug}/`).
 
 If a value is unknown, write `Unknown` and explain what was checked.
 
@@ -20,6 +21,7 @@ Use these when relevant:
 
 - `{TRACE_TARGETS}`: symbols, error codes, routes, files, or behaviors to trace.
 - `{HISTORICAL_CONTEXT}`: concise summary of prior `.record/` findings from previous goals. 5-10 bullets covering what was done, what passed, what failed, what was deferred, what patterns were established. Empty if first goal.
+- `{PROJECT_KNOWLEDGE}`: distilled project experience from `.record/.knowledge/`. Knowledge items with their scope, confidence level (confirmed/inferred/assumed), and content summary. Items marked `status: outdated` are included with "⚠️ 已过时，请验证当前代码状态" warning. Empty if `.record/.knowledge/` has no items relevant to the current goal.
 - `{INVESTIGATION_FINDINGS}`: path to investigation record plus short summary.
 - `{USER_ALIGNMENT}`: user-confirmed answers or explicit assumptions.
 - `{DESIGN_DOCUMENT}`: path and summary of accepted design.

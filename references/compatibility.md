@@ -19,7 +19,7 @@ The workflow is platform-neutral. Tool usage adapts to the host.
 
 These rules apply on every platform with no exception:
 
-1. **强制记录**：Every agent output MUST be saved to `.record/` before the next phase starts. No phase advances without records on disk.
+1. **强制记录**：Every agent output MUST be saved to `.record/{slug}/` (where `{slug}` is the current goal's slug) before the next phase starts. No phase advances without records on disk.
 2. **强制验收**：Every phase deliverable MUST pass independent acceptance review (PASS). No PASS = phase not complete.
 3. **验收不过必须返工**：FAIL triggers mandatory revision and re-submission. The loop continues until PASS. No skip, no override.
 
@@ -92,3 +92,70 @@ Do not make this skill depend on `superpowers`. This skill remains the outer orc
 asdev cannot run without independent agents.
 
 If independent agents are unavailable, do not continue with a self-review substitute. Follow the stop message shape in `references/multi-agent-contract.md`.
+
+## Worktree Capability
+
+asdev can use git worktrees to isolate concurrent or iterative work. Detection:
+
+- **Claude Code**: The Agent tool's `isolation: "worktree"` parameter creates a subagent in its own worktree that auto-cleans if unchanged. `git worktree` is also available directly.
+- **Codex**: Check whether the platform exposes worktree support or built-in per-thread worktree isolation. If not, fall back to branch isolation (see `references/multi-agent-contract.md`).
+
+If worktree capability is unavailable, branch isolation is the fallback. Both achieve the same goal (main checkout stays clean during rework/iteration), but worktree is preferred for Goal Mode iterations because it provides a fully separate working directory.
+
+## Loop Mode Scheduling
+
+Loop mode requires a scheduling mechanism to automatically re-trigger asdev on a cadence. Available options:
+
+- **Claude Code `/loop` skill**: If the `/loop` skill is in the available skills list, loop mode can use `"/loop 10m /asdev [goal]"` for automatic re-triggering.
+- **Claude Code hooks/cron**: If `.claude/settings.json` contains hook or cron configurations, they can be used for scheduled dispatch.
+- **Codex Automations tab**: If the Codex environment exposes an Automations tab, use it for scheduled runs.
+- **Manual re-trigger**: If no scheduling is available, loop mode still works — the user manually re-triggers `/asdev [goal]` after each iteration, with STATUS.md ensuring breakpoint recovery.
+
+**Detection**: In Phase 0, check for the `/loop` skill in available skills and for hooks/cron configuration in `.claude/settings.json`. Record findings in the Phase 0 capability notes. If neither is available, note that loop mode will use manual re-trigger as fallback.
+
+## Model Selection Capability
+
+Some platforms allow per-agent model selection (e.g. Claude Code's Agent tool `model` parameter). When available, the role-model mapping in `references/agent-roles.md` is used to give review/acceptance roles a higher-reasoning model than implementation roles. This is **recommended but optional** — when unsupported, fall back to prompt-level reasoning-effort instructions.
+
+### Detection (Phase 0)
+
+In Phase 0 Bootstrap, the main agent detects model-selection capability by:
+
+1. Attempting to launch a read-only test agent (e.g. one that runs `echo "test"`) with a specified model identifier such as `"opus"`.
+2. If the launch succeeds and returns a result, the platform supports model selection — record the available model identifiers in the Phase 0 capability notes.
+3. If the launch fails or returns an error indicating the model identifier is unknown, the platform does not (currently) support model selection — record the failure and use the prompt-level fallback.
+
+### Claude Code Known Model Identifiers
+
+The Claude Code Agent tool's `model` parameter accepts the following values (subject to the user's subscription tier and platform availability):
+
+- `"opus"` — highest reasoning effort, slower, higher token cost.
+- `"sonnet"` — standard reasoning, default for most roles.
+- `"haiku"` — fastest, lowest token cost, for simple tasks.
+
+Use `"opus"` for the four high-tier review/acceptance roles (Design Acceptance, Task Check, Task Acceptance, Goal Check). Use the default (or `"sonnet"`) for the four standard-tier roles (Investigator, Product/Design, Development Manager, Implementation).
+
+**Note**: Model availability depends on the user's subscription tier. If `"opus"` is unavailable to the current user, fall back to the highest available tier or use the prompt-level fallback.
+
+### Codex Fallback
+
+If Codex does not expose per-agent model selection:
+
+1. For each high-tier review/acceptance role, add a prompt-level reasoning-effort instruction: "请以最高推理努力执行审查" or its English equivalent.
+2. Record the degradation fact and the residual risk (reviewer and implementer may still share some cognitive bias) in `.record/{slug}/`.
+3. The workflow is not blocked — degraded review is still better than self-review.
+
+### Degradation Record Template
+
+When model selection is unavailable, record the following in `.record/{slug}/`:
+
+```markdown
+## Model Selection Degradation Note
+
+> Phase 0 capability detection on YYYY-MM-DD
+> Platform: [Claude Code / Codex]
+> Detection result: [failure reason]
+> Affected roles: [list of high-tier roles]
+> Fallback: prompt-level reasoning-effort instruction
+> Residual risk: reviewer/implementer may share cognitive bias from same model
+```

@@ -2,6 +2,8 @@
 
 ## Contents
 
+- [STATUS Template](#status-template)
+- [Knowledge Item Template](#knowledge-item-template)
 - [Product/Design Template](#productdesign-template)
 - [Task Template](#task-template)
 - [Goal Config Template](#goal-config-template)
@@ -13,11 +15,114 @@ Use these templates when project-local templates are missing.
 
 Prefer the project's existing template if one already exists.
 
+## STATUS Template
+
+Recommended path:
+
+`.record/STATUS.md`
+
+STATUS.md 是 `.record/` 的聚合状态视图，由主 Agent 在 5 个事件点维护：Phase 0 完成后、阶段转换时、任务状态变更时、Goal Check 后、目标完成时。Cross-Goal Memory 优先读取此文件。
+
+```markdown
+# STATUS
+
+> 最后更新：YYYY-MM-DD HH:MM
+> 当前模式：交互 | 循环
+> 当前阶段：Phase 0 | Phase 1 | Phase 2 | Phase 3 | Completion | Goal Check
+
+## 活跃目标
+
+| 目标 | Slug | 停止条件 | 迭代轮次 | 当前阶段 | 状态 |
+|------|------|----------|----------|----------|------|
+| [目标摘要] | loop-eng | [停止条件或 N/A] | R1 | Phase 3 | 进行中 |
+
+## 任务进度
+
+| 任务 | 状态 | 验收结果 | 验收报告 |
+|------|------|----------|----------|
+| T01 | 完成 | PASS | .record/loop-eng/.review/TASK_T01_ACCEPTANCE_*.md |
+| T02 | 进行中 | — | — |
+| T03 | 阻塞 | — | [阻塞原因] |
+
+## 历史目标摘要
+
+> 最多保留最近 10 条。完成时从活跃目标移入此区域，更早的通过日期索引指向具体文件。
+
+| 目标 | Slug | 完成日期 | 最终结果 | 关键产出 |
+|------|------|----------|----------|----------|
+| [目标摘要] | loop-eng | YYYY-MM-DD | PASS | .record/loop-eng/.prod/PROD_*.md |
+
+## 知识要点
+
+> 从 .record/.knowledge/ 提取的最近 5 条可复用知识条目摘要（路径 + 主题）。由 T04 维护。
+
+- [路径] | [主题] | [置信度]
+
+## 可用连接器
+
+> Phase 0 连接器发现阶段记录的可用 MCP 工具，按功能分类（PR 管理 / Issue 管理 / CI/CD / 通知等）。由 T09 维护。
+
+- [连接器名称]：[功能] — [能力描述]
+
+## 最近变更摘要
+
+> 循环模式下的认知投降替代机制：每完成一个任务后追加变更摘要，供用户随时查看。交互模式下此区域可选。
+
+- [YYYY-MM-DD] T01: [变更摘要] → [验收结果]
+- [YYYY-MM-DD] T02: [变更摘要] → [验收结果]
+```
+
+**STATUS.md 与铁律1的边界**：STATUS.md 不是 Agent 产出，绑定上述 5 个事件点而非铁律1的每次文件写入。STATUS.md 与记录文件不一致时，以记录文件为准，STATUS.md 应在下一事件点修正。
+
+## Knowledge Item Template
+
+Recommended path:
+
+`.record/.knowledge/KNOW_YYYYMMDD_HHMM_[short_topic].md`
+
+```markdown
+---
+name: KNOW_YYYYMMDD_HHMM_[short_topic]
+source_goal: [goal summary or .record/{slug}/.goal/ path]
+source_task: [T01/T02/... or N/A]
+date: YYYY-MM-DD
+confidence: confirmed | inferred | assumed
+scope: [description of where this knowledge applies — files, modules, patterns]
+status: active | outdated
+outdated_reason: [reason if outdated, else omit]
+outdated_date: [date if outdated, else omit]
+---
+
+## Content
+
+[One paragraph: what to do, what not to do, and why this is non-obvious]
+
+## Evidence
+
+- [code fact or acceptance report path that supports this knowledge]
+
+## Counter-examples (if any)
+
+- [scenarios where this knowledge does NOT apply]
+```
+
+**Confidence levels**:
+
+- **confirmed**: backed by code facts AND an acceptance report.
+- **inferred**: derived from multiple execution experiences, not yet independently verified.
+- **assumed**: based on limited experience, needs future verification.
+
+Confidence can be upgraded when new evidence references the item.
+
+**Outdated marking**: When a new goal modifies files/symbols in the item's `scope`, set `status: outdated` and add `outdated_reason` and `outdated_date`. Outdated items are still passed to the Investigator Agent with an "⚠️ 已过时" warning.
+
 ## Product/Design Template
 
 Recommended path:
 
-`.record/.prod/PROD_TEMPLATE.md`
+`.record/{slug}/.prod/PROD_TEMPLATE.md`
+
+Where `{slug}` is the current goal's slug.
 
 ```markdown
 # 需求探索：[目标名称]
@@ -107,7 +212,7 @@ Recommended path:
 
 Recommended path:
 
-`.record/.task/TASK_TEMPLATE.md`
+`.record/{slug}/.task/TASK_TEMPLATE.md`
 
 ```markdown
 # 任务档案 [TASK_ID]
@@ -142,16 +247,16 @@ Recommended path:
 
 Recommended path:
 
-`.record/.goal/GOAL_CONFIG_TEMPLATE.md`
+`.record/{slug}/.goal/GOAL_CONFIG_TEMPLATE.md`
 
 ````markdown
 # Goal Workflow Config
 
 ```yaml
 recordRoot: .record
-prodDir: .record/.prod
-taskDir: .record/.task
-reviewDir: .record/.review
+prodDir: .record/{slug}/.prod
+taskDir: .record/{slug}/.task
+reviewDir: .record/{slug}/.review
 language: zh-CN
 rulesFiles:
   - CLAUDE.md
@@ -180,7 +285,7 @@ optionalSkills:
 
 Recommended path:
 
-`.record/.review/REVIEW_TEMPLATE.md`
+`.record/{slug}/.review/REVIEW_TEMPLATE.md`
 
 ```markdown
 # 审阅记录：[对象名称]
@@ -217,7 +322,7 @@ Status: PASS | FAIL
 
 ## Comprehension Report Template
 
-Produced at Completion or Goal Check PASS. Written to `.record/.prod/`.
+Produced at Completion or Goal Check PASS. Written to `.record/{slug}/.prod/`.
 
 ```markdown
 # 理解腐烂防护报告：[目标名称]
@@ -246,7 +351,7 @@ Produced at Completion or Goal Check PASS. Written to `.record/.prod/`.
 
 ## Goal Check Record Template
 
-Written to `.record/.review/` after each Goal Check Agent run.
+Written to `.record/{slug}/.review/` after each Goal Check Agent run.
 
 ```markdown
 # 目标检查记录：[停止条件摘要]

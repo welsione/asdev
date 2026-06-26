@@ -86,7 +86,7 @@ Do not replace missing independent agents with main-agent self-review.
 
 If an individual agent fails:
 
-1. Record the failure in `.record/.review/`.
+1. Record the failure in `.record/{slug}/.review/`.
 2. Retry once with a smaller, clearer prompt if the failure is due to context size or ambiguity.
 3. If the retry fails, stop and ask the user whether to adjust scope, provide missing context, or change platform.
 
@@ -97,7 +97,7 @@ When a review/acceptance agent returns FAIL:
 1. The deliverable MUST be revised according to Required Changes/Required Fixes.
 2. The revised deliverable MUST be re-submitted to the same acceptance agent role.
 3. This loop continues until PASS. There is no skip, downgrade, or override.
-4. Every FAIL and revision MUST be recorded in `.record/` to prove the revision loop was followed.
+4. Every FAIL and revision MUST be recorded in `.record/{slug}/` to prove the revision loop was followed.
 
 ## Optional Capabilities
 
@@ -109,3 +109,51 @@ These improve results but are not required:
 - browser/UI automation tools
 
 Missing optional capabilities must not block asdev unless the user explicitly made them mandatory.
+
+### Recommended: Per-Agent Model Differentiation
+
+When the platform supports per-agent model selection (e.g. Claude Code Agent tool's `model` parameter), **recommend** that the main agent use the role-model mapping in `references/agent-roles.md`:
+
+- **High-tier** (opus or platform's highest reasoning): Design Acceptance, Task Check, Task Acceptance, Goal Check.
+- **Standard-tier** (default, e.g. sonnet): Investigator, Product/Design, Development Manager, Implementation.
+
+This is a recommendation, not a requirement. When the platform does not support per-agent model selection, fall back to prompt-level reasoning-effort instructions and record the degradation in `.record/`. See `references/compatibility.md` for the detection method and degradation template.
+
+The rationale: asdev's "maker does not grade own homework" principle is enforced at the agent role level (separate Implementation Agent vs Task Acceptance Agent). Using a different model for the reviewer further reduces the risk of shared cognitive bias.
+
+### Recommended: Worktree Isolation Strategy
+
+When multiple agents modify files in the same repository, file collisions become the failure mode. Worktree isolation ensures one agent's edits cannot touch another agent's checkout.
+
+**Isolation levels by scenario:**
+
+| Scenario | Isolation Level | Operation |
+|----------|----------------|-----------|
+| Single task, sequential implementation | None needed | Work in main checkout |
+| Task rework (FAIL → redo) | **Branch isolation** | `git checkout -b asdev/T03_$(date +%Y%m%d%H%M)` before implementing; PASS → merge; user terminates → delete branch |
+| Goal Mode iteration | **Worktree isolation** | New iteration in separate worktree; PASS → merge back |
+| Parallel task implementation (future) | **Worktree isolation** | Each parallel task in its own worktree |
+
+**Branch isolation operation (task-level):**
+
+1. Before implementing: `git checkout -b asdev/TXX_YYYYMMDDHHMM` (includes timestamp to avoid conflict with user's existing branches).
+2. If branch already exists: append incrementing suffix (e.g. `_v2`).
+3. Implement and verify on the branch.
+4. Task Acceptance Agent verifies on the branch.
+5. PASS → `git checkout main && git merge asdev/TXX_YYYYMMDDHHMM`.
+6. FAIL → continue fixing on the branch (main remains clean).
+7. User terminates task → `git checkout main && git branch -D asdev/TXX_YYYYMMDDHHMM`, discarding changes.
+
+**Worktree isolation operation (iteration-level, Claude Code):**
+
+1. Goal Mode new iteration: `git worktree add ../asdev-iter-R2 R2-branch`
+2. Implement and verify in the worktree.
+3. Goal Check PASS → merge back to main worktree.
+4. Goal Check FAIL → continue in worktree or discard.
+
+**Platform differences:**
+
+- **Claude Code**: supports `git worktree` and Agent tool's `isolation: "worktree"` parameter.
+- **Codex**: if worktree concept is supported, use it; if not, fall back to branch isolation.
+
+**Worktree cleanup**: After PASS and merge, the worktree MUST be cleaned up (`git worktree remove`) to avoid accumulation. If the task is terminated, preserve the worktree for user inspection.

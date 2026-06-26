@@ -40,10 +40,12 @@ Outputs:
 
 - Confirmed project rule files.
 - Record directories/templates when missing.
-- Detected verification commands when obvious.
+- `.record/STATUS.md` created from the STATUS Template.
 - Capability notes, including confirmation that multi-agent execution is available.
 
 Do not spend too long on Phase 0. Its job is to prepare the workflow, not to solve the feature.
+
+**STATUS.md update**: After Phase 0 completes, update `.record/STATUS.md` — set "当前模式" and "当前阶段", and clear the placeholder sections. See `references/recording-protocol.md` for the five update event points.
 
 ## Phase 1 - Code Investigation And Requirement Exploration
 
@@ -53,9 +55,9 @@ Start by investigating real code. Do not write the design document from assumpti
 
 Before launching any specialist agent, scan existing `.record/` for prior goals:
 
-1. Scan `.record/.prod/` for prior investigation and design documents.
-2. Scan `.record/.task/` for prior task records and completion status.
-3. Scan `.record/.review/` for prior acceptance and review outcomes.
+1. Scan `.record/{slug}/.prod/` for prior investigation and design documents.
+2. Scan `.record/{slug}/.task/` for prior task records and completion status.
+3. Scan `.record/{slug}/.review/` for prior acceptance and review outcomes.
 4. Build a concise historical context summary (5-10 bullets): what was done, what passed, what failed, what was deferred, what patterns were established.
 5. Pass this summary as `{HISTORICAL_CONTEXT}` to the Investigator Agent.
 
@@ -77,7 +79,7 @@ The main agent restates the goal in operational terms before launching specialis
 Launch an independent Investigator Agent to gather code facts. The main agent may do additional reading, but the investigation record must include the independent agent's findings.
 Save the investigation output according to `references/recording-protocol.md`.
 
-**Iron rule 1 enforcement**: The investigation output MUST be written to `.record/.prod/` before the Product/Design Agent is launched. If saving fails, stop and report.
+**Iron rule 1 enforcement**: The investigation output MUST be written to `.record/{slug}/.prod/` before the Product/Design Agent is launched. If saving fails, stop and report.
 
 Use code search and project rules to gather facts:
 
@@ -116,9 +118,11 @@ If the user does not want to discuss details and asks you to proceed, document a
 Launch a Product/Design Agent to draft the requirement exploration from the user goal, project rules, investigation findings, and user-aligned answers.
 Save the design document according to `references/recording-protocol.md`.
 
-**Iron rule 1 enforcement**: The design document MUST be written to `.record/.prod/` before the Design Acceptance Agent is launched. If saving fails, stop and report.
+**Iron rule 1 enforcement**: The design document MUST be written to `.record/{slug}/.prod/` before the Design Acceptance Agent is launched. If saving fails, stop and report.
 
-Create a document in `.record/.prod/`, unless the project uses another convention.
+**STATUS.md update**: After writing the design document, update `.record/STATUS.md` to reflect the active goal — fill in "活跃目标" row and update "当前阶段" to Phase 1.
+
+Create a document in `.record/{slug}/.prod/`, unless the project uses another convention.
 
 The document should include:
 
@@ -159,9 +163,9 @@ Use the accepted Phase 1 design as input.
 Launch a Development Manager Agent to create the task decomposition.
 Save the task document according to `references/recording-protocol.md`.
 
-**Iron rule 1 enforcement**: The task document MUST be written to `.record/.task/` before the Task Check Agent is launched. If saving fails, stop and report.
+**Iron rule 1 enforcement**: The task document MUST be written to `.record/{slug}/.task/` before the Task Check Agent is launched. If saving fails, stop and report.
 
-Create a task document in `.record/.task/`, unless the project uses another convention.
+Create a task document in `.record/{slug}/.task/`, unless the project uses another convention.
 
 Each task should include:
 
@@ -199,22 +203,31 @@ If the review fails, the task plan MUST be revised and re-submitted. This loop i
 
 After Phase 2, pause and ask whether to proceed with development unless the user already asked for full execution.
 
+**STATUS.md update**: After Phase 2 task plan is accepted, update `.record/STATUS.md` to reflect the upcoming Phase 3 task list and update "当前阶段" to Phase 3.
+
 ## Phase 3 - Task-By-Task Implementation And Acceptance
 
 For each task in order:
 
+0. **Pre-Implementation Confirmation (Layer 3)**: Before implementing, present the implementation intent (task description, files involved, expected behavior change, files NOT involved) and ask the user to confirm scope. Allowed adjustments: implementation details only; acceptance criteria changes must re-trigger Task Check. Full-auto exception: may be skipped if user opted into full-auto at goal start.
+0a. **Change Density Check (Layer 4)**: Before implementing, check whether the same file/module has been modified in the previous 2 tasks. If yes, present the Change Density Warning and pause for confirmation. This check applies in both interactive and full-auto modes.
+0b. **Worktree/Branch Isolation**: If the task is a rework (previous FAIL on this task) or Goal Mode iteration, create an isolated branch (`asdev/TXX_YYYYMMDDHHMM`) or worktree before implementing. See `references/multi-agent-contract.md` for the full isolation strategy.
 1. Read the task and relevant project rules.
 2. Investigate the exact files before editing.
 3. Implement the smallest coherent change, using an Implementation Agent when the platform supports agent file edits in the active workspace.
 4. Run focused verification.
 5. Run broader verification when risk or acceptance criteria require it.
-6. **Iron rule 1 enforcement**: Save the implementation summary to `.record/` before launching the Task Acceptance Agent. If saving fails, stop and report.
+6. **Iron rule 1 enforcement**: Save the implementation summary to `.record/{slug}/.review/` before launching the Task Acceptance Agent. If saving fails, stop and report.
 7. Submit to an independent Task Acceptance Agent.
 8. **Iron rule 2 enforcement**: The task is not complete until the Task Acceptance Agent returns PASS.
 9. **Iron rule 3 enforcement**: If the Task Acceptance Agent returns FAIL, fix according to Required Fixes and re-submit. This loop is mandatory and continues until PASS.
 10. Save the acceptance output according to `references/recording-protocol.md`.
 11. If accepted, update task status and acceptance report.
 12. If rejected, fix according to review findings and re-run acceptance. This loop continues until PASS.
+12a. **Knowledge Extraction**: When the task PASSes (or FAIL → rework → PASS), the main agent checks whether the implementation surfaced a non-obvious pattern, gotcha, or constraint that is worth preserving as a knowledge item. If yes, write a `.record/.knowledge/KNOW_*.md` file using the KNOW template. This is opportunistic — not every task produces one.
+13. **STATUS.md update**: After each task status change (in-progress / PASS / FAIL), update `.record/STATUS.md` "任务进度" table with the new state and acceptance result.
+14. **Change Summary (Layer 1)**: After acceptance PASS, present a change summary to the user (files changed, behavior changed, manual verification hints). Write the summary into the task's acceptance report AND show to the user.
+15. **Understanding Verification (Layer 2)**: Every 3 completed tasks, present an Understanding Verification challenge with concrete inferences for the user to judge (NOT a passive "do you understand?" question). User says "no" to an inference → explain and re-verify before proceeding.
 
 Acceptance reports should record:
 
@@ -228,19 +241,16 @@ Do not mark a task complete until the Task Acceptance Agent returns PASS. The on
 
 ### Comprehension Debt Guard (Phase 3)
 
-After each task passes acceptance, the main agent MUST present a **change summary** to the user:
+The full Comprehension Debt Guard is defined in `SKILL.md` as four progressive layers:
 
-- What files changed and where (file paths + brief description).
-- What behavior changed — in plain language, not code.
-- What the user should verify manually if they want confidence beyond the acceptance report.
+- **Layer 1 — Per-Task Change Summary**: After each task PASS, present files changed, behavior changed, and manual verification hints.
+- **Layer 2 — Understanding Verification**: Every 3 tasks, present concrete inferences for the user to judge (NOT a passive "do you understand?" question).
+- **Layer 3 — Pre-Implementation Confirmation**: Before each task, present implementation intent and confirm scope. Adjustments allowed only on implementation details; acceptance criteria changes re-trigger Task Check.
+- **Layer 4 — Change Density Warning**: When the same file/module is modified in 3 consecutive tasks, pause and warn.
+
+Full-auto exception: Layer 3 may be skipped if the user opted into full-auto at goal start. Layers 1, 2, 4 remain mandatory.
 
 This summary is written into the task's acceptance report AND shown to the user. The user cannot be cut out of the loop.
-
-After every 3 tasks completed, the main agent MUST ask the user:
-
-> "以下任务已完成验收。请确认你是否理解变更内容，或是否需要我解释任何部分。"
-
-If the user does not understand a change, the main agent MUST explain it before proceeding. Do not accumulate code the user cannot read.
 
 ## Completion
 
@@ -254,9 +264,11 @@ When all tasks are complete:
   - All changed files with one-line descriptions.
   - New concepts, patterns, or abstractions introduced.
   - Risks or side effects flagged in acceptance reports that the user may not have seen.
-  - Write this report into `.record/.prod/` as part of the goal's final record.
+  - Write this report into `.record/{slug}/.prod/` as part of the goal's final record.
 
 Keep the final response concise; the detailed evidence belongs in the record files.
+
+**STATUS.md update**: At Completion, move the goal from "活跃目标" to "历史目标摘要" in `.record/STATUS.md`, and update "当前阶段" to reflect completion.
 
 ## Goal Mode Loop
 
@@ -279,13 +291,15 @@ When all tasks are complete and the standard Completion step is done:
 2. The Goal Check Agent MUST be different from the Implementation Agent. The maker does not grade its own homework.
 3. The Goal Check Agent reads the stop condition, inspects the code, runs verification commands, and returns PASS or FAIL with evidence.
 
-**Iron rule 1 enforcement**: The Goal Check result MUST be saved to `.record/.review/` before any next action.
+**Iron rule 1 enforcement**: The Goal Check result MUST be saved to `.record/{slug}/.review/` before any next action.
 
 **Iron rule 2 enforcement**: The goal is not achieved until the Goal Check Agent returns PASS.
 
+**STATUS.md update**: After Goal Check, update `.record/STATUS.md` to reflect the iteration round and result, and add an entry to "最近变更摘要" if the iteration introduced changes.
+
 **Iron rule 3 enforcement**: If the Goal Check Agent returns FAIL, the main agent MUST:
 
-1. Record the failure and gap analysis in `.record/.review/`.
+1. Record the failure and gap analysis in `.record/{slug}/.review/`.
 2. Return to Phase 1 to investigate the gap — not from scratch, only the unsatisfied part.
 3. Update the design, add or revise tasks as needed.
 4. Re-run Phase 3 for the new/updated tasks.
@@ -302,6 +316,37 @@ If the goal loop runs 3 full iterations (Phase 1 → 3 → Goal Check) without P
    - What remains unsatisfied and why.
    - Whether the stop condition may be unrealistic or needs decomposition.
 3. The user must decide: adjust the goal, continue, or stop.
-4. Record the decision in `.record/.goal/`.
+4. Record the decision in `.record/{slug}/.goal/`.
 
 Do not loop infinitely. The safeguard exists because a loop that cannot converge is a design problem, not a persistence problem.
+
+## Loop Mode Workflow
+
+When the goal description contains "循环模式", "无人值守", or "自动迭代" keywords, or when the host platform scheduled dispatch triggers `/asdev`, the workflow enters **loop mode**.
+
+### Loop Mode Behavior Differences
+
+- **Phase 2 pause**: After Phase 2 (task decomposition), do not pause to ask the user whether to proceed with development — loop mode proceeds automatically.
+- **Layer 3 (Pre-Implementation Confirmation)**: Skipped. Layer 4 (Change Density Warning) still applies.
+- **Layer 2 (Understanding Verification)**: Skipped in interactive form. Change summaries are written to `.record/STATUS.md` "最近变更摘要" region instead.
+- **Convergence safeguard**: Stricter — pause after 2 full iterations without PASS, or if cumulative changed files exceed 30. Downgrade to interactive mode when triggered.
+
+### Breakpoint Recovery
+
+When loop mode starts or restarts (e.g. after a scheduled interval):
+
+1. Read `.record/STATUS.md`.
+2. If an active goal exists with status "进行中", continue from the current phase.
+3. If no active goal exists, start from Phase 0.
+4. If STATUS.md has pending alignment questions from a previous interactive pause, handle them before proceeding.
+
+### Host Platform Scheduling Integration
+
+Loop mode can be combined with host platform scheduling:
+
+- **Claude Code**: `/loop 10m "/asdev [goal description with 循环模式 keyword]"` — every 10 minutes, re-trigger asdev which reads STATUS.md to recover breakpoint.
+- **Claude Code hooks/cron**: Configure a hook or cron task to call `/asdev [goal]` on a schedule.
+- **Codex Automations tab**: Pick project, prompt, cadence, environment.
+- **Manual re-trigger**: If no scheduling is available, the user manually re-triggers `/asdev [goal]` after each iteration. STATUS.md ensures continuity.
+
+Loop mode does not depend on any specific scheduling mechanism — STATUS.md breakpoint recovery is the core, and scheduling is a convenience layer on top.

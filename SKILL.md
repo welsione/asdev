@@ -57,28 +57,50 @@ In short:
 
 **Before any other work**, execute these steps:
 
-1. Create `.record/` directories if missing: `.record/.goal/`, `.record/.prod/`, `.record/.task/`, `.record/.review/`. If creation fails, stop and report.
+1. Create `.record/` root and `.record/.knowledge/` if missing. The goal-scoped subdirectory `.record/{slug}/` (with `.goal/`, `.prod/`, `.task/`, `.review/`) is created at Phase 1 after the goal slug is generated.
 2. Confirm the platform can spawn independent 子代理 (Agent tool in Claude Code, subagent tools in Codex). If not, stop — asdev requires multi-agent support.
 3. Detect optional capabilities (`codegraph`, `superpowers`) but do not block on them.
 4. Read project-local rules (CLAUDE.md, AGENTS.md) before planning.
 
 For detailed bootstrap guidance, see `references/bootstrap.md`.
 
+## Record Structure (Goal-Scoped)
+
+Each goal gets its own isolated subdirectory under `.record/`:
+
+```text
+.record/
+├── STATUS.md
+├── loop-eng/                    ← goal slug as directory name
+│   ├── .goal/
+│   ├── .prod/
+│   ├── .task/
+│   └── .review/
+├── next-goal/                   ← another goal
+│   ├── .goal/
+│   ├── .prod/
+│   ├── .task/
+│   └── .review/
+└── .knowledge/                  ← shared across all goals
+```
+
+This ensures that files from different goals never mix. A goal's slug is generated at Phase 1 from 2-3 core keywords (e.g. "Loop Engineering Optimization" → `loop-eng`). See `references/recording-protocol.md` for the full slug generation rules.
+
 ## Cross-Goal Memory
 
-asdev is record-first, but records are useless if every goal starts from zero. When a new goal begins, the main agent MUST read existing `.record/` content to carry forward what was learned.
+asdev is record-first, but records are useless if every goal starts from zero. When a new goal begins, the main agent MUST read existing `.record/STATUS.md` first to carry forward what was learned. STATUS.md is the aggregated state view — reading it first avoids scanning all goal subdirectories.
 
 Before Phase 1 investigation:
 
-1. Scan `.record/.prod/` for prior investigation and design documents.
-2. Scan `.record/.task/` for prior task records and their completion status.
-3. Scan `.record/.review/` for prior acceptance and review outcomes.
+1. Read `.record/STATUS.md` to get the aggregated view: active goals, task progress, history, knowledge points, available connectors, recent change summaries.
+2. Scan `.record/` for goal subdirectories (any directory containing `.goal/` or `.prod/`). For each prior goal, scan its `.prod/`, `.task/`, and `.review/` directories for relevant documents.
+3. Scan `.record/.knowledge/` for project experience items relevant to the current goal. Build a `{PROJECT_KNOWLEDGE}` summary: each item's scope, confidence level (confirmed/inferred/assumed), and content. Items marked `status: outdated` are included with "⚠️ 已过时，请验证当前代码状态" warning. Check whether any item's `scope` references files/symbols the current goal will modify — if so, mark them as outdated.
 4. Build a **historical context summary**: what was done, what passed, what failed, what was deferred, what patterns were established.
-5. Pass this summary to the Investigator Agent as `{HISTORICAL_CONTEXT}` so it does not re-derive what is already known.
+5. Pass the historical context to the Investigator Agent as `{HISTORICAL_CONTEXT}` and the project knowledge as `{PROJECT_KNOWLEDGE}`.
 
 The historical context summary should be concise (5-10 bullets). It is not a substitute for fresh investigation — the Investigator Agent still must verify current code state. But it prevents the loop from re-discovering the same facts every run.
 
-If `.record/` is empty (first goal), skip this step. The memory builds up over time as goals are completed.
+If `.record/` is empty (first goal), skip this step. The memory builds up over time as goals are completed. STATUS.md is created during Phase 0 Bootstrap (see `references/bootstrap.md`).
 
 ## Workflow
 
@@ -95,6 +117,44 @@ Default phases:
 Important pause point:
 
 - After Phase 2, ask the user whether to proceed with development unless the user has already explicitly asked for full automatic execution.
+
+## Running Modes
+
+asdev supports two running modes:
+
+| Dimension | Interactive Mode (default) | Loop Mode |
+|-----------|---------------------------|-----------|
+| Trigger | `/asdev` or `/goal` | Goal description contains "循环模式", "无人值守", or "自动迭代" keywords; or host platform scheduled dispatch calls `/asdev` |
+| Iteration start | Manual confirmation | Automatic (depends on host scheduling or user manual re-trigger; STATUS.md breakpoint recovery) |
+| User interaction | May pause at each phase | Pauses only when convergence safeguard triggers |
+| Pre-implementation confirmation (Layer 3) | Enabled | Skipped (unless change density warning triggers) |
+| Cognitive surrender check (Layer 2) | Understanding verification questions | Change summaries written to STATUS.md "最近变更摘要" region |
+| Stop condition | Goal Check PASS or user terminates | Goal Check PASS or convergence safeguard triggers or user says "终止循环" or `/stop` |
+
+**Loop mode activation**: Loop mode activates when the user's goal description contains one of the trigger keywords ("循环模式", "无人值守", "自动迭代"), or when the host platform's scheduling mechanism (Claude Code's `/loop` skill, hooks, cron, GitHub Actions; Codex's Automations tab) calls `/asdev` on a schedule.
+
+**Loop mode fallback**: If the host platform's scheduling mechanism is unavailable, loop mode still works — the user manually re-triggers `/asdev [goal]` after each iteration. STATUS.md ensures breakpoint recovery so the workflow continues from where it left off, not from scratch.
+
+**Breakpoint recovery**: When loop mode starts (or restarts), the main agent:
+1. Reads `.record/STATUS.md`.
+2. If an active goal exists with status "进行中", continues from the current phase.
+3. If no active goal exists, starts from Phase 0.
+
+**Mode switching**: A convergence safeguard trigger downgrades loop mode to interactive mode (waiting for user decision). After the user decides, they may choose to continue in loop mode or stay in interactive mode. The user may also switch to loop mode at any time by including a trigger keyword in their next message.
+
+**Behavior differences by optimization**:
+
+| Optimization | Interactive Mode | Loop Mode |
+|-------------|-----------------|-----------|
+| STATUS.md | Updated but optional | **Required** (breakpoint recovery depends on it) |
+| Model configuration | Recommended | **Strongly recommended** (unattended review needs highest quality) |
+| .knowledge/ | Recommended | Recommended |
+| Cognitive surrender - Understanding verification (Layer 2) | Enabled | Skipped (written to STATUS.md instead) |
+| Cognitive surrender - Pre-implementation confirmation (Layer 3) | Enabled | Skipped |
+| Cognitive surrender - Change density (Layer 4) | Enabled | Enabled (still applies) |
+| Worktree isolation | Branch isolation (optional) | **Worktree isolation** (recommended) |
+
+Full behavioral difference table also available in the design document §2.7.
 
 ## Goal Mode (/goal)
 
@@ -148,6 +208,8 @@ If the goal loop runs 3 full iterations without the Goal Check Agent returning P
 - Whether the stop condition may be unrealistic or requires decomposition into smaller goals.
 
 Do not loop infinitely. The user must decide whether to adjust the goal, continue, or stop.
+
+**Loop mode convergence adjustment**: In loop mode, the convergence safeguard is stricter — pause after 2 full iterations without PASS, or if cumulative changed files exceed 30. The stricter threshold accounts for the higher risk of unattended execution. When the safeguard triggers in loop mode, downgrade to interactive mode and notify the user.
 
 ## Mandatory Agent Roles
 
@@ -220,6 +282,10 @@ These rules are absolute and apply to every phase, every agent, and every delive
 
 Exceptions: if the user explicitly terminates a task before acceptance, record the termination and the reason in `.record/`. The task status becomes `阻塞` with documented rationale. This is the only permitted deviation from the iron rules.
 
+## Status Aggregated View (STATUS.md)
+
+`.record/STATUS.md` is the aggregated state view of `.record/`. The main agent maintains it at five event points: Phase 0 完成后、阶段转换时、任务状态变更时、Goal Check 后、目标完成时. STATUS.md is not an agent output and is NOT bound to Iron Rule 1's per-write enforcement. When STATUS.md conflicts with record files, record files are the source of truth and STATUS.md should be corrected at the next event point. See `references/recording-protocol.md` for full details.
+
 ## Operating Notes
 
 - Respect the user's dirty worktree. Do not revert unrelated changes.
@@ -230,11 +296,11 @@ Exceptions: if the user explicitly terminates a task before acceptance, record t
 
 ## Comprehension Debt Guard
 
-A loop that ships code the user cannot read is a loop that erodes understanding. The faster the loop produces, the wider the gap between what exists and what the user actually comprehends.
+A loop that ships code the user cannot read is a loop that erodes understanding. The faster the loop produces, the wider the gap between what exists and the user actually comprehends.
 
-asdev guards against comprehension debt with three mechanisms:
+asdev guards against comprehension debt with **four progressive layers** that evolve the original passive check ("do you understand?") into active verification:
 
-### 1. Change Summary After Each Task
+### Layer 1 — Per-Task Change Summary
 
 When a task passes acceptance (not before), the main agent MUST present a concise change summary to the user:
 
@@ -244,15 +310,63 @@ When a task passes acceptance (not before), the main agent MUST present a concis
 
 This summary is written into the task's acceptance report in `.record/` AND shown to the user directly. The user cannot be cut out of the loop by a process that only talks to itself.
 
-### 2. Anti-Cognitive-Surrender Check
+### Layer 2 — Understanding Verification (every 3 tasks)
 
-After every 3 tasks completed (or after each goal-mode iteration), the main agent MUST ask the user:
+After every 3 tasks completed (or after each goal-mode iteration), the main agent MUST present an **understanding verification challenge** — NOT a passive "do you understand?" question. The user is given concrete inferences and asked to judge them. Saying "no, this inference is wrong" has a much lower psychological barrier than saying "I don't understand".
 
-- "以下任务已完成验收。请确认你是否理解变更内容，或是否需要我解释任何部分。"
+```markdown
+### Understanding Verification
 
-If the user responds that they do not understand a change, the main agent MUST explain it before proceeding. Do not accumulate code the user cannot read.
+The following tasks have passed acceptance. Verify these inferences (answer "yes" or point out the error):
 
-### 3. Final Comprehension Report
+1. [Change T01] modified [file/module], with effect [behavior change].
+   → Does this mean [concrete inference A]? (yes/no)
+
+2. [Change T02] added [file/module] for [purpose].
+   → If [scenario X] happens, expected behavior is [concrete inference B]? (yes/no)
+```
+
+Key difference: the question is "is this inference correct?", not "do you understand?". This shifts the cognitive load from admitting ignorance to checking a specific claim.
+
+### Layer 3 — Pre-Implementation Confirmation (before each task)
+
+Before each task implementation begins, the main agent MUST present the implementation intent:
+
+```markdown
+### Implementation Intent Confirmation: T03
+
+About to implement: [task description]
+Files involved: [file list]
+Expected behavior change: [behavior change description]
+Files NOT involved: [explicitly excluded files]
+
+Confirm implementation scope? (yes / no / adjust)
+```
+
+**Adjustment boundary** (iron rule compatible):
+
+- **Allowed**: adjusting implementation details (file choice, technique, scope boundary).
+- **NOT allowed**: adjusting the task's **acceptance criteria**. If the user wants to change acceptance criteria, that is a task plan change — it MUST be re-submitted to the Task Check Agent for acceptance. Do not bypass the iron rules through "user confirmation".
+
+If the user says "no", the main agent records the reason, marks the task as `阻塞`, and waits for further direction.
+
+**Full-auto exception**: When the user explicitly opts into full-auto execution (e.g. by saying "just do it" or "auto" at the start of the goal), Layer 3 may be skipped. Layer 2 (understanding verification) is still mandatory. The choice to go full-auto is recorded in `.record/`.
+
+### Layer 4 — Change Density Warning (within Phase 3)
+
+When the **same file or same module** is modified across **3 consecutive tasks** in Phase 3, the main agent MUST pause and warn:
+
+```markdown
+### Change Density Warning
+
+[File/module] has been modified in T01, T02, and T03. Please confirm:
+1. Do you still understand the current state of this file/module?
+2. Should I show the file's current full logic?
+```
+
+This catches the "edited too many times, lost track" failure mode before it compounds. The change density rule applies in both interactive and full-auto modes (Layer 3 may be skipped, Layer 4 cannot).
+
+### Final Comprehension Report
 
 At Completion (or Goal Check PASS), the main agent MUST produce a comprehension report alongside the standard summary:
 
