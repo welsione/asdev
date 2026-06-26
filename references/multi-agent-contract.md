@@ -4,6 +4,16 @@ asdev requires real independent agents. Do this check before Phase 1.
 
 The main agent is the orchestrator and record keeper. Specialist agents must run in separate agent contexts provided by the host platform.
 
+## Table of Contents
+
+- [Minimum Required Capability](#minimum-required-capability)
+- [Codex Detection](#codex-detection)
+- [Claude Code Detection](#claude-code-detection)
+- [Agent Independence Rules](#agent-independence-rules)
+- [Failure Handling](#failure-handling)
+- [Iron Rule Enforcement](#iron-rule-enforcement)
+- [Optional Capabilities](#optional-capabilities)
+
 ## Minimum Required Capability
 
 The environment must support launching independent agents for at least these roles:
@@ -53,7 +63,7 @@ In Claude Code:
 Stop message shape:
 
 ```text
-asdev cannot continue because Claude Code Task/multi-agent support is unavailable. Enable the Agent tool (子代理) or run in a Claude Code environment that supports subagents.
+asdev cannot continue because Claude Code Agent tool (子代理)/multi-agent support is unavailable. Enable the Agent tool (子代理) or run in a Claude Code environment that supports subagents.
 ```
 
 ## Agent Independence Rules

@@ -5,10 +5,20 @@
 - [Iron Rules](#iron-rules)
 - [Phase 0 - Bootstrap](#phase-0---bootstrap)
 - [Phase 1 - Code Investigation And Requirement Exploration](#phase-1---code-investigation-and-requirement-exploration)
+  - [0. Read Historical Context](#0-read-historical-context)
+  - [1. Understand The User Goal](#1-understand-the-user-goal)
+  - [2. Investigate Current Code](#2-investigate-current-code)
+  - [3. Align Open Questions](#3-align-open-questions)
+  - [4. Write Requirement Exploration](#4-write-requirement-exploration)
+  - [5. Design Acceptance Review](#5-design-acceptance-review)
 - [Phase 2 - Task Decomposition](#phase-2---task-decomposition)
 - [Phase 3 - Task-By-Task Implementation And Acceptance](#phase-3---task-by-task-implementation-and-acceptance)
+  - [Comprehension Debt Guard (Phase 3)](#comprehension-debt-guard-phase-3)
 - [Completion](#completion)
 - [Goal Mode Loop](#goal-mode-loop)
+  - [Phase 1 Addition: Define Stop Condition](#phase-1-addition-define-stop-condition)
+  - [After Completion: Goal Check](#after-completion-goal-check)
+  - [Convergence Safeguard](#convergence-safeguard)
 
 This workflow is the core of the skill.
 

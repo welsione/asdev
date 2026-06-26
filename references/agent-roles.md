@@ -1,17 +1,19 @@
 # Agent Roles
 
-## Contents
+## Table of Contents
 
-- [Iron Rules For All Roles](#iron-rules-for-all-roles)
-- [Mandatory Multi-Agent Contract](#mandatory-multi-agent-contract)
-- [Investigator Agent](#investigator-agent)
-- [Product/Design Agent](#productdesign-agent)
-- [Design Acceptance Agent](#design-acceptance-agent)
-- [Development Manager Agent](#development-manager-agent)
-- [Task Check Agent](#task-check-agent)
-- [Implementation Agent](#implementation-agent)
-- [Task Acceptance Agent](#task-acceptance-agent)
-- [Goal Check Agent](#goal-check-agent)
+| # | Section | Description |
+|---|---------|-------------|
+| 1 | [Iron Rules For All Roles](#iron-rules-for-all-roles) | Mandatory recording, acceptance, and rework rules |
+| 2 | [Mandatory Multi-Agent Contract](#mandatory-multi-agent-contract) | Platform requirements for independent agent support |
+| 3 | [Investigator Agent](#investigator-agent) | Discovers code facts and call chains before design |
+| 4 | [Product/Design Agent](#productdesign-agent) | Converts facts and goals into design documents |
+| 5 | [Design Acceptance Agent](#design-acceptance-agent) | Reviews Phase 1 design before task decomposition |
+| 6 | [Development Manager Agent](#development-manager-agent) | Decomposes accepted design into ordered tasks |
+| 7 | [Task Check Agent](#task-check-agent) | Reviews task plan quality and granularity |
+| 8 | [Implementation Agent](#implementation-agent) | Implements one approved task at a time |
+| 9 | [Task Acceptance Agent](#task-acceptance-agent) | Verifies completed tasks against acceptance criteria |
+| 10 | [Goal Check Agent](#goal-check-agent) | Evaluates whether the verifiable stop condition is met |
 
 asdev requires real independent agents. Use the platform's multi-agent mechanism for every review/check role. If independent agents cannot be spawned, stop the workflow and tell the user that asdev requires multi-agent support in the current environment.
 

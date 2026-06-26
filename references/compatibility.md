@@ -42,12 +42,12 @@ If no multi-agent/subagent capability is exposed in the Codex session after foll
 In Claude Code:
 
 - Use the Agent tool (子代理) for independent roles.
-- If Task is unavailable, stop and tell the user that asdev requires Claude Code Task/multi-agent support.
+- If the Agent tool (子代理) is unavailable, stop and tell the user that asdev requires Claude Code Agent tool (子代理)/multi-agent support.
 - Use TodoWrite if available to track phases and task progress.
 - Use Read/Grep/Glob/Bash/Edit tools according to Claude Code conventions.
-- Use `references/agent-prompts.md` as the prompt source when creating Task prompts or project-level `.claude/agents/` files.
+- Use `references/agent-prompts.md` as the prompt source when creating Agent tool (子代理) prompts or project-level `.claude/agents/` files.
 
-Recommended Task prompts:
+Recommended Agent tool (子代理) prompts:
 
 ```text
 You are the Design Acceptance Agent. Review the attached Phase 1 design document against completeness, feasibility, architecture consistency, and verifiability. Do not implement changes. Return PASS or FAIL with findings and required changes.

@@ -1,16 +1,18 @@
 # asdev Agent Prompts (Full Reference)
 
-## Contents
+## Table of Contents
 
-- Investigator Agent Prompt (Phase 1)
-- Product/Design Agent Prompt (Phase 1)
-- Design Acceptance Agent Prompt (Phase 1)
-- Development Manager Agent Prompt (Phase 2)
-- Task Check Agent Prompt (Phase 2)
-- Implementation Agent Prompt (Phase 3)
-- Task Acceptance Agent Prompt (Phase 3)
-- Verification Agent Prompt (Phase 3)
-- Goal Check Agent Prompt (Goal Mode)
+| # | Role | Phase |
+|---|------|-------|
+| 1 | Investigator Agent | Phase 1 |
+| 2 | Product/Design Agent | Phase 1 |
+| 3 | Design Acceptance Agent | Phase 1 |
+| 4 | Development Manager Agent | Phase 2 |
+| 5 | Task Check Agent | Phase 2 |
+| 6 | Implementation Agent | Phase 3 |
+| 7 | Task Acceptance Agent | Phase 3 |
+| 8 | Verification Agent | Phase 3 |
+| 9 | Goal Check Agent | Goal Mode |
 
 Before launching any agent:
 
@@ -22,10 +24,10 @@ Before launching any agent:
 6. **Iron rule 3**: If the agent returns FAIL, revise and re-submit. This loop continues until PASS.
 
 ---
-
 # Investigator Agent Prompt
 
 Phase: 1
+
 Recommended tools: Read/search tools, Shell (read-only), `codegraph` (optional). No edit tools.
 
 ```text
@@ -117,10 +119,10 @@ Your investigation output MUST be saved to `.record/.prod/` before the Product/D
 ```
 
 ---
-
 # Product/Design Agent Prompt
 
 Phase: 1
+
 Recommended tools: Read tools. No edit/write tools unless asked to draft directly into a record file.
 
 ```text
@@ -191,10 +193,10 @@ Your design document MUST be saved to `.record/.prod/` before the Design Accepta
 ```
 
 ---
-
 # Design Acceptance Agent Prompt
 
 Phase: 1
+
 Recommended tools: Read/search tools. No edit/write tools.
 
 ```text
@@ -256,10 +258,10 @@ If your status is FAIL, the design MUST be revised according to your Required Ch
 ```
 
 ---
-
 # Development Manager Agent Prompt
 
 Phase: 2
+
 Recommended tools: Read tools. No code edit tools.
 
 ```text
@@ -332,10 +334,10 @@ Your task document MUST be saved to `.record/.task/` before the Task Check Agent
 ```
 
 ---
-
 # Task Check Agent Prompt
 
 Phase: 2
+
 Recommended tools: Read tools. No edit/write tools.
 
 ```text
@@ -393,10 +395,10 @@ If your status is FAIL, the task plan MUST be revised according to your Required
 ```
 
 ---
-
 # Implementation Agent Prompt
 
 Phase: 3
+
 Recommended tools: Read/search tools, Edit tools, Shell for focused tests.
 
 ```text
@@ -468,10 +470,10 @@ Your implementation summary MUST be saved to `.record/` before the Task Acceptan
 ```
 
 ---
-
 # Task Acceptance Agent Prompt
 
 Phase: 3
+
 Recommended tools: Read/search tools, Shell for tests and verification commands. No edit/write tools.
 
 ```text
@@ -545,10 +547,10 @@ If your status is FAIL, the Implementation Agent MUST fix according to Required 
 ```
 
 ---
-
 # Verification Agent Prompt
 
-Phase: 3 (optional, for heavy validation needs)
+Phase: 3
+
 Recommended tools: Read/search tools, Shell for tests and checks. No edit/write tools.
 
 ```text
@@ -613,10 +615,10 @@ If your status is FAIL, the implementation MUST be fixed and re-verified. This l
 ```
 
 ---
-
 # Goal Check Agent Prompt
 
-Phase: Goal Mode (after all tasks complete)
+Phase: Goal Mode
+
 Recommended tools: Read/search tools, Shell for tests and verification commands. No edit/write tools.
 
 ```text

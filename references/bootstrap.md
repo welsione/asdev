@@ -4,6 +4,15 @@ Use this reference during Phase 0, before requirement exploration.
 
 The goal of bootstrap is to make the project ready for repeatable goal-mode work without forcing heavyweight dependencies.
 
+## Table of Contents
+
+- [Detect Project Context](#detect-project-context)
+- [Create Local Record Structure](#create-local-record-structure)
+- [Create Lightweight Templates](#create-lightweight-templates)
+- [Capability Detection](#capability-detection)
+- [Dependency Policy](#dependency-policy)
+- [Suggested Goal Config](#suggested-goal-config)
+
 ## Detect Project Context
 
 Look for project-local guidance first:

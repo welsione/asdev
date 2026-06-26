@@ -1,6 +1,6 @@
 # Recording Protocol
 
-## Contents
+## Table of Contents
 
 - [Iron Rule Enforcement](#iron-rule-enforcement)
 - [Naming](#naming)
@@ -10,6 +10,8 @@
 - [Evidence Standards](#evidence-standards)
 - [User Alignment Records](#user-alignment-records)
 - [Cross-Goal Memory](#cross-goal-memory)
+
+## Iron Rule Enforcement
 
 asdev is record-first. Agent outputs MUST be written into project-local records so later agents can consume evidence instead of relying on chat history.
 
