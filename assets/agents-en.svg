@@ -35,9 +35,10 @@
     <line x1="600" y1="318" x2="970" y2="504" stroke="#FDE68A" stroke-width="3" stroke-opacity="0.74"/>
 
     <g>
-      <circle cx="600" cy="318" r="80" fill="#D9F99D"/>
-      <text x="530" y="312" class="center">Main Agent</text>
-      <text x="553" y="346" class="label">orchestrate · record</text>
+      <circle cx="600" cy="350" r="82" fill="#D9F99D"/>
+      <text x="563" y="330" class="center">Main</text>
+      <text x="563" y="356" class="label">orchestrate</text>
+      <text x="580" y="374" class="label">record</text>
     </g>
 
     <rect x="72" y="144" width="316" height="102" rx="20" fill="#102A2F" stroke="#7DD3FC" stroke-width="2"/>

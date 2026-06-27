@@ -35,9 +35,9 @@
     <line x1="600" y1="318" x2="970" y2="504" stroke="#FDE68A" stroke-width="3" stroke-opacity="0.74"/>
 
     <g>
-      <circle cx="600" cy="318" r="80" fill="#D9F99D"/>
-      <text x="548" y="312" class="center">主Agent</text>
-      <text x="543" y="346" class="label">编排 · 记录 · 对齐</text>
+      <circle cx="600" cy="350" r="80" fill="#D9F99D"/>
+      <text x="548" y="332" class="center">主Agent</text>
+      <text x="543" y="366" class="label">编排 · 记录 · 对齐</text>
     </g>
 
     <rect x="72" y="144" width="316" height="102" rx="20" fill="#102A2F" stroke="#7DD3FC" stroke-width="2"/>
