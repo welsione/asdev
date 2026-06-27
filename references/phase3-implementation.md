@@ -27,15 +27,19 @@ For each task in order:
 3. Implement the smallest coherent change, using an Implementation Agent when the platform supports agent file edits in the active workspace.
 4. Run focused verification.
 5. Run broader verification when risk or acceptance criteria require it.
-6. Save the implementation summary to `.record/{slug}/` before launching the Task Acceptance Agent (Iron rule 1).
+5a. If a Verification Agent was launched, save its output to `.record/{slug}/.review/VERIFICATION_TXX_*.md` (Iron rule 1).
+▶ CHECKPOINT: `.record/{slug}/.review/VERIFICATION_TXX_*.md` exists
+6. Save the implementation summary to `.record/{slug}/.task/TXX_*.md` before launching the Task Acceptance Agent (Iron rule 1).
+▶ CHECKPOINT: `.record/{slug}/.task/TXX_*.md` exists
 7. Submit to an independent Task Acceptance Agent.
 8. The task is not complete until the Task Acceptance Agent returns PASS (Iron rule 2).
 9. If the Task Acceptance Agent returns FAIL, fix according to Required Fixes and re-submit (Iron rule 3).
-10. Save the acceptance output per recording protocol.
+10. Save acceptance output to `.record/{slug}/.review/TASK_TXX_ACCEPTANCE_*.md` (Iron rule 1).
+▶ CHECKPOINT: `.record/{slug}/.review/TASK_TXX_ACCEPTANCE_*.md` exists
 11. If accepted, update task status and acceptance report.
 12. If rejected, fix according to review findings and re-run acceptance. This loop continues until PASS.
 12a. **Knowledge Extraction**: When the task PASSes (or FAIL → rework → PASS), check whether the implementation surfaced a non-obvious pattern, gotcha, or constraint worth preserving. If yes, write a `.record/.knowledge/KNOW_*.md` file. This is opportunistic — not every task produces one.
-13. **STATUS.md update**: After each task status change, update `.record/STATUS.md` "任务进度" table.
+13. **STATUS.md update**: After each task status change, update `.record/STATUS.md` "任务进度" table. The update is automatic via `scripts/sync-status.py` triggered by PostToolUse hook; verify by reading `.record/STATUS.md`. If the script/hook is unavailable, manually update the "任务进度" table at each task status change. See [references/cross-phase.md](cross-phase.md) for the three-layer sync guarantee.
 14. **Change Summary (Layer 1)**: After acceptance PASS, present a change summary to the user (files changed, behavior changed, manual verification hints). Write the summary into the task's acceptance report AND show to the user.
 15. **Understanding Verification (Layer 2)**: Every 3 completed tasks, present an Understanding Verification challenge with concrete inferences for the user to judge (NOT a passive "do you understand?" question). User says "no" to an inference → explain and re-verify before proceeding.
 
@@ -112,7 +116,9 @@ At Completion, produce a comprehension report:
 - New concepts, patterns, or abstractions introduced.
 - Risks or side effects flagged in acceptance reports.
 
-Write into `.record/{slug}/.prod/` using the Comprehension Report Template from cross-phase.md.
+Write into `.record/{slug}/.prod/` using the Comprehension Report Template from cross-phase.md (Iron rule 1).
+
+▶ CHECKPOINT: `.record/{slug}/.prod/COMPREHENSION_*.md` exists
 
 ## Knowledge Extraction
 

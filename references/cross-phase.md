@@ -5,6 +5,7 @@ Templates, recording protocol, and prompt assembly used across all phases.
 ## Contents
 
 - [Iron Rules](#iron-rules)
+- [Iron Rule Enforcement Checkpoint](#iron-rule-enforcement-checkpoint)
 - [Prompt Assembly](#prompt-assembly)
 - [Recording Protocol](#recording-protocol)
 - [Templates](#templates)
@@ -13,11 +14,23 @@ Templates, recording protocol, and prompt assembly used across all phases.
 
 These rules are absolute. Every phase, every agent, every deliverable:
 
-1. **强制记录**：每个 Agent 产出必须写入 `.record/` 对应目录。产出未落盘，下一阶段不得启动。如果保存失败，停止并报告错误，不允许跳过。
+1. **强制记录**：每个 Agent 产出必须写入 `.record/` 对应目录。主 Agent 负责保存子 Agent 产出并验证文件已落盘。产出未落盘，下一阶段不得启动。如果保存失败，停止并报告错误，不允许跳过。每个落盘步骤后必须执行 Iron Rule Enforcement Checkpoint（见下方定义）。
 2. **强制验收**：设计文档、任务拆解、每个任务的实现——都必须经独立验收 Agent 审查并返回 PASS。没有 PASS，该阶段/任务不算完成。主 Agent 自审不算验收。
 3. **验收不过必须返工**：验收 Agent 返回 FAIL 后，必须按 Required Changes / Required Fixes 修改产出，重新提交同一验收 Agent 审查。此循环持续直到 PASS。不允许跳过、降级、绕过或以"用户确认"代替验收。
 
 唯一例外：用户显式终止任务时，记录终止原因，状态设为 `阻塞`。
+
+### Iron Rule Enforcement Checkpoint
+
+After every step that requires saving to `.record/`, the main agent MUST execute this checkpoint before proceeding:
+
+1. **Verify**: Check that the expected file exists at the specified `.record/` path (read the file or list the directory).
+2. **If missing**: STOP. Do not launch the next agent or advance to the next step. Report the missing file and wait for resolution.
+3. **If present**: Proceed.
+
+Shorthand reference in phase files: `▶ CHECKPOINT: {expected_path}`
+
+The checkpoint is the main agent's responsibility — sub-agents produce output, the main agent saves and verifies. A step is not complete until its checkpoint passes.
 
 ## Prompt Assembly
 
@@ -121,6 +134,55 @@ STATUS.md is the aggregated state view of `.record/`, written to `.record/STATUS
 5. **目标完成时**：从活跃目标移入历史目标摘要（最多 10 条，更早的通过日期索引指向具体文件）。
 
 STATUS.md is NOT an agent output — it is NOT bound to Iron Rule 1's per-write enforcement. When STATUS.md conflicts with record files, record files are source of truth; STATUS.md corrects at next event point.
+
+### STATUS.md 同步保障
+
+STATUS.md 的及时更新由三层保障机制保证：
+
+#### 第一层：脚本自动生成（根本解）
+
+`scripts/sync-status.py` 从 `.record/` 目录的 record files 自动生成 STATUS.md。这是"最终真相"层——无论 Agent 是否手动更新，脚本都能从 source of truth 重建 STATUS.md。
+
+**执行命令**：`python3 scripts/sync-status.py`
+
+**运行模式**：
+- 标准模式：生成并写入 `.record/STATUS.md`
+- `--quiet`：静默模式，hook 调用用，无 stdout 输出
+- `--dry-run`：输出到 stdout，不写文件
+- `--check`：一致性检查，不一致时输出警告到 stderr
+
+**依赖**：Python 3 标准库，无外部包依赖。
+
+#### 第二层：Claude Code Hooks 自动触发（实时性）
+
+`.claude/settings.local.json` 配置 PostToolUse + Stop hook：
+
+- **PostToolUse**：匹配 Write|Edit 工具，调用 `python3 scripts/sync-status.py --quiet`。每次 `.record/` 下文件变更后自动同步。
+- **Stop**：会话结束时调用 `python3 scripts/sync-status.py --check`，发现不一致时输出警告。
+
+脚本内部通过文件修改时间判断是否为 `.record/` 下的变更，无变更时快速退出（< 100ms），避免 hook 累积延迟。
+
+**Windows 兼容**：Windows 端需将 hook command 中的 `python3` 改为 `python`。
+
+#### 第三层：Agent 检查点约束（防御深度）
+
+即使 hook 不可用（如 Codex 平台），Agent 仍应在上述 5 个事件点手动更新 STATUS.md，并在更新后读取 `.record/STATUS.md` 确认内容正确。
+
+**降级行为**：当 `scripts/sync-status.py` 不可用（Python 3 未安装）或 hook 未配置时，Agent 的手动更新恢复为强制要求。
+
+#### 三层保障的协作
+
+```
+记录文件变更
+  ↓
+PostToolUse hook 触发 → scripts/sync-status.py → STATUS.md 更新
+  ↓ (若 hook 不可用)
+Agent 检查点手动更新 → STATUS.md 更新
+  ↓ (若脚本不可用)
+Agent 按 5 个事件点手动编写 STATUS.md
+```
+
+无论哪一层生效，STATUS.md 都应与 record files 保持一致。当 STATUS.md 与 record files 冲突时，以 record files 为准（source of truth）。
 
 ### Status Values
 

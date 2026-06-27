@@ -44,6 +44,8 @@ When all tasks are complete and the standard Completion step is done:
 
 Save the Goal Check result to `.record/{slug}/.review/` before any next action (Iron rule 1).
 
+▶ CHECKPOINT: `.record/{slug}/.review/GOAL_CHECK_*.md` exists
+
 The goal is not achieved until the Goal Check Agent returns PASS (Iron rule 2).
 
 **STATUS.md update**: After Goal Check, update iteration round and result, add entry to "最近变更摘要" if the iteration introduced changes.
@@ -100,6 +102,20 @@ A convergence safeguard trigger downgrades loop mode to interactive mode (waitin
 - **Manual re-trigger**: User manually re-triggers `/asdev [goal]` after each iteration. STATUS.md ensures breakpoint recovery.
 
 Loop mode does not depend on any specific scheduling mechanism — STATUS.md breakpoint recovery is the core, and scheduling is a convenience layer.
+
+### STATUS.md Auto-Sync (Loop Mode Critical)
+
+Loop mode's breakpoint recovery depends entirely on STATUS.md accuracy. To guarantee STATUS.md is always current:
+
+1. **PostToolUse hook (preferred)**: `.claude/settings.local.json` automatically calls `python3 scripts/sync-status.py --quiet` after every Write/Edit. This is the recommended setup — no manual intervention required.
+
+2. **Scheduled sync (fallback)**: If hooks are unavailable, integrate sync into the scheduling command:
+   - Claude Code `/loop`: `"/loop 10m python3 scripts/sync-status.py && /asdev [goal]"`
+   - Manual cadence: Run `python3 scripts/sync-status.py` before each `/asdev` re-trigger.
+
+3. **Stop hook verification**: `.claude/settings.local.json` Stop hook runs `python3 scripts/sync-status.py --check` at session end. A mismatch triggers a warning — the next iteration can detect and correct stale STATUS.md before breakpoint recovery reads it.
+
+When all three layers are active, STATUS.md is guaranteed current at every loop iteration boundary — making breakpoint recovery reliable.
 
 ## Running Modes Comparison
 

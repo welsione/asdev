@@ -45,6 +45,8 @@ Restate the goal in operational terms before launching specialist agents:
 
 Launch an independent Investigator Agent to gather code facts. Save output to `.record/{slug}/.prod/` before the Product/Design Agent is launched (Iron rule 1).
 
+▶ CHECKPOINT: `.record/{slug}/.prod/INVESTIGATION_*.md` exists
+
 Investigation targets: entry points, direct call sites, indirect call chains, existing exception/error/result propagation, similar implementations, module boundaries, tests covering the behavior, gaps between current and target behavior.
 
 For call-chain tasks, explicitly separate: direct callers, indirect callers, boundary callers (Controller/API/SSE/job), error handling/wrapping points (swallow, translate, hide).
@@ -65,6 +67,8 @@ Ask only questions that materially affect the plan. If the user wants to proceed
 
 Launch a Product/Design Agent to draft the design from user goal, project rules, investigation findings, and user-aligned answers. Save to `.record/{slug}/.prod/` before the Design Acceptance Agent is launched (Iron rule 1).
 
+▶ CHECKPOINT: `.record/{slug}/.prod/PROD_*.md` exists
+
 **STATUS.md update**: Fill in "活跃目标" row and update "当前阶段" to Phase 1.
 
 Design document should include: background and goal, current code facts, call-chain analysis when relevant, impact scope, open questions and user-confirmed answers, proposed design, core flow, data model/API changes, key design decisions and reasons, risks and verification strategy. Use the Product/Design Template from cross-phase.md.
@@ -72,6 +76,8 @@ Design document should include: background and goal, current code facts, call-ch
 ### 5. Design Acceptance Review
 
 Submit to an independent Design Acceptance Agent. Save review output to `.record/{slug}/.review/` (Iron rule 1).
+
+▶ CHECKPOINT: `.record/{slug}/.review/DESIGN_REVIEW_*.md` exists
 
 The design is not accepted until the Design Acceptance Agent returns PASS (Iron rule 2). If FAIL, revise according to Required Changes and re-submit (Iron rule 3).
 

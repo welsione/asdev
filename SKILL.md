@@ -1,11 +1,11 @@
 ---
 name: asdev
-description: Handles complex software goals through mandatory multi-agent investigation, design, task decomposition, independent review, and acceptance validation with iterative rework. Trigger on /asdev, /goal, goal mode, 多Agent, 验收Agent, 任务拆解, 调用点, call-chain investigation, or any multi-module change requiring reliable end-to-end delivery.
+description: Handles multi-module software goals through mandatory multi-agent investigation, design, task decomposition, independent review, and acceptance validation with iterative rework. Use when the user invokes /asdev, /goal, goal mode, 多Agent, 验收Agent, 任务拆解, 调用点, call-chain investigation, or any multi-module change requiring reliable end-to-end delivery.
 ---
 
 # asdev
 
-Turn a complex goal into a disciplined delivery loop: investigate → design → decompose → implement → verify. Each phase requires independent agent acceptance before advancing.
+Turn a multi-module goal into a disciplined delivery loop: investigate → design → decompose → implement → verify. Each phase requires independent agent acceptance before advancing.
 
 ## Iron Rules
 
@@ -60,7 +60,7 @@ Cross-phase shared definitions (templates, recording protocol, prompt assembly):
 
 ```text
 .record/
-├── STATUS.md              ← aggregated state (5 event points)
+├── STATUS.md              ← aggregated state (auto-synced by scripts/sync-status.py)
 ├── {goal-slug}/           ← one per goal (e.g. payment-timeout)
 │   ├── .goal/
 │   ├── .prod/
@@ -71,7 +71,9 @@ Cross-phase shared definitions (templates, recording protocol, prompt assembly):
 
 Slug: 2-3 core keywords, lowercase, ≤24 chars. Generated at Phase 1. See [references/cross-phase.md](references/cross-phase.md) for slug rules and naming conventions.
 
-STATUS.md update events: Phase 0 完成后、阶段转换时、任务状态变更时、Goal Check 后、目标完成时。Record files are source of truth.
+**STATUS.md auto-sync**: Run `python3 scripts/sync-status.py` to regenerate STATUS.md from record files. PostToolUse hook in `.claude/settings.local.json` calls this script automatically after every Write/Edit. STATUS.md is the aggregated view — record files are source of truth. See [references/cross-phase.md](references/cross-phase.md) for the three-layer sync guarantee (script + hook + constraints).
+
+**Python 3 dependency**: The sync script requires Python 3 (standard library only, no external packages). If Python 3 is unavailable, install it first or fall back to manually updating STATUS.md at the 5 event points.
 
 ## Cross-Goal Memory
 

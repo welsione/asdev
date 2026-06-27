@@ -18,6 +18,8 @@ Templates (Task Plan, Individual Task Record): see [references/cross-phase.md](c
 
 Launch a Development Manager Agent to decompose the accepted design into an ordered task list. Save output to `.record/{slug}/.task/` before the Task Check Agent is launched (Iron rule 1).
 
+▶ CHECKPOINT: `.record/{slug}/.task/TASK_PLAN_*.md` exists
+
 Decomposition criteria:
 
 - Each task should be independently implementable and verifiable.
@@ -31,6 +33,8 @@ Decomposition criteria:
 ### 2. Task Plan Acceptance Review
 
 Submit to an independent Task Check Agent. Save review output to `.record/{slug}/.review/` (Iron rule 1).
+
+▶ CHECKPOINT: `.record/{slug}/.review/TASK_PLAN_REVIEW_*.md` exists
 
 The task plan is not accepted until the Task Check Agent returns PASS (Iron rule 2). If FAIL, revise according to Required Changes and re-submit (Iron rule 3).
 
