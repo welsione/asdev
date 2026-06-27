@@ -21,23 +21,17 @@ asdev follows a simple rule: **understand before design, decompose before implem
 
 ---
 
-## Before & After
-
 ![Before and after](assets/comparison-en.svg)
 
 Same requirement, same model. The difference is the process. asdev uses independent investigation, phase checks, task acceptance, and durable records to replace "looks fine" with "passed with evidence".
 
 ---
 
-## Three Iron Rules
-
 ![Three iron rules](assets/iron-rules-en.svg)
 
 **Iron rule checkpoint**: after each artifact is saved, the main agent must verify that the file exists before moving forward. Failed checkpoint means the step is not complete. The only exception is explicit user termination; then the reason is recorded and the status becomes `Blocked`.
 
 ---
-
-## Four-Phase Delivery
 
 ![asdev four-phase workflow](assets/workflow-en.svg)
 
@@ -48,8 +42,6 @@ Same requirement, same model. The difference is the process. asdev uses independ
 
 ---
 
-## 9 Independent Agents
-
 ![asdev multi-agent team](assets/agents-en.svg)
 
 Execution roles handle investigation, design, decomposition, and implementation. Review roles handle design acceptance, task checks, task acceptance, and goal checks. The main agent does not grade its own work; it orchestrates, records, aligns, and drives the loop.
@@ -57,16 +49,11 @@ Execution roles handle investigation, design, decomposition, and implementation.
 Review roles should use a higher-reasoning model when the platform supports it, reducing shared cognitive bias with execution roles. When per-role model selection is unavailable, asdev falls back to prompt-level reasoning instructions.
 
 ---
-
-## Comprehension Debt Guard
-
 ![Four-layer comprehension guard](assets/comprehension-en.svg)
 
 A system that ships code faster than the user can understand it is not efficient. It is erosive. asdev keeps the user in the loop with per-task summaries, inference checks every 3 tasks, pre-implementation intent, and mandatory change-density warnings.
 
 ---
-
-## Loop Mode
 
 ![Loop mode](assets/loop-mode-en.svg)
 
@@ -84,8 +71,6 @@ Manual:       /asdev [goal] - STATUS.md preserves continuity
 A loop that cannot converge is a design problem, not a persistence problem.
 
 ---
-
-## Record-First
 
 ![Record artifact chain](assets/records-en.svg)
 
@@ -109,8 +94,6 @@ Each goal gets an isolated record directory, so records from different goals nev
 Cross-goal memory comes from `STATUS.md` and `.knowledge/`: a new goal reads the aggregated view and project experience before passing historical context to the investigator agent.
 
 ---
-
-## When to Use asdev
 
 ![When to use asdev](assets/fit-guide-en.svg)
 
@@ -146,8 +129,6 @@ Stop condition: all test/order-related tests pass and lint has no new warnings.
 ```
 
 ---
-
-## Design Philosophy
 
 ![Design philosophy](assets/philosophy-en.svg)
 
