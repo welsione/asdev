@@ -50,7 +50,7 @@
     <text x="966" y="215" class="folder">Reports</text>
     <text x="956" y="270" class="file">ACCEPTANCE_*</text>
     <text x="956" y="302" class="file">VERIFICATION_*</text>
-    <text x="956" y="332" class="note">Commands · residual risk</text>
+    <text x="940" y="332" class="note">Commands · residual risk</text>
 
     <path d="M304 251H356" stroke="#BAE6FD" stroke-width="4" stroke-linecap="round"/>
     <path d="M588 251H640" stroke="#BAE6FD" stroke-width="4" stroke-linecap="round"/>

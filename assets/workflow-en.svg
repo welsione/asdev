@@ -38,25 +38,27 @@
     <path d="M910 218L926 230L910 242" stroke="#5EEAD4" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
 
     <g>
-      <rect x="72" y="154" width="244" height="164" rx="22" fill="#102A2F" stroke="#7DD3FC" stroke-width="2"/>
+      <rect x="72" y="154" width="244" height="184" rx="22" fill="#102A2F" stroke="#7DD3FC" stroke-width="2"/>
       <rect x="100" y="181" width="84" height="28" rx="14" fill="#7DD3FC"/>
       <text x="118" y="201" class="tag">Phase 0</text>
       <text x="100" y="245" class="phase">Bootstrap</text>
-      <text x="100" y="276" class="body">Confirm multi-agent capability</text>
-      <text x="100" y="300" class="body">Read rules and initialize records</text>
+      <text x="100" y="276" class="body">Confirm multi-agent</text>
+      <text x="100" y="300" class="body">capability</text>
+      <text x="100" y="324" class="body">Read rules, init records</text>
     </g>
 
     <g>
-      <rect x="355" y="154" width="244" height="164" rx="22" fill="#102A2F" stroke="#34D399" stroke-width="2"/>
+      <rect x="355" y="154" width="244" height="184" rx="22" fill="#102A2F" stroke="#34D399" stroke-width="2"/>
       <rect x="383" y="181" width="84" height="28" rx="14" fill="#34D399"/>
       <text x="401" y="201" class="tag">Phase 1</text>
       <text x="383" y="245" class="phase">Investigation</text>
-      <text x="383" y="276" class="body">Find call chains and state flows</text>
-      <text x="383" y="300" class="body">Align uncertainty before design</text>
+      <text x="383" y="276" class="body">Find call chains</text>
+      <text x="383" y="300" class="body">and state flows</text>
+      <text x="383" y="324" class="body">Align before design</text>
     </g>
 
     <g>
-      <rect x="638" y="154" width="244" height="164" rx="22" fill="#102A2F" stroke="#A7F3D0" stroke-width="2"/>
+      <rect x="638" y="154" width="244" height="184" rx="22" fill="#102A2F" stroke="#A7F3D0" stroke-width="2"/>
       <rect x="666" y="181" width="84" height="28" rx="14" fill="#A7F3D0"/>
       <text x="684" y="201" class="tag">Phase 2</text>
       <text x="666" y="245" class="phase">Decomposition</text>
@@ -65,12 +67,13 @@
     </g>
 
     <g>
-      <rect x="921" y="154" width="244" height="164" rx="22" fill="#102A2F" stroke="#FDE68A" stroke-width="2"/>
+      <rect x="921" y="154" width="244" height="184" rx="22" fill="#102A2F" stroke="#FDE68A" stroke-width="2"/>
       <rect x="949" y="181" width="84" height="28" rx="14" fill="#FDE68A"/>
       <text x="967" y="201" class="tag">Phase 3</text>
       <text x="949" y="245" class="phase">Acceptance</text>
-      <text x="949" y="276" class="body">Implement and verify task by task</text>
-      <text x="949" y="300" class="body">FAIL requires rework until PASS</text>
+      <text x="949" y="276" class="body">Implement and verify</text>
+      <text x="949" y="300" class="body">task by task</text>
+      <text x="949" y="324" class="body">Rework until PASS</text>
     </g>
   </g>
 
