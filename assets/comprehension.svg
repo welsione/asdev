@@ -1,0 +1,62 @@
+<svg width="1200" height="560" viewBox="0 0 1200 560" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Comprehension debt guard</title>
+  <desc id="desc">Four layers that keep the user inside the development loop.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="560" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#08111F"/>
+      <stop offset="0.5" stop-color="#102A2F"/>
+      <stop offset="1" stop-color="#12343B"/>
+    </linearGradient>
+    <filter id="shadow" x="40" y="126" width="1120" height="330" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="18" stdDeviation="20" flood-color="#020617" flood-opacity="0.34"/>
+    </filter>
+    <style>
+      .title { font: 900 38px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #F8FAFC; letter-spacing: 0; }
+      .sub { font: 700 19px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #A7F3D0; letter-spacing: 0; }
+      .layer { font: 900 30px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #0B1220; letter-spacing: 0; }
+      .name { font: 900 23px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #F8FAFC; letter-spacing: 0; }
+      .trigger { font: 800 15px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #A7F3D0; letter-spacing: 0; }
+      .body { font: 700 15px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #D1FAE5; letter-spacing: 0; }
+      .foot { font: 800 17px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #E0F2FE; letter-spacing: 0; }
+    </style>
+  </defs>
+  <rect width="1200" height="560" rx="36" fill="url(#bg)"/>
+  <text x="72" y="72" class="title">四层理解腐烂防护：让用户始终在循环内</text>
+  <text x="72" y="108" class="sub">不是问“你懂了吗”，而是用具体摘要、推断和预警保护共同理解。</text>
+  <g filter="url(#shadow)">
+    <g transform="translate(72 154)">
+      <rect width="508" height="128" rx="24" fill="#102A2F" stroke="#7DD3FC" stroke-width="2"/>
+      <circle cx="60" cy="64" r="34" fill="#7DD3FC"/>
+      <text x="41" y="75" class="layer">L1</text>
+      <text x="114" y="52" class="name">每任务变更摘要</text>
+      <text x="114" y="80" class="trigger">触发：每个任务验收 PASS 后</text>
+      <text x="114" y="106" class="body">展示变更文件、行为变化、手动验证建议。</text>
+    </g>
+    <g transform="translate(620 154)">
+      <rect width="508" height="128" rx="24" fill="#102A2F" stroke="#34D399" stroke-width="2"/>
+      <circle cx="60" cy="64" r="34" fill="#34D399"/>
+      <text x="41" y="75" class="layer">L2</text>
+      <text x="114" y="52" class="name">推断验证</text>
+      <text x="114" y="80" class="trigger">触发：每 3 个任务</text>
+      <text x="114" y="106" class="body">给出具体推断，让用户判断对错。</text>
+    </g>
+    <g transform="translate(72 314)">
+      <rect width="508" height="128" rx="24" fill="#102A2F" stroke="#A7F3D0" stroke-width="2"/>
+      <circle cx="60" cy="64" r="34" fill="#A7F3D0"/>
+      <text x="41" y="75" class="layer">L3</text>
+      <text x="114" y="52" class="name">实施前确认</text>
+      <text x="114" y="80" class="trigger">触发：每个任务实施前</text>
+      <text x="114" y="106" class="body">说明涉及文件、预期变化和不涉及范围。</text>
+    </g>
+    <g transform="translate(620 314)">
+      <rect width="508" height="128" rx="24" fill="#102A2F" stroke="#FDE68A" stroke-width="2"/>
+      <circle cx="60" cy="64" r="34" fill="#FDE68A"/>
+      <text x="41" y="75" class="layer">L4</text>
+      <text x="114" y="52" class="name">变更密度预警</text>
+      <text x="114" y="80" class="trigger">触发：同一文件连续 3 个任务被修改</text>
+      <text x="114" y="106" class="body">暂停确认用户仍理解当前模块状态。</text>
+    </g>
+  </g>
+  <rect x="72" y="482" width="1056" height="42" rx="21" fill="#0B1220" fill-opacity="0.62" stroke="#A7F3D0" stroke-opacity="0.3"/>
+  <text x="104" y="509" class="foot">高效不是把用户排除在循环外；高效是让每次推进都可理解、可追踪、可纠正。</text>
+</svg>

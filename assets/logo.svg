@@ -1,58 +1,84 @@
-<svg width="960" height="320" viewBox="0 0 960 320" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
-  <title id="title">asdev 标志</title>
-  <desc id="desc">asdev 的几何标志，中央编排节点连接多个专业 Agent 节点。</desc>
+<svg width="1200" height="560" viewBox="0 0 1200 560" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">asdev hero</title>
+  <desc id="desc">asdev premium README hero for goal-mode multi-agent verified delivery.</desc>
   <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="960" y2="320" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#101828"/>
-      <stop offset="0.55" stop-color="#12343B"/>
-      <stop offset="1" stop-color="#0B3B36"/>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="560" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#08111F"/>
+      <stop offset="0.46" stop-color="#0D2B32"/>
+      <stop offset="1" stop-color="#153C32"/>
     </linearGradient>
-    <linearGradient id="mark" x1="154" y1="62" x2="286" y2="254" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#7DD3FC"/>
-      <stop offset="0.5" stop-color="#34D399"/>
+    <linearGradient id="gold" x1="152" y1="120" x2="338" y2="362" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#7DD3FC"/>
+      <stop offset="0.45" stop-color="#34D399"/>
       <stop offset="1" stop-color="#FDE68A"/>
     </linearGradient>
-    <linearGradient id="text" x1="356" y1="118" x2="790" y2="118" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#F8FAFC"/>
-      <stop offset="1" stop-color="#C7F9E9"/>
+    <linearGradient id="headline" x1="412" y1="144" x2="982" y2="144" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF"/>
+      <stop offset="0.48" stop-color="#E0F2FE"/>
+      <stop offset="1" stop-color="#D9F99D"/>
     </linearGradient>
-    <filter id="shadow" x="90" y="40" width="220" height="240" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-      <feDropShadow dx="0" dy="18" stdDeviation="18" flood-color="#020617" flood-opacity="0.35"/>
+    <filter id="softShadow" x="52" y="54" width="1110" height="448" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="24" stdDeviation="26" flood-color="#020617" flood-opacity="0.42"/>
     </filter>
+    <style>
+      .kicker { font: 800 14px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #7DD3FC; letter-spacing: 1.2px; }
+      .title { font: 900 96px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: url(#headline); letter-spacing: 0; }
+      .tagline { font: 800 28px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #D9F99D; letter-spacing: 0; }
+      .body { font: 700 21px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #C7F9E9; letter-spacing: 0; }
+      .chip { font: 800 16px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #0B1220; letter-spacing: 0; }
+      .small { font: 800 15px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #E0F2FE; letter-spacing: 0; }
+    </style>
   </defs>
 
-  <rect width="960" height="320" rx="32" fill="url(#bg)"/>
-  <path d="M0 248C130 208 217 221 348 254C504 294 647 302 960 220V320H0V248Z" fill="#0F766E" fill-opacity="0.18"/>
-  <path d="M0 52C134 78 242 66 376 35C548 -5 730 0 960 63V0H0V52Z" fill="#38BDF8" fill-opacity="0.08"/>
+  <rect width="1200" height="560" rx="40" fill="url(#bg)"/>
+  <path d="M64 96H1136V464H64V96Z" fill="#0B1220" fill-opacity="0.34"/>
+  <path d="M64 96H1136" stroke="#7DD3FC" stroke-opacity="0.24"/>
+  <path d="M64 464H1136" stroke="#D9F99D" stroke-opacity="0.2"/>
+  <path d="M64 96V464" stroke="#7DD3FC" stroke-opacity="0.18"/>
+  <path d="M1136 96V464" stroke="#FDE68A" stroke-opacity="0.18"/>
 
-  <g filter="url(#shadow)">
-    <path d="M201.8 56L294.6 109.6V216.8L201.8 270.4L109 216.8V109.6L201.8 56Z" fill="#0F172A" stroke="url(#mark)" stroke-width="6"/>
-    <path d="M202 96L260 129.5V196.5L202 230L144 196.5V129.5L202 96Z" fill="#102A2F" stroke="#5EEAD4" stroke-width="4"/>
-    <circle cx="202" cy="163" r="25" fill="url(#mark)"/>
-    <circle cx="145" cy="130" r="13" fill="#7DD3FC"/>
-    <circle cx="259" cy="130" r="13" fill="#34D399"/>
-    <circle cx="145" cy="197" r="13" fill="#FDE68A"/>
-    <circle cx="259" cy="197" r="13" fill="#A7F3D0"/>
-    <path d="M202 137V96" stroke="#BAE6FD" stroke-width="4" stroke-linecap="round"/>
-    <path d="M180 151L145 130" stroke="#BAE6FD" stroke-width="4" stroke-linecap="round"/>
-    <path d="M224 151L259 130" stroke="#A7F3D0" stroke-width="4" stroke-linecap="round"/>
-    <path d="M180 175L145 197" stroke="#FDE68A" stroke-width="4" stroke-linecap="round"/>
-    <path d="M224 175L259 197" stroke="#A7F3D0" stroke-width="4" stroke-linecap="round"/>
-    <path d="M184 162H220" stroke="#0F172A" stroke-width="5" stroke-linecap="round"/>
-    <path d="M202 144V181" stroke="#0F172A" stroke-width="5" stroke-linecap="round"/>
+  <g opacity="0.18">
+    <path d="M0 394C148 332 284 344 438 386C622 436 820 432 1200 330V560H0V394Z" fill="#38BDF8"/>
+    <path d="M0 122C174 164 326 140 502 96C718 42 930 54 1200 136V0H0V122Z" fill="#A7F3D0"/>
   </g>
 
-  <text x="356" y="142" fill="url(#text)" font-family="Inter, 'PingFang SC', 'Microsoft YaHei', 'Noto Sans CJK SC', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="64" font-weight="800" letter-spacing="0">asdev</text>
-  <text x="360" y="184" fill="#A7F3D0" font-family="Inter, 'PingFang SC', 'Microsoft YaHei', 'Noto Sans CJK SC', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="26" font-weight="700" letter-spacing="0">目标模式 · 强制多 Agent 验证交付</text>
-  <g fill="#D9F99D" font-family="Inter, 'PingFang SC', 'Microsoft YaHei', 'Noto Sans CJK SC', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="18" font-weight="700">
-    <text x="360" y="234">代码调查</text>
-    <circle cx="450" cy="228" r="4" fill="#5EEAD4"/>
-    <text x="466" y="234">方案设计</text>
-    <circle cx="556" cy="228" r="4" fill="#5EEAD4"/>
-    <text x="572" y="234">任务拆解</text>
-    <circle cx="662" cy="228" r="4" fill="#5EEAD4"/>
-    <text x="678" y="234">开发实现</text>
-    <circle cx="768" cy="228" r="4" fill="#5EEAD4"/>
-    <text x="784" y="234">独立验收</text>
+  <g filter="url(#softShadow)">
+    <g transform="translate(126 112)">
+      <path d="M146 0L272.44 73V219L146 292L19.56 219V73L146 0Z" fill="#0F172A" stroke="url(#gold)" stroke-width="7"/>
+      <path d="M146 50L229.14 98V194L146 242L62.86 194V98L146 50Z" fill="#102A2F" stroke="#5EEAD4" stroke-width="4"/>
+      <path d="M146 100L185.84 123V169L146 192L106.16 169V123L146 100Z" fill="url(#gold)"/>
+      <circle cx="146" cy="38" r="14" fill="#7DD3FC"/>
+      <circle cx="224" cy="84" r="14" fill="#34D399"/>
+      <circle cx="224" cy="208" r="14" fill="#FDE68A"/>
+      <circle cx="146" cy="254" r="14" fill="#D9F99D"/>
+      <circle cx="68" cy="208" r="14" fill="#A7F3D0"/>
+      <circle cx="68" cy="84" r="14" fill="#BAE6FD"/>
+      <path d="M146 100V52M184 124L214 92M184 168L214 200M146 192V240M108 168L78 200M108 124L78 92" stroke="#E0F2FE" stroke-width="5" stroke-linecap="round"/>
+      <path d="M126 146H166M146 126V166" stroke="#0B1220" stroke-width="7" stroke-linecap="round"/>
+    </g>
+  </g>
+
+  <text x="438" y="150" class="kicker">GOAL MODE / VERIFIED MULTI-AGENT DELIVERY</text>
+  <text x="434" y="252" class="title">asdev</text>
+  <text x="438" y="312" class="tagline">调查 -> 拆解 -> 验收 </text>
+  <text x="438" y="356" class="body">不是让 Agent 更快动手，而是让交付更可靠、可追溯、可验收。</text>
+
+  <g transform="translate(438 398)">
+    <rect width="124" height="38" rx="19" fill="#7DD3FC"/>
+    <text x="27" y="25" class="chip">代码调查</text>
+    <rect x="142" width="124" height="38" rx="19" fill="#34D399"/>
+    <text x="169" y="25" class="chip">任务拆解</text>
+    <rect x="284" width="124" height="38" rx="19" fill="#FDE68A"/>
+    <text x="311" y="25" class="chip">独立验收</text>
+    <rect x="426" width="142" height="38" rx="19" fill="#D9F99D"/>
+    <text x="453" y="25" class="chip">断点恢复</text>
+  </g>
+
+  <g transform="translate(438 470)">
+    <text x="0" y="0" class="small">强制记录</text>
+    <circle cx="96" cy="-6" r="4" fill="#5EEAD4"/>
+    <text x="114" y="0" class="small">强制验收</text>
+    <circle cx="210" cy="-6" r="4" fill="#5EEAD4"/>
+    <text x="228" y="0" class="small">验收不过必须返工</text>
   </g>
 </svg>

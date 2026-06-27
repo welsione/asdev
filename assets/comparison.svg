@@ -1,0 +1,55 @@
+<svg width="1200" height="600" viewBox="0 0 1200 600" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Before and after asdev</title>
+  <desc id="desc">Comparison of software delivery before and after using asdev.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="600" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#08111F"/>
+      <stop offset="0.5" stop-color="#102A2F"/>
+      <stop offset="1" stop-color="#0A1F17"/>
+    </linearGradient>
+    <filter id="shadow" x="40" y="112" width="1120" height="420" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="18" stdDeviation="20" flood-color="#020617" flood-opacity="0.36"/>
+    </filter>
+    <style>
+      .title { font: 900 34px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #F8FAFC; letter-spacing: 0; }
+      .sub { font: 700 19px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #A7F3D0; letter-spacing: 0; }
+      .headBad { font: 900 26px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #FCA5A5; letter-spacing: 0; }
+      .headGood { font: 900 26px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #86EFAC; letter-spacing: 0; }
+      .metric { font: 900 17px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #E0F2FE; letter-spacing: 0; }
+      .bad { font: 700 16px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #FEE2E2; letter-spacing: 0; }
+      .good { font: 700 15px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #D1FAE5; letter-spacing: 0; }
+    </style>
+  </defs>
+  <rect width="1200" height="600" rx="36" fill="url(#bg)"/>
+  <text x="72" y="72" class="title">Before &amp; After：流程决定交付质量</text>
+  <text x="72" y="108" class="sub">asdev 不赌一次写对，而是用调查、拆解、记录和独立验收降低系统性风险。</text>
+  <g filter="url(#shadow)">
+    <rect x="72" y="146" width="232" height="370" rx="24" fill="#0B1220" stroke="#7DD3FC" stroke-opacity="0.42"/>
+    <rect x="328" y="146" width="372" height="370" rx="24" fill="#1C1012" stroke="#F87171" stroke-width="2"/>
+    <rect x="728" y="146" width="400" height="370" rx="24" fill="#0A1F17" stroke="#34D399" stroke-width="2"/>
+    <text x="364" y="193" class="headBad">Before：无 asdev</text>
+    <text x="764" y="193" class="headGood">After：有 asdev</text>
+
+    <g transform="translate(104 230)">
+      <text y="0" class="metric">验收方式</text>
+      <text y="54" class="metric">风险控制</text>
+      <text y="108" class="metric">理解透明度</text>
+      <text y="162" class="metric">记忆连续性</text>
+      <text y="216" class="metric">迭代保障</text>
+    </g>
+    <g transform="translate(364 230)">
+      <text y="0" class="bad">主 Agent 写完后自查，自称完成</text>
+      <text y="54" class="bad">复杂需求直接开干，失败后回滚巨大</text>
+      <text y="108" class="bad">循环越快，用户越看不懂当前状态</text>
+      <text y="162" class="bad">新会话从零开始，重复发现旧事实</text>
+      <text y="216" class="bad">验收不通过后手动补丁，闭环不稳定</text>
+    </g>
+    <g transform="translate(764 230)">
+      <text y="0" class="good">独立验收 Agent 用命令、测试、证据判断</text>
+      <text y="54" class="good">先调查再设计拆解，大风险拆成小风险</text>
+      <text y="108" class="good">四层理解防护，让用户保持在循环内</text>
+      <text y="162" class="good">记录目录和 STATUS.md 延续经验</text>
+      <text y="216" class="good">FAIL 后按意见返工，直到 PASS 才推进</text>
+    </g>
+  </g>
+</svg>

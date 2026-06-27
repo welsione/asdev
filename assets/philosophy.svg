@@ -1,0 +1,50 @@
+<svg width="1200" height="430" viewBox="0 0 1200 430" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Design philosophy</title>
+  <desc id="desc">The three design principles behind asdev.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="430" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#08111F"/>
+      <stop offset="0.54" stop-color="#102A2F"/>
+      <stop offset="1" stop-color="#12343B"/>
+    </linearGradient>
+    <filter id="shadow" x="40" y="112" width="1120" height="238" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="16" stdDeviation="18" flood-color="#020617" flood-opacity="0.34"/>
+    </filter>
+    <style>
+      .title { font: 900 38px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #F8FAFC; letter-spacing: 0; }
+      .sub { font: 700 19px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #A7F3D0; letter-spacing: 0; }
+      .head { font: 900 24px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #F8FAFC; letter-spacing: 0; }
+      .body { font: 700 16px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #D1FAE5; letter-spacing: 0; }
+      .mark { font: 900 30px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #0B1220; }
+    </style>
+  </defs>
+  <rect width="1200" height="430" rx="36" fill="url(#bg)"/>
+  <text x="72" y="72" class="title">设计哲学</text>
+  <text x="72" y="108" class="sub">可靠交付来自流程约束，而不是对单个 Agent 的乐观假设。</text>
+  <g filter="url(#shadow)">
+    <g transform="translate(72 146)">
+      <rect width="330" height="190" rx="24" fill="#102A2F" stroke="#7DD3FC" stroke-width="2"/>
+      <circle cx="54" cy="54" r="27" fill="#7DD3FC"/>
+      <text x="43" y="65" class="mark">1</text>
+      <text x="92" y="56" class="head">调查先于设计</text>
+      <text x="32" y="108" class="body">先找代码事实、调用链、边界入口</text>
+      <text x="32" y="136" class="body">和现有模式，再动手设计。</text>
+    </g>
+    <g transform="translate(435 146)">
+      <rect width="330" height="190" rx="24" fill="#102A2F" stroke="#34D399" stroke-width="2"/>
+      <circle cx="54" cy="54" r="27" fill="#34D399"/>
+      <text x="43" y="65" class="mark">2</text>
+      <text x="92" y="56" class="head">制造者不自审</text>
+      <text x="32" y="108" class="body">执行与审查分离，减少共享偏差</text>
+      <text x="32" y="136" class="body">和“看起来没问题”的幻觉。</text>
+    </g>
+    <g transform="translate(798 146)">
+      <rect width="330" height="190" rx="24" fill="#102A2F" stroke="#FDE68A" stroke-width="2"/>
+      <circle cx="54" cy="54" r="27" fill="#FDE68A"/>
+      <text x="43" y="65" class="mark">3</text>
+      <text x="92" y="56" class="head">大风险拆小风险</text>
+      <text x="32" y="108" class="body">调查、设计、拆解、实现、验收</text>
+      <text x="32" y="136" class="body">每一步都有检查点和返工闭环。</text>
+    </g>
+  </g>
+</svg>

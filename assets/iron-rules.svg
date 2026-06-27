@@ -1,0 +1,53 @@
+<svg width="1200" height="470" viewBox="0 0 1200 470" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Three iron rules</title>
+  <desc id="desc">The three non-negotiable rules in asdev.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="470" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#08111F"/>
+      <stop offset="0.54" stop-color="#102A2F"/>
+      <stop offset="1" stop-color="#1F2937"/>
+    </linearGradient>
+    <filter id="shadow" x="40" y="122" width="1120" height="256" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="16" stdDeviation="18" flood-color="#020617" flood-opacity="0.34"/>
+    </filter>
+    <style>
+      .title { font: 900 38px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #F8FAFC; letter-spacing: 0; }
+      .sub { font: 700 19px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #FDE68A; letter-spacing: 0; }
+      .rule { font: 900 28px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #F8FAFC; letter-spacing: 0; }
+      .slogan { font: 900 18px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #FDE68A; letter-spacing: 0; }
+      .body { font: 700 16px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #D1FAE5; letter-spacing: 0; }
+      .tag { font: 900 14px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #0B1220; letter-spacing: 0; }
+    </style>
+  </defs>
+  <rect width="1200" height="470" rx="36" fill="url(#bg)"/>
+  <text x="72" y="72" class="title">三条铁律：不可绕过，不可降级</text>
+  <text x="72" y="108" class="sub">它们把“看起来完成”变成“有证据地完成”。</text>
+  <g filter="url(#shadow)">
+    <g transform="translate(72 150)">
+      <rect width="330" height="190" rx="24" fill="#102A2F" stroke="#7DD3FC" stroke-width="2"/>
+      <rect x="28" y="28" width="128" height="30" rx="15" fill="#7DD3FC"/>
+      <text x="52" y="49" class="tag">Phase Gate</text>
+      <text x="28" y="94" class="rule">强制记录</text>
+      <text x="28" y="126" class="slogan">不落盘，不推进</text>
+      <text x="28" y="158" class="body">所有 Agent 产出必须写入 .record/</text>
+    </g>
+    <g transform="translate(435 150)">
+      <rect width="330" height="190" rx="24" fill="#102A2F" stroke="#34D399" stroke-width="2"/>
+      <rect x="28" y="28" width="214" height="30" rx="15" fill="#34D399"/>
+      <text x="52" y="49" class="tag">Independent Review</text>
+      <text x="28" y="94" class="rule">强制验收</text>
+      <text x="28" y="126" class="slogan">没有 PASS，不算完成</text>
+      <text x="28" y="158" class="body">主 Agent 自审不算验收</text>
+    </g>
+    <g transform="translate(798 150)">
+      <rect width="330" height="190" rx="24" fill="#102A2F" stroke="#FDE68A" stroke-width="2"/>
+      <rect x="28" y="28" width="202" height="30" rx="15" fill="#FDE68A"/>
+      <text x="52" y="49" class="tag">Mandatory Rework</text>
+      <text x="28" y="94" class="rule">必须返工</text>
+      <text x="28" y="126" class="slogan">无跳过 · 无降级 · 无绕过</text>
+      <text x="28" y="158" class="body">FAIL 后按意见修改，直到 PASS</text>
+    </g>
+  </g>
+  <path d="M72 408H1128" stroke="#FDE68A" stroke-opacity="0.36"/>
+  <text x="72" y="435" class="body">唯一例外：用户显式终止任务，此时记录终止原因，状态变为阻塞。</text>
+</svg>

@@ -1,0 +1,69 @@
+<svg width="1200" height="470" viewBox="0 0 1200 470" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">AI coding failure patterns</title>
+  <desc id="desc">Five failure patterns that asdev is designed to prevent.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="470" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#08111F"/>
+      <stop offset="0.52" stop-color="#1B2330"/>
+      <stop offset="1" stop-color="#1C1012"/>
+    </linearGradient>
+    <filter id="shadow" x="40" y="126" width="1120" height="250" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="14" stdDeviation="18" flood-color="#020617" flood-opacity="0.34"/>
+    </filter>
+    <style>
+      .title { font: 900 38px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #F8FAFC; letter-spacing: 0; }
+      .sub { font: 700 19px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #FCA5A5; letter-spacing: 0; }
+      .num { font: 900 20px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #0B1220; }
+      .name { font: 900 22px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #F8FAFC; letter-spacing: 0; }
+      .body { font: 700 15px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #FEE2E2; letter-spacing: 0; }
+      .foot { font: 800 17px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #E0F2FE; letter-spacing: 0; }
+    </style>
+  </defs>
+  <rect width="1200" height="470" rx="36" fill="url(#bg)"/>
+  <text x="72" y="72" class="title">AI 编程失败，不是因为不会写代码</text>
+  <text x="72" y="108" class="sub">而是太快开始写代码：风险在没有调查、没有拆解、没有独立验收时累积。</text>
+  <g filter="url(#shadow)">
+    <g transform="translate(72 154)">
+      <rect width="200" height="166" rx="22" fill="#1C1012" stroke="#F87171" stroke-width="2"/>
+      <circle cx="38" cy="38" r="18" fill="#F87171"/>
+      <text x="31" y="45" class="num">1</text>
+      <text x="28" y="84" class="name">自审冒充验收</text>
+      <text x="28" y="116" class="body">制造者给自己的</text>
+      <text x="28" y="140" class="body">作业打分</text>
+    </g>
+    <g transform="translate(288 154)">
+      <rect width="200" height="166" rx="22" fill="#1C1012" stroke="#FB7185" stroke-width="2"/>
+      <circle cx="38" cy="38" r="18" fill="#FB7185"/>
+      <text x="31" y="45" class="num">2</text>
+      <text x="28" y="84" class="name">一次性大风险</text>
+      <text x="28" y="116" class="body">方向错了才发现</text>
+      <text x="28" y="140" class="body">回滚代价巨大</text>
+    </g>
+    <g transform="translate(504 154)">
+      <rect width="200" height="166" rx="22" fill="#1C1012" stroke="#F59E0B" stroke-width="2"/>
+      <circle cx="38" cy="38" r="18" fill="#F59E0B"/>
+      <text x="31" y="45" class="num">3</text>
+      <text x="28" y="84" class="name">理解腐烂</text>
+      <text x="28" y="116" class="body">循环越快</text>
+      <text x="28" y="140" class="body">越只能信任或放弃</text>
+    </g>
+    <g transform="translate(720 154)">
+      <rect width="200" height="166" rx="22" fill="#1C1012" stroke="#FCA5A5" stroke-width="2"/>
+      <circle cx="38" cy="38" r="18" fill="#FCA5A5"/>
+      <text x="31" y="45" class="num">4</text>
+      <text x="28" y="84" class="name">记忆缺失</text>
+      <text x="28" y="116" class="body">每个目标从零开始</text>
+      <text x="28" y="140" class="body">重复发现已知事实</text>
+    </g>
+    <g transform="translate(936 154)">
+      <rect width="192" height="166" rx="22" fill="#1C1012" stroke="#FDE68A" stroke-width="2"/>
+      <circle cx="38" cy="38" r="18" fill="#FDE68A"/>
+      <text x="31" y="45" class="num">5</text>
+      <text x="28" y="84" class="name">标准模糊</text>
+      <text x="28" y="116" class="body">看起来没问题</text>
+      <text x="28" y="140" class="body">无法客观验证</text>
+    </g>
+  </g>
+  <rect x="72" y="376" width="1056" height="50" rx="25" fill="#0B1220" fill-opacity="0.66" stroke="#FCA5A5" stroke-opacity="0.3"/>
+  <text x="104" y="408" class="foot">asdev 的解法：把一次性的大风险拆成多个可发现、可纠正、可验收的小风险。</text>
+</svg>

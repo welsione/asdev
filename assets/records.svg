@@ -1,57 +1,65 @@
-<svg width="1120" height="420" viewBox="0 0 1120 420" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+<svg width="1200" height="500" viewBox="0 0 1200 500" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
   <title id="title">asdev 记录产物链路</title>
   <desc id="desc">展示 asdev 将调查、设计、任务、审查和验收结果写入 .record 目录。</desc>
   <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1120" y2="420" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#0F172A"/>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="500" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#08111F"/>
+      <stop offset="0.5" stop-color="#102A2F"/>
       <stop offset="1" stop-color="#164E63"/>
     </linearGradient>
+    <filter id="shadow" x="38" y="106" width="1124" height="272" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="16" stdDeviation="18" flood-color="#020617" flood-opacity="0.34"/>
+    </filter>
     <style>
-      .title { font: 800 34px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #F8FAFC; }
-      .sub { font: 600 18px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #BAE6FD; }
-      .folder { font: 900 24px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #0F172A; }
-      .file { font: 700 16px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #E0F2FE; }
-      .note { font: 600 14px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #C7F9E9; }
+      .title { font: 900 38px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #F8FAFC; letter-spacing: 0; }
+      .sub { font: 700 19px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #BAE6FD; letter-spacing: 0; }
+      .folder { font: 900 24px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #0F172A; letter-spacing: 0; }
+      .file { font: 800 16px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #E0F2FE; letter-spacing: 0; }
+      .note { font: 700 14px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #C7F9E9; letter-spacing: 0; }
+      .foot { font: 800 17px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #E0F2FE; letter-spacing: 0; }
     </style>
   </defs>
-  <rect width="1120" height="420" rx="28" fill="url(#bg)"/>
-  <text x="64" y="64" class="title">记录优先：证据不只留在聊天里</text>
-  <text x="64" y="98" class="sub">每个 Agent 的输出都会进入 .record/，后续 Agent 可以直接读取证据链。</text>
+  <rect width="1200" height="500" rx="36" fill="url(#bg)"/>
+  <text x="72" y="72" class="title">记录优先：证据不只留在聊天里</text>
+  <text x="72" y="108" class="sub">每个目标有独立记录目录，调查、设计、任务、审查、验收都能回到文件里追溯。</text>
 
-  <rect x="64" y="136" width="220" height="196" rx="18" fill="#102A2F" stroke="#7DD3FC" stroke-width="2"/>
-  <path d="M86 158H150L170 180H262V210H86V158Z" fill="#7DD3FC"/>
-  <text x="100" y="198" class="folder">.prod</text>
-  <text x="92" y="246" class="file">INVESTIGATION_*</text>
-  <text x="92" y="276" class="file">PROD_*</text>
-  <text x="92" y="306" class="note">代码事实 · 方案设计</text>
+  <g filter="url(#shadow)">
+    <rect x="72" y="146" width="232" height="210" rx="22" fill="#102A2F" stroke="#7DD3FC" stroke-width="2"/>
+    <path d="M98 172H160L182 194H278V228H98V172Z" fill="#7DD3FC"/>
+    <text x="114" y="215" class="folder">.prod</text>
+    <text x="104" y="270" class="file">INVESTIGATION_*</text>
+    <text x="104" y="302" class="file">PROD_*</text>
+    <text x="104" y="332" class="note">代码事实 · 方案设计</text>
 
-  <rect x="328" y="136" width="220" height="196" rx="18" fill="#102A2F" stroke="#34D399" stroke-width="2"/>
-  <path d="M350 158H414L434 180H526V210H350V158Z" fill="#34D399"/>
-  <text x="364" y="198" class="folder">.task</text>
-  <text x="356" y="246" class="file">TASK_*</text>
-  <text x="356" y="276" class="file">T01 / T02 / ...</text>
-  <text x="356" y="306" class="note">任务原因 · 目标 · 验收项</text>
+    <rect x="356" y="146" width="232" height="210" rx="22" fill="#102A2F" stroke="#34D399" stroke-width="2"/>
+    <path d="M382 172H444L466 194H562V228H382V172Z" fill="#34D399"/>
+    <text x="398" y="215" class="folder">.task</text>
+    <text x="388" y="270" class="file">TASK_*</text>
+    <text x="388" y="302" class="file">T01 / T02 / ...</text>
+    <text x="388" y="332" class="note">任务原因 · 目标 · 验收项</text>
 
-  <rect x="592" y="136" width="220" height="196" rx="18" fill="#102A2F" stroke="#FDE68A" stroke-width="2"/>
-  <path d="M614 158H678L698 180H790V210H614V158Z" fill="#FDE68A"/>
-  <text x="628" y="198" class="folder">.review</text>
-  <text x="620" y="246" class="file">DESIGN_REVIEW_*</text>
-  <text x="620" y="276" class="file">TASK_CHECK_*</text>
-  <text x="620" y="306" class="note">检查意见 · PASS / FAIL</text>
+    <rect x="640" y="146" width="232" height="210" rx="22" fill="#102A2F" stroke="#FDE68A" stroke-width="2"/>
+    <path d="M666 172H728L750 194H846V228H666V172Z" fill="#FDE68A"/>
+    <text x="682" y="215" class="folder">.review</text>
+    <text x="672" y="270" class="file">DESIGN_REVIEW_*</text>
+    <text x="672" y="302" class="file">TASK_CHECK_*</text>
+    <text x="672" y="332" class="note">检查意见 · PASS / FAIL</text>
 
-  <rect x="856" y="136" width="200" height="196" rx="18" fill="#102A2F" stroke="#A7F3D0" stroke-width="2"/>
-  <path d="M878 158H942L962 180H1034V210H878V158Z" fill="#A7F3D0"/>
-  <text x="892" y="198" class="folder">验收报告</text>
-  <text x="884" y="246" class="file">ACCEPTANCE_*</text>
-  <text x="884" y="276" class="file">VERIFICATION_*</text>
-  <text x="884" y="306" class="note">命令结果 · 剩余风险</text>
+    <rect x="924" y="146" width="204" height="210" rx="22" fill="#102A2F" stroke="#A7F3D0" stroke-width="2"/>
+    <path d="M950 172H1012L1034 194H1102V228H950V172Z" fill="#A7F3D0"/>
+    <text x="966" y="215" class="folder">验收报告</text>
+    <text x="956" y="270" class="file">ACCEPTANCE_*</text>
+    <text x="956" y="302" class="file">VERIFICATION_*</text>
+    <text x="956" y="332" class="note">命令结果 · 剩余风险</text>
 
-  <path d="M284 234H328" stroke="#BAE6FD" stroke-width="4" stroke-linecap="round"/>
-  <path d="M548 234H592" stroke="#BAE6FD" stroke-width="4" stroke-linecap="round"/>
-  <path d="M812 234H856" stroke="#BAE6FD" stroke-width="4" stroke-linecap="round"/>
-  <path d="M316 222L332 234L316 246" stroke="#BAE6FD" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M580 222L596 234L580 246" stroke="#BAE6FD" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M844 222L860 234L844 246" stroke="#BAE6FD" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M304 251H356" stroke="#BAE6FD" stroke-width="4" stroke-linecap="round"/>
+    <path d="M588 251H640" stroke="#BAE6FD" stroke-width="4" stroke-linecap="round"/>
+    <path d="M872 251H924" stroke="#BAE6FD" stroke-width="4" stroke-linecap="round"/>
+    <path d="M344 239L360 251L344 263" stroke="#BAE6FD" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M628 239L644 251L628 263" stroke="#BAE6FD" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M912 239L928 251L912 263" stroke="#BAE6FD" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
 
-  <text x="64" y="374" class="sub">目标：任何一次完成，都能回到记录文件里看到为什么做、怎么做、如何验收。</text>
+  <rect x="72" y="404" width="1056" height="50" rx="25" fill="#0B1220" fill-opacity="0.62" stroke="#7DD3FC" stroke-opacity="0.3"/>
+  <text x="104" y="436" class="foot">目标：任何一次完成，都能回到记录文件里看到为什么做、怎么做、如何验收。</text>
 </svg>
