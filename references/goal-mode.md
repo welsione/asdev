@@ -31,7 +31,7 @@ When goal mode is active, add this step after "Write Requirement Exploration":
 
 1. Extract or refine the **verifiable stop condition** from the user's goal.
 2. The stop condition must be objectively testable: a command that exits 0, a test suite that passes, an API response that matches a shape, a grep that finds/does not find a pattern.
-3. Write the stop condition into the design document under "## 停止条件 (Stop Condition)".
+3. Write the stop condition into the design document under "## Stop Condition".
 4. The stop condition does not change between iterations. If the user wants to change it, that is a new goal.
 
 ### After Completion: Goal Check
@@ -48,7 +48,7 @@ Save the Goal Check result to `.record/{slug}/.review/` before any next action (
 
 The goal is not achieved until the Goal Check Agent returns PASS (Iron rule 2).
 
-**STATUS.md update**: After Goal Check, update iteration round and result, add entry to "最近变更摘要" if the iteration introduced changes.
+**STATUS.md update**: After Goal Check, update iteration round and result, add entry to "Recent Changes" if the iteration introduced changes.
 
 If the Goal Check Agent returns FAIL (Iron rule 3):
 
@@ -72,13 +72,13 @@ If the goal loop runs 3 full iterations (Phase 1 → 3 → Goal Check) without P
 
 ## Loop Mode
 
-Loop mode activates when the user's goal description contains "循环模式", "无人值守", or "自动迭代" keywords, or when the host platform's scheduling mechanism calls `/asdev` on a schedule.
+Loop mode activates when the user's goal description contains "循环模式 (loop mode)", "无人值守 (unattended)", or "自动迭代 (auto-iteration)" keywords, or when the host platform's scheduling mechanism calls `/asdev` on a schedule.
 
 ### Behavior Differences
 
 - **Phase 2 pause**: Skipped — loop mode proceeds automatically after task decomposition.
 - **Layer 3 (Pre-Implementation Confirmation)**: Skipped. Layer 4 (Change Density Warning) still applies.
-- **Layer 2 (Understanding Verification)**: Skipped in interactive form. Change summaries written to `.record/STATUS.md` "最近变更摘要" region instead.
+- **Layer 2 (Understanding Verification)**: Skipped in interactive form. Change summaries written to `.record/STATUS.md` "Recent Changes" region instead.
 - **Convergence safeguard**: Stricter — pause after 2 full iterations without PASS, or if cumulative changed files exceed 30. Downgrade to interactive mode when triggered.
 
 ### Breakpoint Recovery
@@ -86,7 +86,7 @@ Loop mode activates when the user's goal description contains "循环模式", "�
 When loop mode starts or restarts:
 
 1. Read `.record/STATUS.md`.
-2. If an active goal exists with status "进行中", continue from the current phase.
+2. If an active goal exists with status "In Progress", continue from the current phase.
 3. If no active goal exists, start from Phase 0.
 4. If STATUS.md has pending alignment questions from a previous interactive pause, handle them before proceeding.
 
@@ -96,7 +96,7 @@ A convergence safeguard trigger downgrades loop mode to interactive mode (waitin
 
 ### Host Platform Scheduling Integration
 
-- **Claude Code `/loop` skill**: `"/loop 10m /asdev [goal with 循环模式 keyword]"` — automatic re-triggering.
+- **Claude Code `/loop` skill**: `"/loop 10m /asdev [goal with 循环模式 (loop mode) keyword]"` — automatic re-triggering.
 - **Claude Code hooks/cron**: Configure in `.claude/settings.json`.
 - **Codex Automations tab**: Pick project, prompt, cadence, environment.
 - **Manual re-trigger**: User manually re-triggers `/asdev [goal]` after each iteration. STATUS.md ensures breakpoint recovery.
@@ -121,12 +121,12 @@ When all three layers are active, STATUS.md is guaranteed current at every loop 
 
 | Dimension | Interactive Mode (default) | Loop Mode |
 |-----------|---------------------------|-----------|
-| Trigger | `/asdev` or `/goal` | "循环模式", "无人值守", "自动迭代" keywords; or host platform scheduled dispatch |
+| Trigger | `/asdev` or `/goal` | "循环模式 (loop mode)", "无人值守 (unattended)", "自动迭代 (auto-iteration)" keywords; or host platform scheduled dispatch |
 | Iteration start | Manual confirmation | Automatic (STATUS.md breakpoint recovery) |
 | User interaction | May pause at each phase | Pauses only when convergence safeguard triggers |
 | Pre-implementation confirmation (Layer 3) | Enabled | Skipped (unless change density warning triggers) |
 | Cognitive surrender check (Layer 2) | Understanding verification questions | Change summaries written to STATUS.md |
-| Stop condition | Goal Check PASS or user terminates | Goal Check PASS or convergence safeguard or user says "终止循环" or `/stop` |
+| Stop condition | Goal Check PASS or user terminates | Goal Check PASS or convergence safeguard or user says "stop loop" or `/stop` |
 | STATUS.md | Updated but optional | **Required** (breakpoint recovery) |
 | Model configuration | Recommended | **Strongly recommended** |
 | .knowledge/ | Recommended | Recommended |
@@ -185,5 +185,5 @@ Status: PASS | FAIL
 ## Recommended Next Steps
 If FAIL, describe exactly what is still needed to satisfy the stop condition.
 
-遵循铁律：产出落盘后才可启动下一阶段 Agent；验收不过必须返工。FAIL 时主 Agent 必须回到 Phase 1 调查差距，循环直到 PASS。
+Follow iron rules: do not launch the next agent until the output is saved to .record/; rework is mandatory on FAIL. On FAIL, the main agent must return to Phase 1 to investigate the gap and loop until PASS.
 ```

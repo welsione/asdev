@@ -1,3 +1,7 @@
+<p align="right">
+  <a href="README.en.md">English</a> | <strong>中文</strong>
+</p>
+
 <p align="center">
   <img src="assets/logo.svg" alt="asdev logo" width="760" />
 </p>
@@ -356,23 +360,7 @@ Codex:        Automations tab → 项目 + 提示词 + 频率
 
 **前置条件**：Claude Code 或 Codex 环境 + 环境支持独立子代理（Agent tool / subagent tools）+ Git
 
-**安装**：
-
-```bash
-# Claude Code
-git clone https://github.com/welsione/asdev.git /tmp/asdev
-mkdir -p ~/.claude/skills
-rm -rf ~/.claude/skills/asdev
-cp -R /tmp/asdev ~/.claude/skills/asdev
-
-# Codex
-git clone https://github.com/welsione/asdev.git /tmp/asdev
-mkdir -p ~/.codex/skills
-rm -rf ~/.codex/skills/asdev
-cp -R /tmp/asdev ~/.codex/skills/asdev
-```
-
-安装后重启 Claude Code 或开启新会话。
+**安装**：把这句话丢给 Agent：`请从 https://github.com/welsione/asdev 安装 asdev skill 到当前环境的 skills 目录；如果是 Claude Code 安装到 ~/.claude/skills/asdev，如果是 Codex 安装到 ~/.codex/skills/asdev，安装完成后提醒我重启或开启新会话。`
 
 **使用示例**：
 

@@ -14,11 +14,11 @@ Templates, recording protocol, and prompt assembly used across all phases.
 
 These rules are absolute. Every phase, every agent, every deliverable:
 
-1. **强制记录**：每个 Agent 产出必须写入 `.record/` 对应目录。主 Agent 负责保存子 Agent 产出并验证文件已落盘。产出未落盘，下一阶段不得启动。如果保存失败，停止并报告错误，不允许跳过。每个落盘步骤后必须执行 Iron Rule Enforcement Checkpoint（见下方定义）。
-2. **强制验收**：设计文档、任务拆解、每个任务的实现——都必须经独立验收 Agent 审查并返回 PASS。没有 PASS，该阶段/任务不算完成。主 Agent 自审不算验收。
-3. **验收不过必须返工**：验收 Agent 返回 FAIL 后，必须按 Required Changes / Required Fixes 修改产出，重新提交同一验收 Agent 审查。此循环持续直到 PASS。不允许跳过、降级、绕过或以"用户确认"代替验收。
+1. **Mandatory Recording**: Every Agent output must be written to the corresponding directory under `.record/`. The main Agent is responsible for saving sub-Agent outputs and verifying that files have been persisted. If an output is not persisted, the next phase must not start. If saving fails, stop and report the error; skipping is not allowed. After each persist step, the Iron Rule Enforcement Checkpoint (defined below) must be executed.
+2. **Mandatory Acceptance**: Design documents, task decomposition, and the implementation of each task — all must be reviewed by an independent acceptance Agent and return PASS. Without PASS, the phase/task is not considered complete. Self-review by the main Agent does not count as acceptance.
+3. **Mandatory Rework on Rejection**: When the acceptance Agent returns FAIL, the output must be modified according to Required Changes / Required Fixes and resubmitted to the same acceptance Agent for review. This loop continues until PASS. Skipping, downgrading, bypassing, or substituting "user confirmation" for acceptance is not allowed.
 
-唯一例外：用户显式终止任务时，记录终止原因，状态设为 `阻塞`。
+The only exception: when the user explicitly terminates the task, record the termination reason and set the status to `Blocked`.
 
 ### Iron Rule Enforcement Checkpoint
 
@@ -68,7 +68,7 @@ If a value is unknown, write `Unknown` and explain what was checked.
 
 - `{TRACE_TARGETS}`: symbols, error codes, routes, files, or behaviors to trace.
 - `{HISTORICAL_CONTEXT}`: prior `.record/` findings (5-10 bullets). Empty if first goal.
-- `{PROJECT_KNOWLEDGE}`: distilled experience from `.record/.knowledge/`. Items marked `status: outdated` include "⚠️ 已过时" warning.
+- `{PROJECT_KNOWLEDGE}`: distilled experience from `.record/.knowledge/`. Items marked `status: outdated` include "⚠️ Outdated" warning.
 - `{INVESTIGATION_FINDINGS}`: path to investigation record + short summary.
 - `{USER_ALIGNMENT}`: user-confirmed answers or explicit assumptions.
 - `{DESIGN_DOCUMENT}`: path and summary of accepted design.
@@ -127,68 +127,68 @@ Examples: "Loop Engineering Skill Optimization" → `loop-eng`, "Fix payment tim
 
 STATUS.md is the aggregated state view of `.record/`, written to `.record/STATUS.md`. The main agent MUST maintain it at five event points (not on every file write):
 
-1. **Phase 0 完成后**：写入初始状态。
-2. **每个阶段转换时**：更新当前阶段（Phase 0 → 1 → 2 → 3 → Completion → Goal Check）。
-3. **每个任务状态变更时**：更新任务进度表（任务 ID、状态、验收结果、验收报告路径）。
-4. **Goal Check 后**：更新迭代轮次和结果。
-5. **目标完成时**：从活跃目标移入历史目标摘要（最多 10 条，更早的通过日期索引指向具体文件）。
+1. **After Phase 0 completes**: Write initial state.
+2. **At each phase transition**: Update current phase (Phase 0 → 1 → 2 → 3 → Completion → Goal Check).
+3. **At each task status change**: Update task progress table (task ID, status, acceptance result, acceptance report path).
+4. **After Goal Check**: Update iteration round and result.
+5. **When a goal completes**: Move from Active Goals to Historical Goals (max 10 entries; older ones are referenced by date index pointing to specific files).
 
 STATUS.md is NOT an agent output — it is NOT bound to Iron Rule 1's per-write enforcement. When STATUS.md conflicts with record files, record files are source of truth; STATUS.md corrects at next event point.
 
-### STATUS.md 同步保障
+### STATUS.md Sync Safeguards
 
-STATUS.md 的及时更新由三层保障机制保证：
+The timely update of STATUS.md is guaranteed by a three-layer safeguard mechanism:
 
-#### 第一层：脚本自动生成（根本解）
+#### Layer 1: Script Auto-Generation (Root Solution)
 
-`scripts/sync-status.py` 从 `.record/` 目录的 record files 自动生成 STATUS.md。这是"最终真相"层——无论 Agent 是否手动更新，脚本都能从 source of truth 重建 STATUS.md。
+`scripts/sync-status.py` automatically generates STATUS.md from the record files in the `.record/` directory. This is the "ultimate truth" layer — regardless of whether the Agent updates manually, the script can rebuild STATUS.md from the source of truth.
 
-**执行命令**：`python3 scripts/sync-status.py`
+**Execution command**: `python3 scripts/sync-status.py`
 
-**运行模式**：
-- 标准模式：生成并写入 `.record/STATUS.md`
-- `--quiet`：静默模式，hook 调用用，无 stdout 输出
-- `--dry-run`：输出到 stdout，不写文件
-- `--check`：一致性检查，不一致时输出警告到 stderr
+**Run modes**:
+- Standard mode: Generate and write to `.record/STATUS.md`
+- `--quiet`: Silent mode, for hook invocation, no stdout output
+- `--dry-run`: Output to stdout, do not write file
+- `--check`: Consistency check, output warnings to stderr when inconsistent
 
-**依赖**：Python 3 标准库，无外部包依赖。
+**Dependencies**: Python 3 standard library, no external package dependencies.
 
-#### 第二层：Claude Code Hooks 自动触发（实时性）
+#### Layer 2: Claude Code Hooks Auto-Trigger (Real-Time)
 
-`.claude/settings.local.json` 配置 PostToolUse + Stop hook：
+`.claude/settings.local.json` configures PostToolUse + Stop hooks:
 
-- **PostToolUse**：匹配 Write|Edit 工具，调用 `python3 scripts/sync-status.py --quiet`。每次 `.record/` 下文件变更后自动同步。
-- **Stop**：会话结束时调用 `python3 scripts/sync-status.py --check`，发现不一致时输出警告。
+- **PostToolUse**: Matches Write|Edit tools, calls `python3 scripts/sync-status.py --quiet`. Automatically syncs after each file change under `.record/`.
+- **Stop**: Calls `python3 scripts/sync-status.py --check` at session end, outputs warnings when inconsistencies are found.
 
-脚本内部通过文件修改时间判断是否为 `.record/` 下的变更，无变更时快速退出（< 100ms），避免 hook 累积延迟。
+The script internally uses file modification times to determine whether the change is under `.record/`; if no change, it exits quickly (< 100ms), avoiding accumulated hook delays.
 
-**Windows 兼容**：Windows 端需将 hook command 中的 `python3` 改为 `python`。
+**Windows compatibility**: On Windows, change `python3` in the hook command to `python`.
 
-#### 第三层：Agent 检查点约束（防御深度）
+#### Layer 3: Agent Checkpoint Constraint (Defense in Depth)
 
-即使 hook 不可用（如 Codex 平台），Agent 仍应在上述 5 个事件点手动更新 STATUS.md，并在更新后读取 `.record/STATUS.md` 确认内容正确。
+Even when hooks are unavailable (e.g., Codex platform), the Agent should still manually update STATUS.md at the 5 event points described above, and after updating, read `.record/STATUS.md` to confirm the content is correct.
 
-**降级行为**：当 `scripts/sync-status.py` 不可用（Python 3 未安装）或 hook 未配置时，Agent 的手动更新恢复为强制要求。
+**Degraded behavior**: When `scripts/sync-status.py` is unavailable (Python 3 not installed) or hooks are not configured, the Agent's manual update reverts to a mandatory requirement.
 
-#### 三层保障的协作
+#### Three-Layer Safeguard Collaboration
 
 ```
-记录文件变更
+Record file change
   ↓
-PostToolUse hook 触发 → scripts/sync-status.py → STATUS.md 更新
-  ↓ (若 hook 不可用)
-Agent 检查点手动更新 → STATUS.md 更新
-  ↓ (若脚本不可用)
-Agent 按 5 个事件点手动编写 STATUS.md
+PostToolUse hook triggers → scripts/sync-status.py → STATUS.md updated
+  ↓ (if hook unavailable)
+Agent checkpoint manual update → STATUS.md updated
+  ↓ (if script unavailable)
+Agent manually writes STATUS.md at 5 event points
 ```
 
-无论哪一层生效，STATUS.md 都应与 record files 保持一致。当 STATUS.md 与 record files 冲突时，以 record files 为准（source of truth）。
+Regardless of which layer takes effect, STATUS.md should remain consistent with record files. When STATUS.md conflicts with record files, record files take precedence (source of truth).
 
 ### Status Values
 
-`草稿`, `待验收`, `已验收`, `未完成`, `进行中`, `完成`, `阻塞`
+`Draft`, `Pending Acceptance`, `Accepted`, `Incomplete`, `In Progress`, `Completed`, `Blocked`
 
-Do not mark as `已验收` or `完成` without evidence from an independent acceptance agent that returned PASS.
+Do not mark as `Accepted` or `Completed` without evidence from an independent acceptance agent that returned PASS.
 
 ### Evidence Standards
 
@@ -210,7 +210,7 @@ When a new goal begins:
 
 1. Read `.record/STATUS.md` for aggregated view.
 2. Scan `.record/` for goal subdirectories (any directory matching `.record/{slug}/` with a `.goal/` or `.prod/` inside). For each prior goal, scan its `.prod/`, `.task/`, and `.review/` directories.
-3. Scan `.record/.knowledge/` for project experience items relevant to the current goal. Build a `{PROJECT_KNOWLEDGE}` summary with each item's scope, confidence level, and content. Items marked `status: outdated` are included with "⚠️ 已过时" warning. Check whether any item's `scope` references files/symbols the current goal will modify — if so, mark them as outdated.
+3. Scan `.record/.knowledge/` for project experience items relevant to the current goal. Build a `{PROJECT_KNOWLEDGE}` summary with each item's scope, confidence level, and content. Items marked `status: outdated` are included with "⚠️ Outdated" warning. Check whether any item's `scope` references files/symbols the current goal will modify — if so, mark them as outdated.
 4. Build a concise historical context summary (5-10 bullets): what was done, what passed, what failed, what was deferred, what patterns were established.
 5. Pass the summary as `{HISTORICAL_CONTEXT}` and `{PROJECT_KNOWLEDGE}` to the Investigator Agent.
 6. If `.record/STATUS.md` does not exist or is empty, fall back to scanning `.record/` directories for goal subdirectories.
@@ -230,38 +230,38 @@ Path: `.record/STATUS.md`
 ```markdown
 # STATUS
 
-> 最后更新：YYYY-MM-DD HH:MM
-> 当前模式：交互 | 循环
-> 当前阶段：Phase 0 | Phase 1 | Phase 2 | Phase 3 | Completion | Goal Check
+> Last Updated: YYYY-MM-DD HH:MM
+> Current Mode: Interactive | Loop
+> Current Phase: Phase 0 | Phase 1 | Phase 2 | Phase 3 | Completion | Goal Check
 
-## 活跃目标
+## Active Goals
 
-| 目标 | Slug | 停止条件 | 迭代轮次 | 当前阶段 | 状态 |
-|------|------|----------|----------|----------|------|
+| Goal | Slug | Stop Condition | Iteration Round | Current Phase | Status |
+|------|------|----------------|-----------------|---------------|--------|
 
-## 任务进度
+## Task Progress
 
-| 任务 | 状态 | 验收结果 | 验收报告 |
-|------|------|----------|----------|
+| Task | Status | Acceptance Result | Acceptance Report |
+|------|--------|-------------------|-------------------|
 
-## 历史目标摘要
+## Historical Goals
 
-> 最多 10 条，更早的通过日期索引指向具体文件。
+> Max 10 entries; older ones are referenced by date index pointing to specific files.
 
-| 目标 | Slug | 完成日期 | 最终结果 | 关键产出 |
-|------|------|----------|----------|----------|
+| Goal | Slug | Completion Date | Final Result | Key Artifacts |
+|------|------|-----------------|--------------|---------------|
 
-## 知识要点
+## Knowledge Highlights
 
-> 最近 5 条可复用知识条目摘要。
+> Summary of the 5 most recent reusable knowledge items.
 
-## 可用连接器
+## Available Connectors
 
-> Phase 0 连接器发现阶段记录的可用 MCP 工具。
+> Available MCP tools recorded during the Phase 0 connector discovery stage.
 
-## 最近变更摘要
+## Recent Changes
 
-- [YYYY-MM-DD] T01: [变更摘要] → [验收结果]
+- [YYYY-MM-DD] T01: [Change Summary] → [Acceptance Result]
 ```
 
 ### Knowledge Item Template
@@ -296,52 +296,52 @@ outdated_date: [date if outdated, else omit]
 
 Confidence levels: **confirmed** (code facts + acceptance report), **inferred** (multiple experiences, not independently verified), **assumed** (limited experience).
 
-Outdated marking: When a new goal modifies files/symbols in the item's `scope`, set `status: outdated` with `outdated_reason` and `outdated_date`. Outdated items are still passed to the Investigator Agent with "⚠️ 已过时" warning.
+Outdated marking: When a new goal modifies files/symbols in the item's `scope`, set `status: outdated` with `outdated_reason` and `outdated_date`. Outdated items are still passed to the Investigator Agent with "⚠️ Outdated" warning.
 
 ### Product/Design Template
 
 Path: `.record/{slug}/.prod/PROD_TEMPLATE.md`
 
 ```markdown
-# 需求探索：[目标名称]
+# Requirement Exploration: [Goal Name]
 
-> 来源：[用户目标或会话摘要]
-> 创建日期：[YYYY-MM-DD]
-> 状态：草稿 | 已验收
+> Source: [User goal or session summary]
+> Created: [YYYY-MM-DD]
+> Status: Draft | Accepted
 
-## 1. 背景与目标
-- 背景/目标/非目标：
+## 1. Background & Goal
+- Background/Goal/Non-goals:
 
-## 2. 项目规范与上下文
-- 读取的规范文件/相关模块/约束：
+## 2. Project Rules & Context
+- Rule files read/Related modules/Constraints:
 
-## 3. 当前代码事实
-- 入口/直接调用点/间接调用点/当前行为/已有相似实现/测试覆盖：
+## 3. Current Code Facts
+- Entry points/Direct call sites/Indirect call sites/Current behavior/Existing similar implementations/Test coverage:
 
-## 4. 疑问与对齐结论
-| 问题 | 用户结论 | 影响 |
+## 4. Open Questions & Alignment
+| Question | User Conclusion | Impact |
 
-## 5. 影响范围
-- 后端/前端/数据库/接口/任务/定时/事件/测试：
+## 5. Impact Scope
+- Backend/Frontend/Database/API/Tasks/Scheduled/Events/Tests:
 
-## 6. 方案设计
-- 总体方案/核心流程/错误传播/兼容性：
+## 6. Design
+- Overall design/Core flow/Error propagation/Compatibility:
 
-## 7. 数据模型与接口变更
-- 数据模型/API/配置/迁移：
+## 7. Data Model & API Changes
+- Data model/API/Configuration/Migration:
 
-## 8. 关键设计决策
-| 决策 | 原因 | 替代方案 |
+## 8. Key Design Decisions
+| Decision | Reason | Alternative |
 
-## 9. 风险与验证策略
-- 风险/验证命令/验收证据：
+## 9. Risks & Verification Strategy
+- Risks/Verification commands/Acceptance evidence:
 
-## 10. 设计验收记录
-- 验收 Agent / 结论 / 修改记录
-- 铁律提醒：FAIL 必须修改后重新提交，循环直到 PASS。
+## 10. Design Acceptance Record
+- Acceptance Agent / Conclusion / Change log
+- Iron Rules reminder: FAIL must be modified and resubmitted, loop until PASS.
 
-## 10. 停止条件（仅目标模式）
-- 停止条件/验证方式
+## 10. Stop Condition (Goal Mode Only)
+- Stop condition/Verification method
 ```
 
 ### Task Plan Template
@@ -349,27 +349,27 @@ Path: `.record/{slug}/.prod/PROD_TEMPLATE.md`
 Path: `.record/{slug}/.task/TASK_PLAN_TEMPLATE.md`
 
 ```markdown
-# 任务计划：[目标名称]
+# Task Plan: [Goal Name]
 
-> 来源：[设计文档路径]
-> 创建日期：[YYYY-MM-DD]
-> 状态：待验收 | 已验收
+> Source: [Design document path]
+> Created: [YYYY-MM-DD]
+> Status: Pending Acceptance | Accepted
 
-## 任务列表
+## Task List
 
-### T01: [任务名称]
+### T01: [Task Name]
 
-- **描述**：
-- **涉及文件**：
-- **验收标准**：
+- **Description**:
+- **Files Involved**:
+- **Acceptance Criteria**:
   1. [objective, testable criterion]
-- **依赖**：无 | T01, T02
-- **风险**：
+- **Dependencies**: None | T01, T02
+- **Risks**:
 
 ### T02: ...
 
-## 任务计划验收记录
-- 验收 Agent / 结论 / 修改记录
+## Task Plan Acceptance Record
+- Acceptance Agent / Conclusion / Change log
 ```
 
 ### Individual Task Record Template
@@ -377,26 +377,26 @@ Path: `.record/{slug}/.task/TASK_PLAN_TEMPLATE.md`
 Path: `.record/{slug}/.task/T01_YYYYMMDD_HHMM_[short_name].md`
 
 ```markdown
-# T01: [任务名称]
+# T01: [Task Name]
 
-> 任务计划来源：[TASK_PLAN 路径]
-> 创建日期：[YYYY-MM-DD]
-> 状态：待验收 | 进行中 | 完成 | 阻塞
+> Task Plan Source: [TASK_PLAN path]
+> Created: [YYYY-MM-DD]
+> Status: Pending Acceptance | In Progress | Completed | Blocked
 
-## 描述
+## Description
 [What to implement, scope, boundary]
 
-## 验收标准
+## Acceptance Criteria
 1. [criterion from task plan]
 
-## 实施记录
-| 日期 | 操作 | 文件 | 说明 |
+## Implementation Log
+| Date | Action | File | Notes |
 
-## 验收报告
-- 验收 Agent / 验收结果 / 验收报告路径
+## Acceptance Report
+- Acceptance Agent / Acceptance Result / Acceptance Report Path
 
-## 变更摘要（Layer 1）
-- 变更文件/行为变更/建议手动验证：
+## Change Summary (Layer 1)
+- Changed files/Behavior changes/Suggested manual verification:
 ```
 
 ### Goal Config Template
@@ -432,23 +432,23 @@ multiAgent:
 Path: `.record/{slug}/.review/REVIEW_TEMPLATE.md`
 
 ```markdown
-# 审阅记录：[对象名称]
+# Review Record: [Target Name]
 
-> 审阅对象 / 审阅日期 / 审阅角色
+> Review Target / Review Date / Review Role
 
-## 结论
+## Conclusion
 Status: PASS | FAIL
 
-## 发现
-- [severity] [问题描述与证据]
+## Findings
+- [severity] [Issue description and evidence]
 
-## 必须修改
-- [修改项]
+## Required Changes
+- [Change item]
 
-## 返工记录
-| 轮次 | 审阅结果 | 修改内容 | 重新提交日期 |
+## Rework Log
+| Round | Review Result | Changes Made | Resubmission Date |
 
-## 备注
+## Notes
 ```
 
 ### Comprehension Report Template
@@ -456,21 +456,21 @@ Status: PASS | FAIL
 Path: `.record/{slug}/.prod/COMPREHENSION_YYYYMMDD_HHMM.md`
 
 ```markdown
-# 理解腐烂防护报告：[目标名称]
+# Comprehension Debt Guard Report: [Goal Name]
 
-> 生成日期 / 关联设计文档
+> Generated Date / Associated Design Document
 
-## 变更文件摘要
-| 文件路径 | 变更描述 |
+## Changed Files Summary
+| File Path | Change Description |
 
-## 新引入的概念、模式或抽象
-- [概念/模式/抽象]：[简要说明]
+## New Concepts, Patterns, or Abstractions
+- [Concept/Pattern/Abstraction]: [Brief description]
 
-## 验收报告标记的风险或副作用
-- [风险/副作用]：[来源任务和验收报告路径]
+## Risks or Side Effects Flagged in Acceptance Reports
+- [Risk/Side effect]: [Source task and acceptance report path]
 
-## 用户需手动确认的项
-- [ ] [确认项]
+## Items Requiring Manual User Confirmation
+- [ ] [Confirmation item]
 ```
 
 ### Goal Check Record Template
@@ -478,22 +478,22 @@ Path: `.record/{slug}/.prod/COMPREHENSION_YYYYMMDD_HHMM.md`
 Path: `.record/{slug}/.review/GOAL_CHECK_RXX_YYYYMMDD_HHMM.md`
 
 ```markdown
-# 目标检查记录：[停止条件摘要]
+# Goal Check Record: [Stop Condition Summary]
 
-> 检查日期 / 迭代轮次
+> Check Date / Iteration Round
 
-## 检查结果
+## Check Result
 Status: PASS | FAIL
 
-## 停止条件评估
-| 条件 | 证据 | 结果 |
+## Stop Condition Evaluation
+| Condition | Evidence | Result |
 
-## 差距分析
-- 未满足的条件及原因：
+## Gap Analysis
+- Unmet conditions and reasons:
 
-## 建议下一步
-- [如果 FAIL，描述还需做什么]
+## Suggested Next Steps
+- [If FAIL, describe what still needs to be done]
 
-## 返工记录
-| 轮次 | 检查结果 | 差距 | 修改内容 | 重新提交日期 |
+## Rework Log
+| Round | Check Result | Gap | Changes Made | Resubmission Date |
 ```

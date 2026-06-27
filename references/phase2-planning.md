@@ -28,7 +28,7 @@ Decomposition criteria:
 - Avoid tasks that span too many modules; split by module boundary if needed.
 - Prefer fewer, well-scoped tasks over many micro-tasks.
 
-**STATUS.md update**: Update "任务进度" with all planned tasks.
+**STATUS.md update**: Update "Task Progress" with all planned tasks.
 
 ### 2. Task Plan Acceptance Review
 
@@ -55,7 +55,7 @@ After Phase 2 acceptance passes, ask the user whether to proceed with Phase 3 im
 
 If the user declines, record the decision and wait for further direction.
 
-**STATUS.md update**: After PASS, update "当前阶段" to Phase 3.
+**STATUS.md update**: After PASS, update "Current Phase" to Phase 3.
 
 ## Agent Prompts
 
@@ -97,7 +97,7 @@ Plan only. No implementation. No code changes.
 
 Return a task plan following the Task Plan Template in references/cross-phase.md.
 
-遵循铁律：产出落盘后才可启动下一阶段 Agent；验收不过必须返工。
+Follow iron rules: do not launch the next agent until the output is saved to .record/; rework is mandatory on FAIL.
 ```
 
 ### Task Check Agent (Phase 2)
@@ -148,7 +148,7 @@ List findings ordered by severity with evidence.
 ## Required Changes
 List exact changes required before Phase 3. Empty if PASS.
 
-遵循铁律：产出落盘后才可启动下一阶段 Agent；验收不过必须返工。FAIL 时必须按 Required Changes 修改后重新提交，循环直到 PASS。
+Follow iron rules: do not launch the next agent until the output is saved to .record/; rework is mandatory on FAIL. On FAIL, revise per Required Changes and resubmit until PASS.
 ```
 
 ## Phase 2 Roles

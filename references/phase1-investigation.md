@@ -69,7 +69,7 @@ Launch a Product/Design Agent to draft the design from user goal, project rules,
 
 ▶ CHECKPOINT: `.record/{slug}/.prod/PROD_*.md` exists
 
-**STATUS.md update**: Fill in "活跃目标" row and update "当前阶段" to Phase 1.
+**STATUS.md update**: Fill in "Active Goals" row and update "Current Phase" to Phase 1.
 
 Design document should include: background and goal, current code facts, call-chain analysis when relevant, impact scope, open questions and user-confirmed answers, proposed design, core flow, data model/API changes, key design decisions and reasons, risks and verification strategy. Use the Product/Design Template from cross-phase.md.
 
@@ -151,7 +151,7 @@ Read files, search code, inspect build metadata, run read-only analysis. No edit
 
 ## Evidence Log
 
-遵循铁律：产出落盘后才可启动下一阶段 Agent；验收不过必须返工。
+Follow iron rules: do not launch the next agent until the output is saved to .record/; rework is mandatory on FAIL.
 ```
 
 ### Product/Design Agent (Phase 1)
@@ -193,7 +193,7 @@ Propose architecture and verification strategy. Do not invent code facts, hide a
 
 Return a `.record/{slug}/.prod/` style document following the Product/Design Template in references/cross-phase.md.
 
-遵循铁律：产出落盘后才可启动下一阶段 Agent；验收不过必须返工。
+Follow iron rules: do not launch the next agent until the output is saved to .record/; rework is mandatory on FAIL.
 ```
 
 ### Design Acceptance Agent (Phase 1)
@@ -248,7 +248,7 @@ List exact changes required before Phase 2. Empty if PASS.
 ## Acceptance Notes
 Why the design is ready or not ready for task decomposition.
 
-遵循铁律：产出落盘后才可启动下一阶段 Agent；验收不过必须返工。FAIL 时必须按 Required Changes 修改后重新提交，循环直到 PASS。
+Follow iron rules: do not launch the next agent until the output is saved to .record/; rework is mandatory on FAIL. On FAIL, revise per Required Changes and resubmit until PASS.
 ```
 
 ## Phase 1 Roles

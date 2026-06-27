@@ -1,6 +1,6 @@
 ---
 name: asdev
-description: Handles multi-module software goals through mandatory multi-agent investigation, design, task decomposition, independent review, and acceptance validation with iterative rework. Use when the user invokes /asdev, /goal, goal mode, 多Agent, 验收Agent, 任务拆解, 调用点, call-chain investigation, or any multi-module change requiring reliable end-to-end delivery.
+description: Handles multi-module software goals through mandatory multi-agent investigation, design, task decomposition, independent review, and acceptance validation with iterative rework. Use when the user invokes /asdev, /goal, goal mode, multi-agent, acceptance-agent, task-decomposition, call-site, call-chain investigation, or any multi-module change requiring reliable end-to-end delivery.
 ---
 
 # asdev
@@ -9,11 +9,11 @@ Turn a multi-module goal into a disciplined delivery loop: investigate → desig
 
 ## Iron Rules
 
-1. **强制记录**：每个 Agent 产出必须写入 `.record/`，不落盘不推进下一阶段。
-2. **强制验收**：每个阶段产出必须经独立验收 Agent 审查并返回 PASS。主 Agent 自审不算验收。
-3. **验收不过必须返工**：FAIL 后必须按验收意见修改再提交，循环直到 PASS。无跳过、无降级、无绕过。
+1. **Mandatory Recording**: Every agent output must be written to `.record/`. No save, no advance to the next phase.
+2. **Mandatory Acceptance**: Every phase output must be reviewed by an independent acceptance agent returning PASS. Main agent self-review does not count.
+3. **Mandatory Rework on Rejection**: On FAIL, revise per acceptance feedback and resubmit. Loop until PASS. No skip, no downgrade, no bypass.
 
-唯一例外：用户显式终止任务时，记录终止原因，状态设为 `阻塞`。
+The only exception: when the user explicitly terminates a task, record the reason and set status to `Blocked`.
 
 ## When To Use
 
@@ -81,7 +81,7 @@ Before Phase 1: read `.record/STATUS.md` → scan prior goal directories → sca
 
 ## Platform Compatibility
 
-- **Claude Code**: Agent tool (子代理). Required; stop if unavailable.
+- **Claude Code**: Agent tool (subagent). Required; stop if unavailable.
 - **Codex**: Available multi-agent/subagent tools. Stop if unavailable.
 - **Optional**: `codegraph`, `superpowers`. Detect and use only when available.
 
@@ -96,4 +96,4 @@ Prefer objective verification: run tests, search for forbidden imports, use call
 - Respect the user's dirty worktree. Do not revert unrelated changes.
 - Use existing project patterns over new abstractions.
 - Do not install dependencies or modify global agent config without explicit approval.
-- All generated records in the user's preferred language (default: Chinese for Chinese projects/prompts).
+- All generated records in the user's preferred language (default: matching the project/prompt language).

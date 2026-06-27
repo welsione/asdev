@@ -39,11 +39,11 @@ For each task in order:
 11. If accepted, update task status and acceptance report.
 12. If rejected, fix according to review findings and re-run acceptance. This loop continues until PASS.
 12a. **Knowledge Extraction**: When the task PASSes (or FAIL → rework → PASS), check whether the implementation surfaced a non-obvious pattern, gotcha, or constraint worth preserving. If yes, write a `.record/.knowledge/KNOW_*.md` file. This is opportunistic — not every task produces one.
-13. **STATUS.md update**: After each task status change, update `.record/STATUS.md` "任务进度" table. The update is automatic via `scripts/sync-status.py` triggered by PostToolUse hook; verify by reading `.record/STATUS.md`. If the script/hook is unavailable, manually update the "任务进度" table at each task status change. See [references/cross-phase.md](cross-phase.md) for the three-layer sync guarantee.
+13. **STATUS.md update**: After each task status change, update `.record/STATUS.md` "Task Progress" table. The update is automatic via `scripts/sync-status.py` triggered by PostToolUse hook; verify by reading `.record/STATUS.md`. If the script/hook is unavailable, manually update the "Task Progress" table at each task status change. See [references/cross-phase.md](cross-phase.md) for the three-layer sync guarantee.
 14. **Change Summary (Layer 1)**: After acceptance PASS, present a change summary to the user (files changed, behavior changed, manual verification hints). Write the summary into the task's acceptance report AND show to the user.
 15. **Understanding Verification (Layer 2)**: Every 3 completed tasks, present an Understanding Verification challenge with concrete inferences for the user to judge (NOT a passive "do you understand?" question). User says "no" to an inference → explain and re-verify before proceeding.
 
-Do not mark a task complete until the Task Acceptance Agent returns PASS. The only exception is if the user explicitly terminates the task — record the termination and reason, set status to `阻塞`.
+Do not mark a task complete until the Task Acceptance Agent returns PASS. The only exception is if the user explicitly terminates the task — record the termination and reason, set status to `Blocked`.
 
 ## Comprehension Debt Guard
 
@@ -140,7 +140,7 @@ When all tasks are complete:
 - Mention residual risks or skipped tests.
 - Produce the final comprehension report (write to `.record/{slug}/.prod/`).
 
-**STATUS.md update**: Move the goal from "活跃目标" to "历史目标摘要", update "当前阶段" to reflect completion.
+**STATUS.md update**: Move the goal from "Active Goals" to "Historical Goals", update "Current Phase" to reflect completion.
 
 ## Agent Prompts
 
@@ -197,7 +197,7 @@ Implement only the assigned task. Do not refactor unrelated code. Do not revert 
 ## Notes
 - Residual risk or skipped verification:
 
-遵循铁律：产出落盘后才可启动下一阶段 Agent；验收不过必须返工。
+Follow iron rules: do not launch the next agent until the output is saved to .record/; rework is mandatory on FAIL.
 ```
 
 ### Task Acceptance Agent (Phase 3)
@@ -262,7 +262,7 @@ If PASS, provide text the main agent MUST write into the task's acceptance repor
 - **Behavior changed**: what the code now does differently, in plain language.
 - **Manual verification**: what the user should check by hand if they want confidence beyond this report.
 
-遵循铁律：产出落盘后才可启动下一阶段 Agent；验收不过必须返工。FAIL 时必须按 Required Fixes 修改后重新提交，循环直到 PASS。
+Follow iron rules: do not launch the next agent until the output is saved to .record/; rework is mandatory on FAIL. On FAIL, revise per Required Fixes and resubmit until PASS.
 ```
 
 ### Verification Agent (Phase 3)
@@ -313,7 +313,7 @@ Status: PASS | FAIL
 ## Required Fixes
 - Exact fixes needed before the task can be accepted. Empty if PASS.
 
-遵循铁律：产出落盘后才可启动下一阶段 Agent；验收不过必须返工。
+Follow iron rules: do not launch the next agent until the output is saved to .record/; rework is mandatory on FAIL.
 ```
 
 ## Phase 3 Roles

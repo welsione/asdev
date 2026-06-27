@@ -1,21 +1,22 @@
 #!/usr/bin/env python3
 """
-sync-status.py — 从 .record/ 目录自动生成 STATUS.md
+sync-status.py — Auto-generate STATUS.md from .record/ directory
 
-这是 asdev Skill STATUS.md 自动同步机制的根本解层。
-无论 Agent 是否手动更新 STATUS.md，本脚本都能从 record files (source of truth) 重建 STATUS.md。
+This is the root-solution layer of the asdev Skill STATUS.md auto-sync mechanism.
+Regardless of whether the agent manually updates STATUS.md, this script can rebuild
+STATUS.md from record files (source of truth).
 
 Usage:
-    python3 scripts/sync-status.py          # 标准模式：生成并写入 .record/STATUS.md
-    python3 scripts/sync-status.py --quiet  # 静默模式：hook 调用用，无 stdout 输出
-    python3 scripts/sync-status.py --dry-run # 输出到 stdout，不写文件
-    python3 scripts/sync-status.py --check  # 一致性检查：不一致时输出警告到 stderr
+    python3 scripts/sync-status.py          # Standard: generate and write .record/STATUS.md
+    python3 scripts/sync-status.py --quiet  # Quiet: no stdout output, for hook calls
+    python3 scripts/sync-status.py --dry-run # Output to stdout, do not write file
+    python3 scripts/sync-status.py --check  # Consistency check: warn to stderr on mismatch
 
-设计原则（遵循官方 Skill 编写最佳实践）：
-- 脚本解决问题而非推卸给 Claude（错误时提供具体信息并继续处理）
-- 路径始终使用正斜杠（pathlib.Path 跨平台兼容）
-- 无"巫术常量"（所有阈值都有注释说明理由）
-- 容错优先（frontmatter 缺失或格式错误时不崩溃）
+Design principles (following official Skill authoring best practices):
+- Scripts solve problems, not delegate to Claude (provide specific info on errors and continue)
+- Paths always use forward slashes (pathlib.Path cross-platform compatibility)
+- No "magic constants" (all thresholds have comments explaining rationale)
+- Fault-tolerance first (don't crash on missing or malformed frontmatter)
 """
 
 from __future__ import annotations
@@ -29,33 +30,33 @@ from typing import Any
 
 
 # ============================================================================
-# Constants — 所有常量都有注释说明理由（官方最佳实践：无"巫术常量"）
+# Constants — All constants have comments explaining rationale (best practice: no magic constants)
 # ============================================================================
 
-# .record/ 根目录相对于当前工作目录
+# .record/ root directory relative to current working directory
 RECORD_ROOT = Path(".record")
 
-# STATUS.md 在 .record/ 下的路径
+# STATUS.md path under .record/
 STATUS_FILE = RECORD_ROOT / "STATUS.md"
 
-# 知识要点最多展示 5 条，保持 STATUS.md 简洁
-# 5 条足以覆盖最近关键知识，更多可通过 .knowledge/ 目录查看
+# Show at most 5 knowledge highlights to keep STATUS.md concise
+# 5 is enough to cover recent key knowledge; more available via .knowledge/ directory
 MAX_KNOWLEDGE_ITEMS = 5
 
-# 历史目标最多 10 条，与 cross-phase.md 定义一致
+# At most 10 historical goals, consistent with cross-phase.md definition
 MAX_HISTORY_GOALS = 10
 
-# 最近变更摘要最多 10 条
+# At most 10 recent change entries
 MAX_RECENT_CHANGES = 10
 
-# STATUS.md 在 .record/ 下文件变更后 2 秒内视为"刚变更"
-# 2 秒覆盖了绝大多数文件写入场景，同时避免误判
-# 用于 PostToolUse hook 的快速退出优化
+# STATUS.md is considered "just changed" within 2 seconds after .record/ file changes
+# 2 seconds covers most file write scenarios while avoiding false positives
+# Used for PostToolUse hook fast-exit optimization
 RECENT_CHANGE_THRESHOLD_SECONDS = 2
 
 
 # ============================================================================
-# Frontmatter Parsing — 容错优先，缺失/格式错误时返回空 dict
+# Frontmatter Parsing — Fault-tolerance first, return empty dict on missing/malformed
 # ============================================================================
 
 FRONTMATTER_PATTERN = re.compile(r"^---\s*\n(.*?)\n---\s*\n", re.DOTALL)
@@ -63,16 +64,16 @@ FRONTMATTER_PATTERN = re.compile(r"^---\s*\n(.*?)\n---\s*\n", re.DOTALL)
 
 def parse_frontmatter(filepath: Path) -> dict[str, str]:
     """
-    解析 Markdown 文件的 YAML frontmatter。
+    Parse YAML frontmatter from a Markdown file.
 
-    容错处理：
-    - 文件不存在或无法读取 → 返回空 dict
-    - frontmatter 缺失 → 返回空 dict
-    - frontmatter 格式错误 → 返回空 dict
-    - 字段值缺失 → 跳过该字段
+    Fault-tolerance:
+    - File does not exist or cannot be read → return empty dict
+    - Frontmatter missing → return empty dict
+    - Frontmatter malformed → return empty dict
+    - Field value missing → skip that field
 
     Returns:
-        dict[str, str]: frontmatter 字段字典
+        dict[str, str]: frontmatter field dictionary
     """
     if not filepath.exists():
         return {}
@@ -94,7 +95,7 @@ def parse_frontmatter(filepath: Path) -> dict[str, str]:
         key, _, value = line.partition(":")
         key = key.strip()
         value = value.strip()
-        # 去掉可选的引号
+        # Strip optional quotes
         if (value.startswith('"') and value.endswith('"')) or (
             value.startswith("'") and value.endswith("'")
         ):
@@ -106,16 +107,16 @@ def parse_frontmatter(filepath: Path) -> dict[str, str]:
 
 
 # ============================================================================
-# .record/ 目录扫描
+# .record/ Directory Scanning
 # ============================================================================
 
 
 def is_goal_dir(path: Path) -> bool:
     """
-    判断是否为 goal 子目录（含 .goal/ 子目录）。
+    Determine if a path is a goal subdirectory (contains .goal/ subdirectory).
 
-    参考 cross-phase.md 的 record structure 定义：
-    .record/{slug}/ 含 .goal/, .prod/, .task/, .review/ 子目录
+    Per cross-phase.md record structure definition:
+    .record/{slug}/ contains .goal/, .prod/, .task/, .review/ subdirectories
     """
     if not path.is_dir():
         return False
@@ -124,9 +125,9 @@ def is_goal_dir(path: Path) -> bool:
 
 def scan_goal_dirs(record_root: Path) -> list[Path]:
     """
-    扫描所有 goal 子目录。
+    Scan all goal subdirectories.
 
-    跳过 .knowledge/ 和其他非 goal 目录。
+    Skips .knowledge/ and other non-goal directories.
     """
     if not record_root.exists():
         return []
@@ -138,9 +139,10 @@ def scan_goal_dirs(record_root: Path) -> list[Path]:
 
 def get_recent_mtime(record_root: Path) -> float:
     """
-    获取 .record/ 下最近文件修改时间。
+    Get the most recent file modification time under .record/.
 
-    用于 hook 快速退出优化：如果最近 N 秒内没有文件变更，无需重新生成 STATUS.md。
+    Used for hook fast-exit optimization: if no file changed in the last N seconds,
+    there's no need to regenerate STATUS.md.
     """
     if not record_root.exists():
         return 0.0
@@ -162,37 +164,37 @@ def get_recent_mtime(record_root: Path) -> float:
 
 
 # ============================================================================
-# Goal 数据提取
+# Goal Data Extraction
 # ============================================================================
 
 
 def extract_goal_data(goal_dir: Path) -> dict[str, Any] | None:
     """
-    从单个 goal 目录提取数据。
+    Extract data from a single goal directory.
 
     Returns:
-        dict or None: 如果目录结构不完整则返回 None
+        dict or None: returns None if directory structure is incomplete
     """
     slug = goal_dir.name
 
-    # 读取 GOAL_CONFIG.md（如果存在）
+    # Read GOAL_CONFIG.md if it exists
     goal_config_path = goal_dir / ".goal" / "GOAL_CONFIG.md"
     goal_config = parse_frontmatter(goal_config_path)
 
-    # 提取任务进度
+    # Extract task progress
     task_progress = extract_task_progress(goal_dir)
 
-    # 推断当前阶段
+    # Infer current phase
     current_phase = infer_phase(goal_dir)
 
-    # 提取最近变更
+    # Extract recent changes
     recent_changes = extract_recent_changes(goal_dir)
 
     return {
         "slug": slug,
         "name": goal_config.get("name", slug),
         "stop_condition": goal_config.get("stop_condition", ""),
-        "status": goal_config.get("status", "进行中"),
+        "status": goal_config.get("status", "In Progress"),
         "iteration": goal_config.get("iteration", "R1"),
         "current_phase": current_phase,
         "task_progress": task_progress,
@@ -202,10 +204,10 @@ def extract_goal_data(goal_dir: Path) -> dict[str, Any] | None:
 
 def extract_task_progress(goal_dir: Path) -> list[dict[str, str]]:
     """
-    提取任务进度表。
+    Extract task progress table.
 
-    从 .task/TXX_*.md 读取任务状态。
-    从 .review/TASK_TXX_ACCEPTANCE_*.md 读取验收结果。
+    Reads task status from .task/TXX_*.md.
+    Reads acceptance results from .review/TASK_TXX_ACCEPTANCE_*.md.
     """
     task_dir = goal_dir / ".task"
     review_dir = goal_dir / ".review"
@@ -214,7 +216,7 @@ def extract_task_progress(goal_dir: Path) -> list[dict[str, str]]:
     if not task_dir.exists():
         return tasks
 
-    # 收集任务文件（TXX_*.md，排除 TASK_PLAN_*.md）
+    # Collect task files (TXX_*.md, excluding TASK_PLAN_*.md)
     task_files = sorted(
         f for f in task_dir.glob("T*_*.md")
         if not f.name.startswith("TASK_PLAN_")
@@ -223,17 +225,17 @@ def extract_task_progress(goal_dir: Path) -> list[dict[str, str]]:
     for task_file in task_files:
         fm = parse_frontmatter(task_file)
 
-        # 任务 ID 提取：T01, T02, T10 等
+        # Task ID extraction: T01, T02, T10, etc.
         task_id_match = re.match(r"^(T\d+)", task_file.name)
         task_id = task_id_match.group(1) if task_id_match else task_file.stem
 
-        # 任务名称
+        # Task name
         task_name = fm.get("name", task_file.stem)
 
-        # 任务状态
-        status = fm.get("status", "未开始")
+        # Task status
+        status = fm.get("status", "Not Started")
 
-        # 查找对应的验收报告
+        # Find corresponding acceptance report
         acceptance_status = "—"
         acceptance_report = "—"
         if review_dir.exists():
@@ -258,15 +260,15 @@ def extract_task_progress(goal_dir: Path) -> list[dict[str, str]]:
 
 def infer_phase(goal_dir: Path) -> str:
     """
-    推断 goal 的当前阶段。
+    Infer the goal's current phase.
 
-    推断逻辑（基于文件存在性）：
-    - 只有 .goal/ → Phase 0 (Bootstrap)
-    - 有 .prod/ 但无 .task/ → Phase 1 (Investigation)
-    - 有 .task/TASK_PLAN 但无 ACCEPTANCE → Phase 2 (Planning)
-    - 有 .task/TXX + .review/TASK_TXX_ACCEPTANCE → Phase 3 (Implementation)
-    - 所有任务 status=完成 → Completion
-    - 有 .review/GOAL_CHECK → Goal Check
+    Inference logic (based on file existence):
+    - Only .goal/ → Phase 0 (Bootstrap)
+    - Has .prod/ but no .task/ → Phase 1 (Investigation)
+    - Has .task/TASK_PLAN but no ACCEPTANCE → Phase 2 (Planning)
+    - Has .task/TXX + .review/TASK_TXX_ACCEPTANCE → Phase 3 (Implementation)
+    - All tasks status=Completed → Completion
+    - Has .review/GOAL_CHECK → Goal Check
     """
     has_goal = (goal_dir / ".goal").exists()
     has_prod = (goal_dir / ".prod").exists()
@@ -276,11 +278,11 @@ def infer_phase(goal_dir: Path) -> str:
     if not has_goal:
         return "Unknown"
 
-    # 检查任务完成情况
+    # Check task completion
     tasks = extract_task_progress(goal_dir)
-    all_done = tasks and all(t["status"] == "完成" for t in tasks)
+    all_done = tasks and all(t["status"] == "Completed" for t in tasks)
 
-    # 检查 Goal Check
+    # Check Goal Check
     if has_review and list((goal_dir / ".review").glob("GOAL_CHECK_*.md")):
         return "Goal Check"
 
@@ -305,9 +307,9 @@ def infer_phase(goal_dir: Path) -> str:
 
 def extract_recent_changes(goal_dir: Path) -> list[dict[str, str]]:
     """
-    提取最近变更摘要。
+    Extract recent change summary.
 
-    从 .review/ 中读取任务验收报告，按日期排序取最近 MAX_RECENT_CHANGES 条。
+    Reads task acceptance reports from .review/, sorted by date, taking the most recent MAX_RECENT_CHANGES entries.
     """
     review_dir = goal_dir / ".review"
     if not review_dir.exists():
@@ -319,7 +321,7 @@ def extract_recent_changes(goal_dir: Path) -> list[dict[str, str]]:
         if not fm:
             continue
 
-        # 提取任务 ID
+        # Extract task ID
         task_id_match = re.match(r"TASK_(T\d+)_ACCEPTANCE", review_file.name)
         task_id = task_id_match.group(1) if task_id_match else "T??"
 
@@ -342,15 +344,15 @@ def extract_recent_changes(goal_dir: Path) -> list[dict[str, str]]:
 
 
 # ============================================================================
-# Knowledge 提取
+# Knowledge Extraction
 # ============================================================================
 
 
 def extract_knowledge(record_root: Path) -> list[dict[str, str]]:
     """
-    提取最近 MAX_KNOWLEDGE_ITEMS 条知识条目。
+    Extract the most recent MAX_KNOWLEDGE_ITEMS knowledge items.
 
-    从 .record/.knowledge/KNOW_*.md 读取。
+    Reads from .record/.knowledge/KNOW_*.md.
     """
     knowledge_dir = record_root / ".knowledge"
     if not knowledge_dir.exists():
@@ -378,15 +380,15 @@ def extract_knowledge(record_root: Path) -> list[dict[str, str]]:
 
 
 # ============================================================================
-# 历史目标摘要提取
+# Historical Goals Extraction
 # ============================================================================
 
 
 def extract_history_goals(goal_dirs: list[Path]) -> list[dict[str, str]]:
     """
-    提取已完成的历史目标。
+    Extract completed historical goals.
 
-    判定：所有任务 status=完成 + 有 .review/ 中的验收报告。
+    Criteria: all tasks status=Completed + has acceptance reports in .review/.
     """
     history: list[dict[str, str]] = []
     for goal_dir in goal_dirs:
@@ -405,35 +407,35 @@ def extract_history_goals(goal_dirs: list[Path]) -> list[dict[str, str]]:
 
 
 # ============================================================================
-# STATUS.md 生成
+# STATUS.md Generation
 # ============================================================================
 
 
 def generate_status(data: dict[str, Any]) -> str:
     """
-    按 STATUS.md 模板格式生成内容。
+    Generate content in STATUS.md template format.
 
-    参考 cross-phase.md 中的 STATUS Template。
+    See cross-phase.md STATUS Template.
     """
     now = datetime.now().strftime("%Y-%m-%d %H:%M")
     active_goals = [g for g in data["goals"] if g["current_phase"] not in ("Completion", "Goal Check")]
     completed_goals = [g for g in data["goals"] if g["current_phase"] in ("Completion", "Goal Check")]
 
-    # 当前阶段取第一个活跃目标的阶段
+    # Current phase from first active goal
     current_phase = active_goals[0]["current_phase"] if active_goals else "—"
-    current_mode = "循环" if "loop" in data.get("mode", "").lower() else "交互"
+    current_mode = "Loop" if "loop" in data.get("mode", "").lower() else "Interactive"
 
     lines: list[str] = [
         "# STATUS",
         "",
-        f"> 最后更新：{now}",
-        f"> 当前模式：{current_mode}",
-        f"> 当前阶段：{current_phase}",
+        f"> Last updated: {now}",
+        f"> Current mode: {current_mode}",
+        f"> Current phase: {current_phase}",
         "",
-        "## 活跃目标",
+        "## Active Goals",
         "",
-        "| 目标 | Slug | 停止条件 | 迭代轮次 | 当前阶段 | 状态 |",
-        "|------|------|----------|----------|----------|------|",
+        "| Goal | Slug | Stop Condition | Iteration | Current Phase | Status |",
+        "|------|------|----------------|-----------|---------------|--------|",
     ]
 
     if active_goals:
@@ -445,13 +447,13 @@ def generate_status(data: dict[str, Any]) -> str:
     else:
         lines.append("| — | — | — | — | — | — |")
 
-    # 任务进度（取第一个活跃目标的任务）
+    # Task progress (from first active goal's tasks)
     lines.extend([
         "",
-        "## 任务进度",
+        "## Task Progress",
         "",
-        "| 任务 | 状态 | 验收结果 | 验收报告 |",
-        "|------|------|----------|----------|",
+        "| Task | Status | Acceptance | Report |",
+        "|------|--------|------------|--------|",
     ])
 
     if active_goals and active_goals[0]["task_progress"]:
@@ -463,15 +465,15 @@ def generate_status(data: dict[str, Any]) -> str:
     else:
         lines.append("| — | — | — | — |")
 
-    # 历史目标摘要
+    # Historical goals
     lines.extend([
         "",
-        "## 历史目标摘要",
+        "## Historical Goals",
         "",
-        "> 最多 10 条，更早的通过日期索引指向具体文件。",
+        "> At most 10 entries; older ones accessible via date index to specific files.",
         "",
-        "| 目标 | Slug | 完成日期 | 最终结果 | 关键产出 |",
-        "|------|------|----------|----------|----------|",
+        "| Goal | Slug | Completion Date | Final Result | Key Artifacts |",
+        "|------|------|-----------------|--------------|---------------|",
     ])
 
     if completed_goals:
@@ -482,54 +484,54 @@ def generate_status(data: dict[str, Any]) -> str:
     else:
         lines.append("| — | — | — | — | — |")
 
-    # 知识要点
+    # Knowledge highlights
     lines.extend([
         "",
-        "## 知识要点",
+        "## Knowledge Highlights",
         "",
-        "> 最近 5 条可复用知识条目摘要。",
+        "> Most recent 5 reusable knowledge item summaries.",
         "",
     ])
 
     if data["knowledge"]:
         for item in data["knowledge"]:
-            status_marker = " ⚠️ 已过时" if item["status"] == "outdated" else ""
+            status_marker = " ⚠️ Outdated" if item["status"] == "outdated" else ""
             lines.append(
                 f"- **{item['name']}** ({item['date']}) — {item['scope']}{status_marker}"
             )
     else:
-        lines.append("（暂无知识条目，待后续目标维护）")
+        lines.append("(No knowledge items yet; maintained by future goals)")
 
-    # 可用连接器
+    # Available connectors
     lines.extend([
         "",
-        "## 可用连接器",
+        "## Available Connectors",
         "",
-        "> Phase 0 连接器发现阶段记录的可用 MCP 工具。",
+        "> Available MCP tools discovered during Phase 0.",
         "",
-        "（待 Phase 0 实施后维护）",
+        "(Maintained after Phase 0 implementation)",
     ])
 
-    # 最近变更摘要
+    # Recent changes
     lines.extend([
         "",
-        "## 最近变更摘要",
+        "## Recent Changes",
         "",
     ])
 
     all_changes: list[dict[str, str]] = []
     for goal in data["goals"]:
         all_changes.extend(goal["recent_changes"])
-    # 按日期降序排序
+    # Sort by date descending
     all_changes.sort(key=lambda c: c["date"], reverse=True)
 
     if all_changes:
         for change in all_changes[:MAX_RECENT_CHANGES]:
             lines.append(
-                f"- {change['date']} {change['task_id']} {change['summary'] or '（无摘要）'} — {change['status']}"
+                f"- {change['date']} {change['task_id']} {change['summary'] or '(no summary)'} — {change['status']}"
             )
     else:
-        lines.append("- （暂无变更记录）")
+        lines.append("- (No change records yet)")
 
     lines.append("")
     return "\n".join(lines)
@@ -541,7 +543,7 @@ def generate_status(data: dict[str, Any]) -> str:
 
 
 def collect_data(record_root: Path) -> dict[str, Any]:
-    """收集所有需要的数据。"""
+    """Collect all required data."""
     goal_dirs = scan_goal_dirs(record_root)
     goals = []
     for goal_dir in goal_dirs:
@@ -559,29 +561,29 @@ def collect_data(record_root: Path) -> dict[str, Any]:
 
 
 def main() -> int:
-    """主入口。"""
+    """Main entry point."""
     parser = argparse.ArgumentParser(
-        description="从 .record/ 目录自动生成 STATUS.md"
+        description="Auto-generate STATUS.md from .record/ directory"
     )
     parser.add_argument(
         "--quiet",
         action="store_true",
-        help="静默模式：无 stdout 输出，hook 调用时使用",
+        help="Quiet mode: no stdout output, for hook calls",
     )
     parser.add_argument(
         "--dry-run",
         action="store_true",
-        help="输出到 stdout，不写文件",
+        help="Output to stdout, do not write file",
     )
     parser.add_argument(
         "--check",
         action="store_true",
-        help="一致性检查：不一致时输出警告到 stderr",
+        help="Consistency check: warn to stderr on mismatch",
     )
     args = parser.parse_args()
 
-    # 快速退出优化：如果最近 N 秒内没有 .record/ 文件变更，且 STATUS.md 存在，
-    # 则无需重新生成（避免无意义的 hook 调用）
+    # Fast-exit optimization: if no .record/ file changed in the last N seconds
+    # and STATUS.md exists, no need to regenerate (avoids unnecessary hook calls)
     if args.quiet:
         if STATUS_FILE.exists():
             import time
@@ -590,54 +592,54 @@ def main() -> int:
                 status_mtime = STATUS_FILE.stat().st_mtime
                 record_mtime = get_recent_mtime(RECORD_ROOT)
                 if record_mtime <= status_mtime and (now - status_mtime) > RECENT_CHANGE_THRESHOLD_SECONDS:
-                    # .record/ 没有比 STATUS.md 更新的文件，且 STATUS.md 不是刚刚生成
+                    # No .record/ files newer than STATUS.md, and STATUS.md was not just generated
                     return 0
             except OSError:
                 pass
 
-    # 收集数据
+    # Collect data
     data = collect_data(RECORD_ROOT)
 
-    # 生成 STATUS.md 内容
+    # Generate STATUS.md content
     content = generate_status(data)
 
-    # --check 模式：比较当前 STATUS.md 与生成版本
+    # --check mode: compare current STATUS.md with generated version
     if args.check:
         if not STATUS_FILE.exists():
             print(
-                f"WARNING: STATUS.md 不存在，需要运行 sync-status.py 生成",
+                "WARNING: STATUS.md does not exist, run sync-status.py to generate",
                 file=sys.stderr,
             )
             return 1
         try:
             current = STATUS_FILE.read_text(encoding="utf-8")
         except (OSError, UnicodeDecodeError) as e:
-            print(f"WARNING: 读取 STATUS.md 失败: {e}", file=sys.stderr)
+            print(f"WARNING: Failed to read STATUS.md: {e}", file=sys.stderr)
             return 1
         if current != content:
             print(
-                "WARNING: STATUS.md 与 record files 不一致，请运行 "
-                "python3 scripts/sync-status.py 同步",
+                "WARNING: STATUS.md is out of sync with record files. "
+                "Run python3 scripts/sync-status.py to sync",
                 file=sys.stderr,
             )
             return 1
         return 0
 
-    # --dry-run 模式：输出到 stdout
+    # --dry-run mode: output to stdout
     if args.dry_run:
         print(content)
         return 0
 
-    # 标准模式：写入 STATUS.md
+    # Standard mode: write STATUS.md
     try:
         STATUS_FILE.parent.mkdir(parents=True, exist_ok=True)
         STATUS_FILE.write_text(content, encoding="utf-8")
     except OSError as e:
-        print(f"ERROR: 写入 STATUS.md 失败: {e}", file=sys.stderr)
+        print(f"ERROR: Failed to write STATUS.md: {e}", file=sys.stderr)
         return 1
 
     if not args.quiet:
-        print(f"已生成 {STATUS_FILE}")
+        print(f"Generated {STATUS_FILE}")
 
     return 0
 
