@@ -1,0 +1,79 @@
+<svg width="1200" height="470" viewBox="0 0 1200 470" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">asdev workflow overview</title>
+  <desc id="desc">Shows the four-phase asdev flow from bootstrap and investigation to decomposition and acceptance.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="470" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#08111F"/>
+      <stop offset="0.54" stop-color="#102A2F"/>
+      <stop offset="1" stop-color="#12343B"/>
+    </linearGradient>
+    <linearGradient id="phase" x1="86" y1="136" x2="1114" y2="305" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#7DD3FC"/>
+      <stop offset="0.48" stop-color="#34D399"/>
+      <stop offset="1" stop-color="#FDE68A"/>
+    </linearGradient>
+    <filter id="shadow" x="28" y="82" width="1144" height="292" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="16" stdDeviation="18" flood-color="#020617" flood-opacity="0.35"/>
+    </filter>
+    <style>
+      .title { font: 900 34px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #F8FAFC; letter-spacing: 0; }
+      .sub { font: 700 19px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #A7F3D0; letter-spacing: 0; }
+      .phase { font: 900 27px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #F8FAFC; letter-spacing: 0; }
+      .body { font: 700 16px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #D1FAE5; letter-spacing: 0; }
+      .tag { font: 800 13px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #0F172A; }
+      .foot { font: 800 16px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #E0F2FE; letter-spacing: 0; }
+    </style>
+  </defs>
+  <rect width="1200" height="470" rx="36" fill="url(#bg)"/>
+  <path d="M68 116H1132" stroke="#7DD3FC" stroke-opacity="0.18"/>
+  <text x="72" y="70" class="title">Four-phase delivery: from code facts to evidence</text>
+  <text x="72" y="105" class="sub">Investigate real code first, then design, decompose, implement, and accept.</text>
+
+  <g filter="url(#shadow)">
+    <path d="M315 230H352" stroke="#5EEAD4" stroke-width="5" stroke-linecap="round"/>
+    <path d="M598 230H635" stroke="#5EEAD4" stroke-width="5" stroke-linecap="round"/>
+    <path d="M881 230H918" stroke="#5EEAD4" stroke-width="5" stroke-linecap="round"/>
+    <path d="M344 218L360 230L344 242" stroke="#5EEAD4" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M627 218L643 230L627 242" stroke="#5EEAD4" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M910 218L926 230L910 242" stroke="#5EEAD4" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+
+    <g>
+      <rect x="72" y="154" width="244" height="164" rx="22" fill="#102A2F" stroke="#7DD3FC" stroke-width="2"/>
+      <rect x="100" y="181" width="84" height="28" rx="14" fill="#7DD3FC"/>
+      <text x="118" y="201" class="tag">Phase 0</text>
+      <text x="100" y="245" class="phase">Bootstrap</text>
+      <text x="100" y="276" class="body">Confirm multi-agent capability</text>
+      <text x="100" y="300" class="body">Read rules and initialize records</text>
+    </g>
+
+    <g>
+      <rect x="355" y="154" width="244" height="164" rx="22" fill="#102A2F" stroke="#34D399" stroke-width="2"/>
+      <rect x="383" y="181" width="84" height="28" rx="14" fill="#34D399"/>
+      <text x="401" y="201" class="tag">Phase 1</text>
+      <text x="383" y="245" class="phase">Investigation</text>
+      <text x="383" y="276" class="body">Find call chains and state flows</text>
+      <text x="383" y="300" class="body">Align uncertainty before design</text>
+    </g>
+
+    <g>
+      <rect x="638" y="154" width="244" height="164" rx="22" fill="#102A2F" stroke="#A7F3D0" stroke-width="2"/>
+      <rect x="666" y="181" width="84" height="28" rx="14" fill="#A7F3D0"/>
+      <text x="684" y="201" class="tag">Phase 2</text>
+      <text x="666" y="245" class="phase">Decomposition</text>
+      <text x="666" y="276" class="body">Each task has a reason</text>
+      <text x="666" y="300" class="body">goal and objective criteria</text>
+    </g>
+
+    <g>
+      <rect x="921" y="154" width="244" height="164" rx="22" fill="#102A2F" stroke="#FDE68A" stroke-width="2"/>
+      <rect x="949" y="181" width="84" height="28" rx="14" fill="#FDE68A"/>
+      <text x="967" y="201" class="tag">Phase 3</text>
+      <text x="949" y="245" class="phase">Acceptance</text>
+      <text x="949" y="276" class="body">Implement and verify task by task</text>
+      <text x="949" y="300" class="body">FAIL requires rework until PASS</text>
+    </g>
+  </g>
+
+  <rect x="72" y="366" width="1056" height="48" rx="24" fill="#0B1220" fill-opacity="0.62" stroke="#A7F3D0" stroke-opacity="0.32"/>
+  <text x="104" y="397" class="foot">Constraint: design, task plan, and implementation require independent acceptance.</text>
+</svg>

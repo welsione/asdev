@@ -1,0 +1,42 @@
+<svg width="1200" height="470" viewBox="0 0 1200 470" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Loop mode</title>
+  <desc id="desc">Interactive mode and loop mode in asdev.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="470" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#08111F"/>
+      <stop offset="0.5" stop-color="#102A2F"/>
+      <stop offset="1" stop-color="#153C32"/>
+    </linearGradient>
+    <filter id="shadow" x="40" y="124" width="1120" height="258" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="16" stdDeviation="18" flood-color="#020617" flood-opacity="0.34"/>
+    </filter>
+    <style>
+      .title { font: 900 38px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #F8FAFC; letter-spacing: 0; }
+      .sub { font: 700 19px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #A7F3D0; letter-spacing: 0; }
+      .mode { font: 900 28px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #F8FAFC; letter-spacing: 0; }
+      .body { font: 700 17px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #D1FAE5; letter-spacing: 0; }
+      .tag { font: 900 14px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #0B1220; letter-spacing: 0; }
+      .foot { font: 800 17px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #E0F2FE; letter-spacing: 0; }
+    </style>
+  </defs>
+  <rect width="1200" height="470" rx="36" fill="url(#bg)"/>
+  <text x="72" y="72" class="title">Loop mode: unattended iteration + recovery</text>
+  <text x="72" y="108" class="sub">Interactive mode favors alignment; loop mode favors continuous progress with safeguards.</text>
+  <g filter="url(#shadow)">
+    <rect x="72" y="154" width="508" height="190" rx="24" fill="#102A2F" stroke="#7DD3FC" stroke-width="2"/>
+    <rect x="104" y="184" width="118" height="30" rx="15" fill="#7DD3FC"/>
+    <text x="130" y="205" class="tag">Default</text>
+    <text x="104" y="252" class="mode">Interactive mode</text>
+    <text x="104" y="290" class="body">Phases may pause for confirmation</text>
+    <text x="104" y="320" class="body">Stop: Goal Check PASS or user termination</text>
+
+    <rect x="620" y="154" width="508" height="190" rx="24" fill="#102A2F" stroke="#FDE68A" stroke-width="2"/>
+    <rect x="652" y="184" width="144" height="30" rx="15" fill="#FDE68A"/>
+    <text x="678" y="205" class="tag">Unattended</text>
+    <text x="652" y="252" class="mode">Loop mode</text>
+    <text x="652" y="290" class="body">Auto-iterates until safeguards pause it</text>
+    <text x="652" y="320" class="body">Stop: PASS, convergence guard, or user stop</text>
+  </g>
+  <rect x="72" y="392" width="1056" height="42" rx="21" fill="#0B1220" fill-opacity="0.62" stroke="#A7F3D0" stroke-opacity="0.3"/>
+  <text x="104" y="419" class="foot">On restart, read .record/STATUS.md: continue an active goal or start from Phase 0.</text>
+</svg>

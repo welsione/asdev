@@ -1,0 +1,62 @@
+<svg width="1200" height="560" viewBox="0 0 1200 560" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Comprehension debt guard</title>
+  <desc id="desc">Four layers that keep the user inside the development loop.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="560" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#08111F"/>
+      <stop offset="0.5" stop-color="#102A2F"/>
+      <stop offset="1" stop-color="#12343B"/>
+    </linearGradient>
+    <filter id="shadow" x="40" y="126" width="1120" height="330" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="18" stdDeviation="20" flood-color="#020617" flood-opacity="0.34"/>
+    </filter>
+    <style>
+      .title { font: 900 38px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #F8FAFC; letter-spacing: 0; }
+      .sub { font: 700 19px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #A7F3D0; letter-spacing: 0; }
+      .layer { font: 900 30px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #0B1220; letter-spacing: 0; }
+      .name { font: 900 23px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #F8FAFC; letter-spacing: 0; }
+      .trigger { font: 800 15px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #A7F3D0; letter-spacing: 0; }
+      .body { font: 700 15px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #D1FAE5; letter-spacing: 0; }
+      .foot { font: 800 17px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #E0F2FE; letter-spacing: 0; }
+    </style>
+  </defs>
+  <rect width="1200" height="560" rx="36" fill="url(#bg)"/>
+  <text x="72" y="72" class="title">Four-layer comprehension guard</text>
+  <text x="72" y="108" class="sub">asdev uses summaries, inferences, and warnings to keep shared understanding intact.</text>
+  <g filter="url(#shadow)">
+    <g transform="translate(72 154)">
+      <rect width="508" height="128" rx="24" fill="#102A2F" stroke="#7DD3FC" stroke-width="2"/>
+      <circle cx="60" cy="64" r="34" fill="#7DD3FC"/>
+      <text x="41" y="75" class="layer">L1</text>
+      <text x="114" y="52" class="name">Per-task change summary</text>
+      <text x="114" y="80" class="trigger">Trigger: after each task PASS</text>
+      <text x="114" y="106" class="body">Changed files, behavior, and manual checks.</text>
+    </g>
+    <g transform="translate(620 154)">
+      <rect width="508" height="128" rx="24" fill="#102A2F" stroke="#34D399" stroke-width="2"/>
+      <circle cx="60" cy="64" r="34" fill="#34D399"/>
+      <text x="41" y="75" class="layer">L2</text>
+      <text x="114" y="52" class="name">Inference verification</text>
+      <text x="114" y="80" class="trigger">Trigger: every 3 tasks</text>
+      <text x="114" y="106" class="body">Concrete inferences for the user to judge.</text>
+    </g>
+    <g transform="translate(72 314)">
+      <rect width="508" height="128" rx="24" fill="#102A2F" stroke="#A7F3D0" stroke-width="2"/>
+      <circle cx="60" cy="64" r="34" fill="#A7F3D0"/>
+      <text x="41" y="75" class="layer">L3</text>
+      <text x="114" y="52" class="name">Pre-implementation intent</text>
+      <text x="114" y="80" class="trigger">Trigger: before each task</text>
+      <text x="114" y="106" class="body">Files involved, expected change, exclusions.</text>
+    </g>
+    <g transform="translate(620 314)">
+      <rect width="508" height="128" rx="24" fill="#102A2F" stroke="#FDE68A" stroke-width="2"/>
+      <circle cx="60" cy="64" r="34" fill="#FDE68A"/>
+      <text x="41" y="75" class="layer">L4</text>
+      <text x="114" y="52" class="name">Change-density warning</text>
+      <text x="114" y="80" class="trigger">Trigger: same file changed 3 tasks</text>
+      <text x="114" y="106" class="body">Pause and confirm the module is still understood.</text>
+    </g>
+  </g>
+  <rect x="72" y="482" width="1056" height="42" rx="21" fill="#0B1220" fill-opacity="0.62" stroke="#A7F3D0" stroke-opacity="0.3"/>
+  <text x="104" y="509" class="foot">Efficiency means every step remains understandable, traceable, and correctable.</text>
+</svg>

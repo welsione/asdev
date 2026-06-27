@@ -1,0 +1,55 @@
+<svg width="1200" height="600" viewBox="0 0 1200 600" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Before and after asdev</title>
+  <desc id="desc">Comparison of software delivery before and after using asdev.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="600" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#08111F"/>
+      <stop offset="0.5" stop-color="#102A2F"/>
+      <stop offset="1" stop-color="#0A1F17"/>
+    </linearGradient>
+    <filter id="shadow" x="40" y="112" width="1120" height="420" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="18" stdDeviation="20" flood-color="#020617" flood-opacity="0.36"/>
+    </filter>
+    <style>
+      .title { font: 900 34px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #F8FAFC; letter-spacing: 0; }
+      .sub { font: 700 19px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #A7F3D0; letter-spacing: 0; }
+      .headBad { font: 900 26px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #FCA5A5; letter-spacing: 0; }
+      .headGood { font: 900 26px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #86EFAC; letter-spacing: 0; }
+      .metric { font: 900 17px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #E0F2FE; letter-spacing: 0; }
+      .bad { font: 700 15px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #FEE2E2; letter-spacing: 0; }
+      .good { font: 700 15px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #D1FAE5; letter-spacing: 0; }
+    </style>
+  </defs>
+  <rect width="1200" height="600" rx="36" fill="url(#bg)"/>
+  <text x="72" y="72" class="title">Before &amp; After: process decides quality</text>
+  <text x="72" y="108" class="sub">asdev replaces one-shot optimism with investigation, records, and acceptance.</text>
+  <g filter="url(#shadow)">
+    <rect x="72" y="146" width="226" height="370" rx="24" fill="#0B1220" stroke="#7DD3FC" stroke-opacity="0.42"/>
+    <rect x="322" y="146" width="398" height="370" rx="24" fill="#1C1012" stroke="#F87171" stroke-width="2"/>
+    <rect x="746" y="146" width="382" height="370" rx="24" fill="#0A1F17" stroke="#34D399" stroke-width="2"/>
+    <text x="356" y="193" class="headBad">Before: no asdev</text>
+    <text x="780" y="193" class="headGood">After: with asdev</text>
+
+    <g transform="translate(104 230)">
+      <text y="0" class="metric">Acceptance</text>
+      <text y="54" class="metric">Risk control</text>
+      <text y="108" class="metric">Transparency</text>
+      <text y="162" class="metric">Memory</text>
+      <text y="216" class="metric">Iteration</text>
+    </g>
+    <g transform="translate(356 230)">
+      <text y="0" class="bad">Main agent self-checks, declares done</text>
+      <text y="54" class="bad">Complex goals jump straight to code</text>
+      <text y="108" class="bad">The faster the loop, the less you see</text>
+      <text y="162" class="bad">New sessions rediscover old facts</text>
+      <text y="216" class="bad">Failed acceptance turns into patching</text>
+    </g>
+    <g transform="translate(780 230)">
+      <text y="0" class="good">Acceptance agent verifies evidence</text>
+      <text y="54" class="good">Investigate, design, then decompose</text>
+      <text y="108" class="good">Four guard layers keep the user in-loop</text>
+      <text y="162" class="good">Records and STATUS.md carry memory</text>
+      <text y="216" class="good">FAIL triggers rework until PASS</text>
+    </g>
+  </g>
+</svg>

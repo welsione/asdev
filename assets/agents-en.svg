@@ -1,6 +1,6 @@
 <svg width="1200" height="640" viewBox="0 0 1200 640" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
-  <title id="title">asdev 多 Agent 团队</title>
-  <desc id="desc">展示 asdev 的主编排 Agent 与调查、设计、拆解、验收等专业 Agent 的协作关系。</desc>
+  <title id="title">asdev multi-agent team</title>
+  <desc id="desc">Shows the main orchestration agent and the specialist agents for investigation, design, planning, checks, and acceptance.</desc>
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="640" gradientUnits="userSpaceOnUse">
       <stop stop-color="#07111F"/>
@@ -14,15 +14,15 @@
       .title { font: 900 34px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #F8FAFC; letter-spacing: 0; }
       .sub { font: 700 18px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #A7F3D0; letter-spacing: 0; }
       .name { font: 900 22px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #F8FAFC; letter-spacing: 0; }
-      .desc { font: 700 15px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #D1FAE5; letter-spacing: 0; }
+      .desc { font: 700 14px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #D1FAE5; letter-spacing: 0; }
       .center { font: 900 30px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #0F172A; letter-spacing: 0; }
       .label { font: 700 13px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #0F172A; }
       .tier { font: 900 14px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #0B1220; letter-spacing: 0; }
     </style>
   </defs>
   <rect width="1200" height="640" rx="36" fill="url(#bg)"/>
-  <text x="72" y="72" class="title">9 个独立 Agent：制造者不自审</text>
-  <text x="72" y="108" class="sub">主 Agent 只做编排、记录和对齐；调查、设计、拆解、审查、验收由专业角色完成。</text>
+  <text x="72" y="72" class="title">9 independent agents: no self-review</text>
+  <text x="72" y="108" class="sub">The main agent orchestrates; specialists investigate, design, check, and accept.</text>
 
   <g filter="url(#shadow)">
     <line x1="600" y1="318" x2="230" y2="204" stroke="#5EEAD4" stroke-width="3" stroke-opacity="0.72"/>
@@ -36,43 +36,43 @@
 
     <g>
       <circle cx="600" cy="318" r="80" fill="#D9F99D"/>
-      <text x="548" y="312" class="center">主Agent</text>
-      <text x="543" y="346" class="label">编排 · 记录 · 对齐</text>
+      <text x="530" y="312" class="center">Main Agent</text>
+      <text x="553" y="346" class="label">orchestrate · record</text>
     </g>
 
     <rect x="72" y="144" width="316" height="102" rx="20" fill="#102A2F" stroke="#7DD3FC" stroke-width="2"/>
     <text x="104" y="182" class="name">Investigator</text>
-    <text x="104" y="212" class="desc">代码事实、调用链、影响范围</text>
+    <text x="104" y="212" class="desc">Code facts, call chains, impact</text>
 
     <rect x="442" y="130" width="316" height="102" rx="20" fill="#102A2F" stroke="#34D399" stroke-width="2"/>
     <text x="474" y="168" class="name">Product / Design</text>
-    <text x="474" y="198" class="desc">需求探索、方案设计、风险策略</text>
+    <text x="474" y="198" class="desc">Requirement exploration and design</text>
 
     <rect x="812" y="144" width="316" height="102" rx="20" fill="#102A2F" stroke="#FDE68A" stroke-width="2"/>
     <text x="844" y="182" class="name">Design Acceptance</text>
-    <text x="844" y="212" class="desc">完整性、可行性、一致性验收</text>
+    <text x="844" y="212" class="desc">Completeness and feasibility review</text>
 
     <rect x="72" y="306" width="316" height="102" rx="20" fill="#102A2F" stroke="#A7F3D0" stroke-width="2"/>
     <text x="104" y="344" class="name">Development Manager</text>
-    <text x="104" y="374" class="desc">任务拆解、依赖顺序、验收标准</text>
+    <text x="104" y="374" class="desc">Task breakdown, order, criteria</text>
 
     <rect x="812" y="306" width="316" height="102" rx="20" fill="#102A2F" stroke="#34D399" stroke-width="2"/>
     <text x="844" y="344" class="name">Task Check</text>
-    <text x="844" y="374" class="desc">任务粒度、顺序、客观验收项</text>
+    <text x="844" y="374" class="desc">Granularity, dependencies, criteria</text>
 
     <rect x="72" y="468" width="316" height="102" rx="20" fill="#102A2F" stroke="#7DD3FC" stroke-width="2"/>
     <text x="104" y="506" class="name">Implementation</text>
-    <text x="104" y="536" class="desc">单任务实现、测试、变更说明</text>
+    <text x="104" y="536" class="desc">Single-task implementation and tests</text>
 
     <rect x="442" y="468" width="316" height="102" rx="20" fill="#102A2F" stroke="#A7F3D0" stroke-width="2"/>
     <text x="474" y="506" class="name">Goal Check</text>
-    <text x="474" y="536" class="desc">停止条件、全局验收、剩余风险</text>
+    <text x="474" y="536" class="desc">Stop condition and residual risk</text>
 
     <rect x="812" y="468" width="316" height="102" rx="20" fill="#102A2F" stroke="#FDE68A" stroke-width="2"/>
     <text x="844" y="506" class="name">Task Acceptance</text>
-    <text x="844" y="536" class="desc">逐项验收、证据检查、返工建议</text>
+    <text x="844" y="536" class="desc">Criteria checks and rework advice</text>
   </g>
 
-  <rect x="308" y="590" width="584" height="34" rx="17" fill="#D9F99D"/>
-  <text x="346" y="613" class="tier">缺少独立 Agent 能力时，asdev 会停止，而不是退化成单 Agent 自审</text>
+  <rect x="374" y="590" width="452" height="34" rx="17" fill="#D9F99D"/>
+  <text x="416" y="613" class="tier">No independent agents: stop, never self-review</text>
 </svg>

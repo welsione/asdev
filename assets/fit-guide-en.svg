@@ -1,0 +1,37 @@
+<svg width="1200" height="430" viewBox="0 0 1200 430" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">When to use asdev</title>
+  <desc id="desc">Use asdev for complex verifiable software goals, not simple edits or ordinary Q and A.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="430" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#08111F"/>
+      <stop offset="0.52" stop-color="#102A2F"/>
+      <stop offset="1" stop-color="#1C1012"/>
+    </linearGradient>
+    <filter id="shadow" x="40" y="112" width="1120" height="238" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="16" stdDeviation="18" flood-color="#020617" flood-opacity="0.34"/>
+    </filter>
+    <style>
+      .title { font: 900 38px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #F8FAFC; letter-spacing: 0; }
+      .sub { font: 700 19px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #A7F3D0; letter-spacing: 0; }
+      .headGood { font: 900 28px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #86EFAC; letter-spacing: 0; }
+      .headBad { font: 900 28px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #FCA5A5; letter-spacing: 0; }
+      .body { font: 700 17px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #D1FAE5; letter-spacing: 0; }
+    </style>
+  </defs>
+  <rect width="1200" height="430" rx="36" fill="url(#bg)"/>
+  <text x="72" y="72" class="title">When to use asdev</text>
+  <text x="72" y="108" class="sub">Use it for goals worth investigating, decomposing, and independently accepting.</text>
+  <g filter="url(#shadow)">
+    <rect x="72" y="146" width="508" height="190" rx="24" fill="#0A1F17" stroke="#34D399" stroke-width="2"/>
+    <text x="104" y="194" class="headGood">Use for</text>
+    <text x="104" y="232" class="body">Multiple modules, roles, or runtime boundaries</text>
+    <text x="104" y="262" class="body">Call sites, state flows, data flows, events</text>
+    <text x="104" y="292" class="body">Design checks, task acceptance, auto-iteration</text>
+
+    <rect x="620" y="146" width="508" height="190" rx="24" fill="#1C1012" stroke="#F87171" stroke-width="2"/>
+    <text x="652" y="194" class="headBad">Avoid for</text>
+    <text x="652" y="232" class="body">Simple one-line edits</text>
+    <text x="652" y="262" class="body">General Q&amp;A or single-file explanations</text>
+    <text x="652" y="292" class="body">Small tasks that do not need acceptance</text>
+  </g>
+</svg>

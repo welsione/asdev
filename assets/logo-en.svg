@@ -1,0 +1,84 @@
+<svg width="1200" height="560" viewBox="0 0 1200 560" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">asdev hero</title>
+  <desc id="desc">asdev premium README hero for goal-mode multi-agent verified delivery.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="560" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#08111F"/>
+      <stop offset="0.46" stop-color="#0D2B32"/>
+      <stop offset="1" stop-color="#153C32"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="152" y1="120" x2="338" y2="362" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#7DD3FC"/>
+      <stop offset="0.45" stop-color="#34D399"/>
+      <stop offset="1" stop-color="#FDE68A"/>
+    </linearGradient>
+    <linearGradient id="headline" x1="412" y1="144" x2="982" y2="144" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF"/>
+      <stop offset="0.48" stop-color="#E0F2FE"/>
+      <stop offset="1" stop-color="#D9F99D"/>
+    </linearGradient>
+    <filter id="softShadow" x="52" y="54" width="1110" height="448" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="24" stdDeviation="26" flood-color="#020617" flood-opacity="0.42"/>
+    </filter>
+    <style>
+      .kicker { font: 800 14px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #7DD3FC; letter-spacing: 1.2px; }
+      .title { font: 900 96px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: url(#headline); letter-spacing: 0; }
+      .tagline { font: 800 31px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #D9F99D; letter-spacing: 0; }
+      .body { font: 700 21px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #C7F9E9; letter-spacing: 0; }
+      .chip { font: 800 16px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #0B1220; letter-spacing: 0; }
+      .small { font: 800 15px Inter, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #E0F2FE; letter-spacing: 0; }
+    </style>
+  </defs>
+
+  <rect width="1200" height="560" rx="40" fill="url(#bg)"/>
+  <path d="M64 96H1136V464H64V96Z" fill="#0B1220" fill-opacity="0.34"/>
+  <path d="M64 96H1136" stroke="#7DD3FC" stroke-opacity="0.24"/>
+  <path d="M64 464H1136" stroke="#D9F99D" stroke-opacity="0.2"/>
+  <path d="M64 96V464" stroke="#7DD3FC" stroke-opacity="0.18"/>
+  <path d="M1136 96V464" stroke="#FDE68A" stroke-opacity="0.18"/>
+
+  <g opacity="0.18">
+    <path d="M0 394C148 332 284 344 438 386C622 436 820 432 1200 330V560H0V394Z" fill="#38BDF8"/>
+    <path d="M0 122C174 164 326 140 502 96C718 42 930 54 1200 136V0H0V122Z" fill="#A7F3D0"/>
+  </g>
+
+  <g filter="url(#softShadow)">
+    <g transform="translate(126 112)">
+      <path d="M146 0L272.44 73V219L146 292L19.56 219V73L146 0Z" fill="#0F172A" stroke="url(#gold)" stroke-width="7"/>
+      <path d="M146 50L229.14 98V194L146 242L62.86 194V98L146 50Z" fill="#102A2F" stroke="#5EEAD4" stroke-width="4"/>
+      <path d="M146 100L185.84 123V169L146 192L106.16 169V123L146 100Z" fill="url(#gold)"/>
+      <circle cx="146" cy="38" r="14" fill="#7DD3FC"/>
+      <circle cx="224" cy="84" r="14" fill="#34D399"/>
+      <circle cx="224" cy="208" r="14" fill="#FDE68A"/>
+      <circle cx="146" cy="254" r="14" fill="#D9F99D"/>
+      <circle cx="68" cy="208" r="14" fill="#A7F3D0"/>
+      <circle cx="68" cy="84" r="14" fill="#BAE6FD"/>
+      <path d="M146 100V52M184 124L214 92M184 168L214 200M146 192V240M108 168L78 200M108 124L78 92" stroke="#E0F2FE" stroke-width="5" stroke-linecap="round"/>
+      <path d="M126 146H166M146 126V166" stroke="#0B1220" stroke-width="7" stroke-linecap="round"/>
+    </g>
+  </g>
+
+  <text x="438" y="150" class="kicker">GOAL MODE / VERIFIED MULTI-AGENT DELIVERY</text>
+  <text x="434" y="252" class="title">asdev</text>
+  <text x="438" y="312" class="tagline">Investigate. Decompose. Verify.</text>
+  <text x="438" y="356" class="body">Not faster coding. More reliable, traceable delivery.</text>
+
+  <g transform="translate(438 398)">
+    <rect width="124" height="38" rx="19" fill="#7DD3FC"/>
+    <text x="20" y="25" class="chip">Investigate</text>
+    <rect x="142" width="124" height="38" rx="19" fill="#34D399"/>
+    <text x="156" y="25" class="chip">Decompose</text>
+    <rect x="284" width="124" height="38" rx="19" fill="#FDE68A"/>
+    <text x="320" y="25" class="chip">Verify</text>
+    <rect x="426" width="142" height="38" rx="19" fill="#D9F99D"/>
+    <text x="460" y="25" class="chip">Recovery</text>
+  </g>
+
+  <g transform="translate(438 470)">
+    <text x="0" y="0" class="small">Mandatory records</text>
+    <circle cx="155" cy="-6" r="4" fill="#5EEAD4"/>
+    <text x="170" y="0" class="small">Mandatory acceptance</text>
+    <circle cx="362" cy="-6" r="4" fill="#5EEAD4"/>
+    <text x="380" y="0" class="small">Rework until PASS</text>
+  </g>
+</svg>
