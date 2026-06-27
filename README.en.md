@@ -360,23 +360,7 @@ Each goal gets its own isolated subdirectory — records from different goals ne
 
 **Prerequisites**: Claude Code or Codex environment + platform supports independent subagents (Agent tool / subagent tools) + Git
 
-**Install**:
-
-```bash
-# Claude Code
-git clone https://github.com/welsione/asdev.git /tmp/asdev
-mkdir -p ~/.claude/skills
-rm -rf ~/.claude/skills/asdev
-cp -R /tmp/asdev ~/.claude/skills/asdev
-
-# Codex
-git clone https://github.com/welsione/asdev.git /tmp/asdev
-mkdir -p ~/.codex/skills
-rm -rf ~/.codex/skills/asdev
-cp -R /tmp/asdev ~/.codex/skills/asdev
-```
-
-Restart Claude Code or start a new session after installation.
+**Install**: give this one sentence to your Agent: `Install the asdev skill from https://github.com/welsione/asdev into the current environment's skills directory; use ~/.claude/skills/asdev for Claude Code or ~/.codex/skills/asdev for Codex, then remind me to restart or open a new session.`
 
 **Usage examples**:
 
